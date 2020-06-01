@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lcc.eduservice.entity.EduCourse;
 import com.lcc.eduservice.entity.EduCourseDescription;
+import com.lcc.eduservice.entity.frontvo.CourseFrontVo;
 import com.lcc.eduservice.entity.vo.CourseInfoVo;
 import com.lcc.eduservice.entity.vo.CoursePublishVo;
 import com.lcc.eduservice.entity.vo.CourseQuery;
@@ -20,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -94,10 +97,10 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Override
     public void updateCourseInfo(CourseInfoVo courseInfoVo) {
         EduCourse eduCourse = new EduCourse();
-        BeanUtils.copyProperties(courseInfoVo,eduCourse);
+        BeanUtils.copyProperties(courseInfoVo, eduCourse);
         int update = baseMapper.updateById(eduCourse);
-        if(update == 0) {
-            throw new BadException(20001,"修改课程信息失败");
+        if (update == 0) {
+            throw new BadException(20001, "修改课程信息失败");
         }
         EduCourseDescription description = new EduCourseDescription();
         description.setId(courseInfoVo.getId());
@@ -116,9 +119,45 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         chapterService.removeChapterByCourseId(courseId);
         courseDescriptionService.removeById(courseId);
         int result = baseMapper.deleteById(courseId); //逻辑删除
-        if(result == 0) {
-            throw new BadException(20001,"删除失败！");
+        if (result == 0) {
+            throw new BadException(20001, "删除失败！");
         }
     }
 
+    @Override
+    public Map<String, Object> getCourseFrontList(Page<EduCourse> coursePage, CourseFrontVo courseFrontVo) {
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(courseFrontVo.getSubjectParentId())) {
+            wrapper.eq("subject_parent_id", courseFrontVo.getSubjectParentId());
+        }
+        if (!StringUtils.isEmpty(courseFrontVo.getSubjectId())) {
+            wrapper.eq("subject_id", courseFrontVo.getSubjectId());
+        }
+        if (!StringUtils.isEmpty(courseFrontVo.getBuyCountSort())) {
+            wrapper.orderByDesc("buy_count");
+        }
+        if (!StringUtils.isEmpty(courseFrontVo.getGmtCreateSort())) {
+            wrapper.orderByDesc("gmt_create");
+        }
+        if (!StringUtils.isEmpty(courseFrontVo.getPriceSort())) {
+            wrapper.orderByDesc("price");
+        }
+        baseMapper.selectPage(coursePage, wrapper);
+        List<EduCourse> courseList = coursePage.getRecords();
+        long current = coursePage.getCurrent(); //当前页
+        long pages = coursePage.getPages(); //共有多少页
+        long size = coursePage.getSize();  //一页多少条
+        long total = coursePage.getTotal(); //一共多少条
+        boolean hasNext = coursePage.hasNext(); //上一页
+        boolean hasPrevious = coursePage.hasPrevious(); //下一页
+        Map<String, Object> map = new HashMap<>();
+        map.put("items", courseList);
+        map.put("current", current);
+        map.put("pages", pages);
+        map.put("size", size);
+        map.put("total", total);
+        map.put("hasNext", hasNext);
+        map.put("hasPrevious", hasPrevious);
+        return map;
+    }
 }

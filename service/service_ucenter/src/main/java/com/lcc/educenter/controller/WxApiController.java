@@ -36,56 +36,43 @@ public class WxApiController {
                     "&code=%s" +
                     "&grant_type=authorization_code";
             //拼接三个参数 ：id  秘钥 和 code值
-            String accessTokenUrl = String.format(
-                    baseAccessTokenUrl,
-                    ConstantWxUtils.WX_OPEN_APP_ID,
-                    ConstantWxUtils.WX_OPEN_APP_SECRET,
-                    code
+            String accessTokenUrl = String.format(baseAccessTokenUrl, ConstantWxUtils.WX_OPEN_APP_ID,
+                    ConstantWxUtils.WX_OPEN_APP_SECRET, code
             );
             //请求这个拼接好的地址，得到返回两个值 accsess_token 和 openid
             //使用httpclient发送请求，得到返回结果
             String accessTokenInfo = HttpClientUtils.get(accessTokenUrl);
-
             //从accessTokenInfo字符串获取出来两个值 accsess_token 和 openid
+            //accessTokenInfo是一个json对象，key-value
             //把accessTokenInfo字符串转换map集合，根据map里面key获取对应值
-            //使用json转换工具 Gson
-            Gson gson = new Gson();
+            Gson gson = new Gson(); //使用json转换工具谷歌的，直接把json对象转换为map集合
             HashMap mapAccessToken = gson.fromJson(accessTokenInfo, HashMap.class);
             String access_token = (String) mapAccessToken.get("access_token");
             String openid = (String) mapAccessToken.get("openid");
-
-            //把扫描人信息添加数据库里面
+            //把扫描人信息添加数据库里面,微信登录不用注册
             //判断数据表里面是否存在相同微信信息，根据openid判断
             UcenterMember member = memberService.getOpenIdMember(openid);
-            if (member == null) {//memeber是空，表没有相同微信数据，进行添加
-
+            if (member == null) {//数据库中没有相同微信数据，进行添加
                 //3 拿着得到accsess_token 和 openid，再去请求微信提供固定的地址，获取到扫描人信息
                 //访问微信的资源服务器，获取用户信息
                 String baseUserInfoUrl = "https://api.weixin.qq.com/sns/userinfo" +
-                        "?access_token=%s" +
-                        "&openid=%s";
-                //拼接两个参数
-                String userInfoUrl = String.format(
-                        baseUserInfoUrl,
-                        access_token,
-                        openid
-                );
+                        "?access_token=%s" + "&openid=%s";
+                String userInfoUrl = String.format(baseUserInfoUrl, access_token, openid); //拼接两个参数
                 //发送请求
                 String userInfo = HttpClientUtils.get(userInfoUrl);
                 //获取返回userinfo字符串扫描人信息
                 HashMap userInfoMap = gson.fromJson(userInfo, HashMap.class);
-                String nickname = (String) userInfoMap.get("nickname");//昵称
-                String headimgurl = (String) userInfoMap.get("headimgurl");//头像
-
+                String nickname = (String) userInfoMap.get("nickname"); //key值为json对象中的key
+                String headimgurl = (String) userInfoMap.get("headimgurl");
                 member = new UcenterMember();
                 member.setOpenid(openid);
                 member.setNickname(nickname);
                 member.setAvatar(headimgurl);
-                memberService.save(member);
+                memberService.save(member); //添加到数据库
             }
             //使用jwt根据member对象生成token字符串
             String jwtToken = JwtUtils.getJwtToken(member.getId(), member.getNickname());
-            //最后：返回首页面，通过路径传递token字符串
+            //返回首页面，通过路径传递token字符串
             return "redirect:http://localhost:3000?token=" + jwtToken;
         } catch (Exception e) {
             throw new BadException(20001, "登录失败");

@@ -1,11 +1,15 @@
 package com.lcc.eduservice.service;
 
-import com.lcc.eduservice.entity.EduCourse;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lcc.eduservice.entity.EduCourse;
+import com.lcc.eduservice.entity.frontvo.CourseFrontVo;
 import com.lcc.eduservice.entity.vo.CourseInfoVo;
 import com.lcc.eduservice.entity.vo.CoursePublishVo;
 import com.lcc.eduservice.entity.vo.CourseQuery;
 import com.lcc.eduservice.entity.vo.ObjectPageInfo;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -18,7 +22,7 @@ import com.lcc.eduservice.entity.vo.ObjectPageInfo;
 public interface EduCourseService extends IService<EduCourse> {
 
     /**
-     *
+     * 后台管理 ---> 课程分类查询
      * @return
      */
     ObjectPageInfo selectAllCoursePageInfo(long current, long size, CourseQuery courseQuery);
@@ -54,4 +58,11 @@ public interface EduCourseService extends IService<EduCourse> {
      * @param courseId
      */
     void removeCourse(String courseId);
+
+    /**
+     * 前端页面课程分页查询
+     * @param coursePage
+     * @return
+     */
+    Map<String, Object> getCourseFrontList(Page<EduCourse> coursePage, CourseFrontVo courseFrontVo);
 }
