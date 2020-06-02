@@ -1,7 +1,7 @@
 package com.lcc.oss.controller;
 
 import com.lcc.oss.service.OssService;
-import com.lcc.util.Result;
+import com.lcc.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

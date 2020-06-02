@@ -14,6 +14,17 @@ import java.util.List;
 public class TestVod {
 
     public static void main(String[] args) {
+        try {
+            getPlayAuth();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 上传视频
+     */
+    public static void uploadVideo(){
         String accessKeyId = "LTAI4G3qQbaBSR4bNMuTcX3f";
         String accessKeySecret = "hGsyTJZhAdacvohIg2JI8DFKAg9NP0";
         String title = "1 - upload by sdk";   //上传之后文件名称
@@ -42,13 +53,11 @@ public class TestVod {
      */
     public static void getPlayAuth() throws Exception{
 
-        DefaultAcsClient client = InitObject.initVodClient("LTAI4G3qQbaBSR4bNMuTcX3f", "hGsyTJZhAdacvohIg2JI8DFKAg9NP0");
-
+        DefaultAcsClient client = InitObject.initVodClient("LTAI4G3qQbaBSR4bNMuTcX3f",
+                "hGsyTJZhAdacvohIg2JI8DFKAg9NP0");
         GetVideoPlayAuthRequest request = new GetVideoPlayAuthRequest();
         GetVideoPlayAuthResponse response = new GetVideoPlayAuthResponse();
-
-        request.setVideoId("b3619a9a51f446e187374bb5484112a5");
-
+        request.setVideoId("1c475f6c825e4cc1afc24f25c1464c1e");
         response = client.getAcsResponse(request);
         System.out.println("playAuth:"+response.getPlayAuth());
     }

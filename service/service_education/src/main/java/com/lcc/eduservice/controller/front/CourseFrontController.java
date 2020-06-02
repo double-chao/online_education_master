@@ -1,15 +1,24 @@
 package com.lcc.eduservice.controller.front;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lcc.eduservice.client.OrderClient;
 import com.lcc.eduservice.entity.EduCourse;
+import com.lcc.eduservice.entity.chapter.ChapterVo;
 import com.lcc.eduservice.entity.frontvo.CourseFrontVo;
+import com.lcc.eduservice.entity.frontvo.CourseWebVo;
+import com.lcc.eduservice.service.EduChapterService;
 import com.lcc.eduservice.service.EduCourseService;
-import com.lcc.util.Result;
+import com.lcc.result.Result;
+import com.lcc.util.JwtUtils;
+import com.lcc.vo.CourseOrder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,14 +34,36 @@ public class CourseFrontController {
 
     @Autowired
     private EduCourseService courseService;
+    @Autowired
+    private EduChapterService chapterService;
+    @Autowired
+    private OrderClient orderClient;
 
     @ApiOperation("分页查询课程")
     @PostMapping("/getCourseFrontList/{current}/{size}")
     public Result getCourseFrontList(@PathVariable long current, @PathVariable long size,
                                      @RequestBody(required = false) CourseFrontVo courseFrontVo) {
-        Page<EduCourse> coursePage = new Page<>(current,size);
-        Map<String,Object> map = courseService.getCourseFrontList(coursePage,courseFrontVo);
+        Page<EduCourse> coursePage = new Page<>(current, size);
+        Map<String, Object> map = courseService.getCourseFrontList(coursePage, courseFrontVo);
         return Result.ok().data(map);
     }
 
+    @ApiOperation("根据课程id查询课程信息")
+    @GetMapping("/getFrontCourseInfo/{courseId}")
+    public Result getFrontCourseInfo(@PathVariable String courseId, HttpServletRequest request) {
+        CourseWebVo courseWebVo = courseService.getBaseCourseInfo(courseId);
+        List<ChapterVo> chapterVideoList = chapterService.getChapterAndVideoById(courseId);
+        //这里还可以在做一个判断，若用户没有登录，就取不到这个用户id
+        boolean buyCourse = orderClient.isBuyCourse(courseId, JwtUtils.getMemberIdByJwtToken(request));
+        return Result.ok().data("courseWebVo", courseWebVo).data("chapterVideoList", chapterVideoList).data("isBuy",buyCourse);
+    }
+
+    @ApiOperation("根据课程id查询-订单的课程信息")
+    @PostMapping("/getOrderCourseInfo/{id}")
+    public CourseOrder getOrderCourseInfo(@PathVariable String id) {
+        CourseWebVo courseInfo = courseService.getBaseCourseInfo(id);
+        CourseOrder courseOrder = new CourseOrder();
+        BeanUtils.copyProperties(courseInfo, courseOrder);
+        return courseOrder;
+    }
 }

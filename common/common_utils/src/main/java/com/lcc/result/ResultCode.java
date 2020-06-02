@@ -1,4 +1,4 @@
-package com.lcc.util;
+package com.lcc.result;
 
 public interface ResultCode {
 

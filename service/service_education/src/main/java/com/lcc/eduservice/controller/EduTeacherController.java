@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lcc.eduservice.entity.EduTeacher;
 import com.lcc.eduservice.entity.vo.TeacherQuery;
 import com.lcc.eduservice.service.EduTeacherService;
-import com.lcc.util.Result;
+import com.lcc.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

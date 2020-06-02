@@ -3,7 +3,7 @@ package com.lcc.eduservice.controller;
 import com.lcc.eduservice.entity.EduChapter;
 import com.lcc.eduservice.entity.chapter.ChapterVo;
 import com.lcc.eduservice.service.EduChapterService;
-import com.lcc.util.Result;
+import com.lcc.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

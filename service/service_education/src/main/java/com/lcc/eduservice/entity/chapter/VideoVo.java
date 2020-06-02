@@ -1,5 +1,6 @@
 package com.lcc.eduservice.entity.chapter;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 /**
  * 小节
@@ -13,4 +14,7 @@ public class VideoVo {
     private String id;
 
     private String title;
+
+    @ApiModelProperty("阿里云视频id")
+    private String videoSourceId;
 }

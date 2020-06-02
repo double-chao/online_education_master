@@ -1,7 +1,7 @@
 package com.lcc.eduservice.client.ipml;
 
 import com.lcc.eduservice.client.VodClient;
-import com.lcc.util.Result;
+import com.lcc.result.Result;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

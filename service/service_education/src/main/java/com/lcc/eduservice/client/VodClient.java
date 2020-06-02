@@ -1,7 +1,7 @@
 package com.lcc.eduservice.client;
 
 import com.lcc.eduservice.client.ipml.VodFileDegradeFeignClient;
-import com.lcc.util.Result;
+import com.lcc.result.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;

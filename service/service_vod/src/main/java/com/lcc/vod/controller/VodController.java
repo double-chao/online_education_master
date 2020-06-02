@@ -2,10 +2,12 @@ package com.lcc.vod.controller;
 
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
+import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthRequest;
+import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthResponse;
 import com.lcc.servicebase.exceptionhandler.BadException;
-import com.lcc.util.Result;
+import com.lcc.result.Result;
 import com.lcc.vod.service.VodService;
-import com.lcc.vod.utils.ConstantVodUtils;
+import com.lcc.vod.utils.AliyunConstantUtils;
 import com.lcc.vod.vo.InitVodClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +26,7 @@ import java.util.List;
  * @author chaochao
  * @since 2020-05-30
  */
-@Api(description = "上传视频")
+@Api(description = "阿里云视频")
 @RestController
 @RequestMapping("/eduvod/video")
 @CrossOrigin
@@ -46,7 +48,7 @@ public class VodController {
     public Result removeAlyVideo(@ApiParam(name = "id", value = "视频id", required = true)
                                  @PathVariable String id) {
         try {
-            DefaultAcsClient client = InitVodClient.initVodClient(ConstantVodUtils.ACCESS_KEY_ID, ConstantVodUtils.ACCESS_KEY_SECRET);
+            DefaultAcsClient client = InitVodClient.initVodClient(AliyunConstantUtils.ACCESS_KEY_ID, AliyunConstantUtils.ACCESS_KEY_SECRET);
             DeleteVideoRequest request = new DeleteVideoRequest();
             request.setVideoIds(id);
             client.getAcsResponse(request);
@@ -63,6 +65,23 @@ public class VodController {
                               @RequestParam("videoIdList") List<String> videoIdList) {
         vodService.removeMoreAlyVideo(videoIdList);
         return Result.ok();
+    }
+
+    @ApiOperation("根据阿里云视频id获取凭证")
+    @GetMapping("/getPlayAuth/{id}")
+    public Result getPlayAuth(@ApiParam(name = "id", value = "阿里云视频id", required = true)
+                              @PathVariable String id) {
+        try {
+            DefaultAcsClient client = InitVodClient.initVodClient(AliyunConstantUtils.ACCESS_KEY_ID,
+                    AliyunConstantUtils.ACCESS_KEY_SECRET);
+            GetVideoPlayAuthRequest request = new GetVideoPlayAuthRequest();
+            request.setVideoId(id);
+            GetVideoPlayAuthResponse response = client.getAcsResponse(request);
+            String playAuth = response.getPlayAuth();
+            return Result.ok().data("playAuth", playAuth);
+        } catch (Exception e) {
+            throw new BadException(20001, "获取凭证失败");
+        }
     }
 
 }

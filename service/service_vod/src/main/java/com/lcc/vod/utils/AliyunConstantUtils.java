@@ -1,11 +1,11 @@
-package com.lcc.msmservice.utils;
+package com.lcc.vod.utils;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ConstantSMSUtils implements InitializingBean {
+public class AliyunConstantUtils implements InitializingBean {
 
     @Value("${aliyun.vod.file.keyid}")
     private String keyid;

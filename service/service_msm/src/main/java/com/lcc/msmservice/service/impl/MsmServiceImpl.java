@@ -8,7 +8,7 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.lcc.msmservice.service.MsmService;
-import com.lcc.msmservice.utils.ConstantSMSUtils;
+import com.lcc.msmservice.utils.AliyunConstantUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -23,8 +23,8 @@ public class MsmServiceImpl implements MsmService {
         if (StringUtils.isEmpty(phone)) return false;
 
         DefaultProfile profile =
-                DefaultProfile.getProfile("default", ConstantSMSUtils.ACCESS_KEY_ID,
-                        ConstantSMSUtils.ACCESS_KEY_SECRET);
+                DefaultProfile.getProfile("default", AliyunConstantUtils.ACCESS_KEY_ID,
+                        AliyunConstantUtils.ACCESS_KEY_SECRET);
         IAcsClient client = new DefaultAcsClient(profile);
         //设置相关固定的参数
         CommonRequest request = new CommonRequest();

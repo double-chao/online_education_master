@@ -1,6 +1,6 @@
 package com.lcc.eduservice.controller;
 
-import com.lcc.util.Result;
+import com.lcc.result.Result;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 

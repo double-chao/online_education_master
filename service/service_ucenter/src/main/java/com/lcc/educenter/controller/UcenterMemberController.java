@@ -5,9 +5,11 @@ import com.lcc.educenter.entity.UcenterMember;
 import com.lcc.educenter.entity.vo.RegisterVo;
 import com.lcc.educenter.service.UcenterMemberService;
 import com.lcc.util.JwtUtils;
-import com.lcc.util.Result;
+import com.lcc.result.Result;
+import com.lcc.vo.UserOrder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +36,7 @@ public class UcenterMemberController {
     @PostMapping("/login")
     public Result loginUser(@RequestBody UcenterMember member) {
         String token = memberService.login(member);
-        return Result.ok().data("token",token);
+        return Result.ok().data("token", token);
     }
 
     @ApiOperation("注册")
@@ -49,7 +51,16 @@ public class UcenterMemberController {
     public Result getMemberInfo(HttpServletRequest request) {
         String memberId = JwtUtils.getMemberIdByJwtToken(request); //根据token得到用户id
         UcenterMember member = memberService.getById(memberId);  //得到用户全部信息
-        return Result.ok().data("userInfo",member);
+        return Result.ok().data("userInfo", member);
+    }
+
+    @ApiOperation("根据用户id获取用户信息")
+    @PostMapping("/getUserInfoOrder/{id}")
+    public UserOrder getUserInfoOrder(@PathVariable String id) {
+        UserOrder userOrder = new UserOrder();
+        UcenterMember ucenterMember = memberService.getById(id);
+        BeanUtils.copyProperties(ucenterMember, userOrder);
+        return userOrder;
     }
 
 }

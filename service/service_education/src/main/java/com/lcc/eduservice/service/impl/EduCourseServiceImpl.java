@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lcc.eduservice.entity.EduCourse;
 import com.lcc.eduservice.entity.EduCourseDescription;
 import com.lcc.eduservice.entity.frontvo.CourseFrontVo;
+import com.lcc.eduservice.entity.frontvo.CourseWebVo;
 import com.lcc.eduservice.entity.vo.CourseInfoVo;
 import com.lcc.eduservice.entity.vo.CoursePublishVo;
 import com.lcc.eduservice.entity.vo.CourseQuery;
@@ -159,5 +160,10 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         map.put("hasNext", hasNext);
         map.put("hasPrevious", hasPrevious);
         return map;
+    }
+
+    @Override
+    public CourseWebVo getBaseCourseInfo(String courseId) {
+        return baseMapper.selectWebCourseInfo(courseId);
     }
 }

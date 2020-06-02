@@ -2,7 +2,7 @@ package com.lcc.msmservice.controller;
 
 import com.lcc.msmservice.service.MsmService;
 import com.lcc.msmservice.utils.RandomUtil;
-import com.lcc.util.Result;
+import com.lcc.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class MsmController {
         }
         //2 如果redis获取 不到，进行阿里云发送
         //生成随机值，传递阿里云进行发送
-        code = RandomUtil.getFourBitRandom();
+        code = RandomUtil.getSixBitRandom();
         Map<String, Object> param = new HashMap<>();
         param.put("code", code);
         //调用service发送短信的方法

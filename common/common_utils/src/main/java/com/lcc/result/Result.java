@@ -1,4 +1,4 @@
-package com.lcc.util;
+package com.lcc.result;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

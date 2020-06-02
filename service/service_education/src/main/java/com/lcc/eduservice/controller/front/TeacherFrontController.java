@@ -6,7 +6,7 @@ import com.lcc.eduservice.entity.EduCourse;
 import com.lcc.eduservice.entity.EduTeacher;
 import com.lcc.eduservice.service.EduCourseService;
 import com.lcc.eduservice.service.EduTeacherService;
-import com.lcc.util.Result;
+import com.lcc.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

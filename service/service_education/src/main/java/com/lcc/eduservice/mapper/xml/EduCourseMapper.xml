@@ -4,19 +4,39 @@
 
     <select id="selectPublishVoInfo" parameterType="java.lang.String"
             resultType="com.lcc.eduservice.entity.vo.CoursePublishVo">
-          SELECT
-            ec.id,ec.title,ec.cover,ec.price,ec.lesson_num AS lessonNum,
-            ecd.description,
-            et.name AS teacherName,
-            es1.title AS subjectLevelOne,
-            es2.title AS subjectLevelTwo
-        FROM
-            edu_course ec
-        LEFT JOIN edu_course_description ecd ON ec.id = ecd.id
-        LEFT JOIN edu_teacher et ON et.id = ec.teacher_id
-        LEFT JOIN edu_subject es1 ON es1.id = ec.subject_parent_id
-        LEFT JOIN edu_subject es2 ON es2.id = ec.subject_id
-        WHERE ec.id = #{courseId}
+            SELECT
+                ec.id,ec.title,ec.cover,ec.price,ec.lesson_num AS lessonNum,
+                ecd.description,
+                et.name AS teacherName,
+                es1.title AS subjectLevelOne,
+                es2.title AS subjectLevelTwo
+            FROM
+                edu_course ec
+            LEFT JOIN edu_course_description ecd ON ec.id = ecd.id
+            LEFT JOIN edu_teacher et ON et.id = ec.teacher_id
+            LEFT JOIN edu_subject es1 ON es1.id = ec.subject_parent_id
+            LEFT JOIN edu_subject es2 ON es2.id = ec.subject_id
+            WHERE
+                 ec.id = #{courseId}
+    </select>
+
+    <select id="selectWebCourseInfo" parameterType="java.lang.String"
+            resultType="com.lcc.eduservice.entity.frontvo.CourseWebVo">
+            SELECT
+                ec.id,ec.title,ec.cover,ec.price,ec.lesson_num AS lessonNum,
+                ec.buy_count AS buyCount,ec.view_count AS viewCount,
+                ecd.description,et.id AS teacherId,
+                et.NAME AS teacherName,et.intro,et.avatar,
+                es1.id AS subjectLevelOneId,es1.title AS subjectLevelOne,
+                es2.id AS subjectLevelTwoId,es2.title AS subjectLevelTwo
+            FROM
+                edu_course ec
+            LEFT JOIN edu_course_description ecd ON ec.id = ecd.id
+            LEFT JOIN edu_teacher et ON et.id = ec.teacher_id
+            LEFT JOIN edu_subject es1 ON es1.id = ec.subject_parent_id
+            LEFT JOIN edu_subject es2 ON es2.id = ec.subject_id
+            WHERE
+                ec.id = #{courseId}
     </select>
 
 </mapper>

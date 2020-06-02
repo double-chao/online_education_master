@@ -7,7 +7,7 @@ import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
 import com.lcc.servicebase.exceptionhandler.BadException;
 import com.lcc.vod.service.VodService;
-import com.lcc.vod.utils.ConstantVodUtils;
+import com.lcc.vod.utils.AliyunConstantUtils;
 import com.lcc.vod.vo.InitVodClient;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -35,8 +35,8 @@ public class VodServiceImpl implements VodService {
             String title = fileName.substring(0, fileName.lastIndexOf("."));
             //inputStream：上传文件输入流
             InputStream inputStream = file.getInputStream();
-            UploadStreamRequest request = new UploadStreamRequest(ConstantVodUtils.ACCESS_KEY_ID,
-                    ConstantVodUtils.ACCESS_KEY_SECRET, title, fileName, inputStream);
+            UploadStreamRequest request = new UploadStreamRequest(AliyunConstantUtils.ACCESS_KEY_ID,
+                    AliyunConstantUtils.ACCESS_KEY_SECRET, title, fileName, inputStream);
             UploadVideoImpl uploader = new UploadVideoImpl();
             UploadStreamResponse response = uploader.uploadStream(request);
 
@@ -58,7 +58,7 @@ public class VodServiceImpl implements VodService {
     @Override
     public void removeMoreAlyVideo(List<String> videoIdList) {
         try {
-            DefaultAcsClient client = InitVodClient.initVodClient(ConstantVodUtils.ACCESS_KEY_ID, ConstantVodUtils.ACCESS_KEY_SECRET);
+            DefaultAcsClient client = InitVodClient.initVodClient(AliyunConstantUtils.ACCESS_KEY_ID, AliyunConstantUtils.ACCESS_KEY_SECRET);
             DeleteVideoRequest request = new DeleteVideoRequest();
             //利用apache包下的工具类，把集合转换成用逗号隔开的字符串形式 如："1,2,3"
             String ids = StringUtils.join(videoIdList.toArray(), ",");

@@ -3,7 +3,7 @@ package com.lcc.eduservice.controller;
 
 import com.lcc.eduservice.entity.CrmBanner;
 import com.lcc.eduservice.service.CrmBannerService;
-import com.lcc.util.Result;
+import com.lcc.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,7 +5,7 @@ import com.lcc.eduservice.client.VodClient;
 import com.lcc.eduservice.entity.EduVideo;
 import com.lcc.eduservice.service.EduVideoService;
 import com.lcc.servicebase.exceptionhandler.BadException;
-import com.lcc.util.Result;
+import com.lcc.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

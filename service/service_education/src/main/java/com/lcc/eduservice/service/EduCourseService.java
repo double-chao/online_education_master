@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lcc.eduservice.entity.EduCourse;
 import com.lcc.eduservice.entity.frontvo.CourseFrontVo;
+import com.lcc.eduservice.entity.frontvo.CourseWebVo;
 import com.lcc.eduservice.entity.vo.CourseInfoVo;
 import com.lcc.eduservice.entity.vo.CoursePublishVo;
 import com.lcc.eduservice.entity.vo.CourseQuery;
@@ -65,4 +66,11 @@ public interface EduCourseService extends IService<EduCourse> {
      * @return
      */
     Map<String, Object> getCourseFrontList(Page<EduCourse> coursePage, CourseFrontVo courseFrontVo);
+
+    /**
+     * 前端页面---》课程信息
+     * @param courseId
+     * @return
+     */
+    CourseWebVo getBaseCourseInfo(String courseId);
 }

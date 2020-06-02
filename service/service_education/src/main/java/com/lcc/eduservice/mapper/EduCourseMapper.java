@@ -1,7 +1,8 @@
 package com.lcc.eduservice.mapper;
 
-import com.lcc.eduservice.entity.EduCourse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.lcc.eduservice.entity.EduCourse;
+import com.lcc.eduservice.entity.frontvo.CourseWebVo;
 import com.lcc.eduservice.entity.vo.CoursePublishVo;
 
 /**
@@ -20,4 +21,10 @@ public interface EduCourseMapper extends BaseMapper<EduCourse> {
      * @return
      */
     CoursePublishVo selectPublishVoInfo(String courseId);
+
+    /**
+     * 前端页面---》根据id查询课程信息
+     * @return
+     */
+    CourseWebVo selectWebCourseInfo(String courseId);
 }
