@@ -5,6 +5,7 @@
     <modules>
         <module>service</module>
         <module>common</module>
+        <module>infrasructure</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -44,6 +45,8 @@
         <canal.client.version>1.1.0</canal.client.version>
         <docker.image.prefix>zx</docker.image.prefix>
         <cloud-alibaba.version>0.2.2.RELEASE</cloud-alibaba.version>
+        <redisson.version>3.12.0</redisson.version>
+        <dynamic-datasource.version>3.2.1</dynamic-datasource.version>
     </properties>
 
     <dependencyManagement>
@@ -69,6 +72,12 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!-- mybatis-plus 多数据源-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic-datasource.version}</version>
             </dependency>
 
             <!-- velocity 模板引擎, Mybatis Plus 代码生成器需要 -->
@@ -200,6 +209,14 @@
                 <artifactId>canal.client</artifactId>
                 <version>${canal.client.version}</version>
             </dependency>
+
+            <!-- 以后使用redisson作为所有分布式锁，分布式对象等功能 -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

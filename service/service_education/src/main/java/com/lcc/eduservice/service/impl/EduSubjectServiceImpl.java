@@ -5,13 +5,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lcc.eduservice.entity.EduSubject;
 import com.lcc.eduservice.entity.excel.SubjectData;
-import com.lcc.eduservice.entity.subject.OneSubject;
-import com.lcc.eduservice.entity.subject.TwoSubject;
+import com.lcc.eduservice.entity.vo.subject.OneSubjectVO;
+import com.lcc.eduservice.entity.vo.subject.TwoSubjectVO;
 import com.lcc.eduservice.listener.SubjectExcelListener;
 import com.lcc.eduservice.mapper.EduSubjectMapper;
 import com.lcc.eduservice.service.EduSubjectService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ import java.util.List;
 public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubject> implements EduSubjectService {
 
     @Override
-    public void saveSubjectFile(MultipartFile file,EduSubjectService subjectService) {
+    public void saveSubjectFile(MultipartFile file, EduSubjectService subjectService) {
         try (InputStream inputStream = file.getInputStream()) {
             EasyExcel.read(inputStream, SubjectData.class, new SubjectExcelListener(subjectService)).sheet().doRead();
         } catch (IOException e) {
@@ -40,35 +41,57 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
     }
 
     @Override
-    public List<OneSubject> getAllOneTwoSubject() {
-        QueryWrapper<EduSubject> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("parent_id", "0");
-        List<EduSubject> eduSubjectListOne = baseMapper.selectList(queryWrapper);
+    public List<OneSubjectVO> getSubjectInfo() {
+        QueryWrapper<EduSubject> oneWrapper = new QueryWrapper<>();
+        oneWrapper.eq("parent_id", "0"); //一级菜单的父id一定为0
+        List<EduSubject> oneSubject = baseMapper.selectList(oneWrapper); //一级菜单
 
-        QueryWrapper<EduSubject> queryWrapper1 = new QueryWrapper<>();
-        queryWrapper1.ne("parent_id", "0");
-        List<EduSubject> eduSubjectListTwo = baseMapper.selectList(queryWrapper1);
+        QueryWrapper<EduSubject> twoWrapper = new QueryWrapper<>();
+        twoWrapper.ne("parent_id", "0"); //二级菜单的父id一定不为0
+        List<EduSubject> twoSubject = baseMapper.selectList(twoWrapper); //二级菜单
 
-        List<OneSubject> oneSubjectList = new ArrayList<>(eduSubjectListOne.size());
-        // 一级菜单
-        for (int i = 0; i < eduSubjectListOne.size(); i++) {
-            EduSubject eduSubject = eduSubjectListOne.get(i);
-            OneSubject oneSubject = new OneSubject();
-            BeanUtils.copyProperties(eduSubject, oneSubject);
-            oneSubjectList.add(oneSubject);
+        List<OneSubjectVO> oneSubjectVOList = new ArrayList<>(oneSubject.size());
+        for (int i = 0; i < oneSubject.size(); i++) {
+            EduSubject subject1 = oneSubject.get(i); //从一级菜单中取基本信息
+            OneSubjectVO oneSubjectVO = new OneSubjectVO();
+            BeanUtils.copyProperties(subject1, oneSubjectVO); //赋值
+            oneSubjectVOList.add(oneSubjectVO); //添加到集合中
 
-            List<TwoSubject> twoSubjectList = new ArrayList<>(eduSubjectListTwo.size());
-            //二级菜单
-            for (int j = 0; j < eduSubjectListTwo.size(); j++) {
-                EduSubject eduSubject2 = eduSubjectListTwo.get(j);
-                if (eduSubject2.getParentId().equals(eduSubject.getId())) { //判断二级菜单的父id与一级菜单的id是否相等
-                    TwoSubject twoSubject = new TwoSubject();
-                    BeanUtils.copyProperties(eduSubject2, twoSubject);
-                    twoSubjectList.add(twoSubject);
+            List<TwoSubjectVO> twoSubjectVOList = new ArrayList<>(twoSubject.size());
+            for (int j = 0; j < twoSubject.size(); j++) {
+                EduSubject subject2 = twoSubject.get(j); //二级菜菜单的信息
+                if (subject2.getParentId().equals(subject1.getId())) {  //二级菜单的父id等于一级菜单的id
+                    TwoSubjectVO twoSubjectVO = new TwoSubjectVO();
+                    BeanUtils.copyProperties(subject2, twoSubjectVO); //赋值
+                    twoSubjectVOList.add(twoSubjectVO);
                 }
             }
-            oneSubject.setChildren(twoSubjectList);
+            oneSubjectVO.setTwoSubjectVOList(twoSubjectVOList); //一级菜单添加多个二级菜单
         }
-        return oneSubjectList;
+        return oneSubjectVOList;
+    }
+
+    @Override
+    public boolean saveOneSubject(EduSubject eduSubject) {
+        QueryWrapper<EduSubject> queryWrapper = new QueryWrapper<>();
+        String title = eduSubject.getTitle();
+        queryWrapper.eq("title", title);
+        EduSubject subject = baseMapper.selectOne(queryWrapper);
+        if (StringUtils.isEmpty(subject)) {
+            int i = baseMapper.insert(eduSubject);
+            return i > 0;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean saveTwoSubjectById(String id, Integer sort, String title) {
+        EduSubject eduSubject = new EduSubject();
+        eduSubject.setParentId(id);
+        eduSubject.setSort(sort);
+        eduSubject.setTitle(title);
+        int i = baseMapper.insert(eduSubject);
+        return i > 0;
     }
 }

@@ -17,12 +17,11 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.time.Duration;
-
 @EnableCaching //开启缓存
 @Configuration //配置类
 public class RedisConfig extends CachingConfigurerSupport {
 
+    // 在spring security 中使用，把权限列表数据缓存起来，序列化，并默认过期时间为永久。
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
@@ -51,9 +50,9 @@ public class RedisConfig extends CachingConfigurerSupport {
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
-        // 配置序列化（解决乱码的问题）,过期时间600秒
+        // 配置序列化（解决乱码的问题）,过期时间600秒,不在这里设置，建议在配置文件中设置过期时间
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofSeconds(600))
+//                .entryTtl(Duration.ofSeconds(600))
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
                 .disableCachingNullValues();

@@ -30,7 +30,7 @@ public class SwaggerConfig {
                 .groupName("webApi")
                 .apiInfo(webApiInfo())
                 .select()
-                .paths(Predicates.not(PathSelectors.regex("/admin/.*")))
+//                .paths(Predicates.not(PathSelectors.regex("/admin/.*"))) //以/admin开头的路径，在swagger中不会显示
                 .paths(Predicates.not(PathSelectors.regex("/error.*")))
                 .build();
 

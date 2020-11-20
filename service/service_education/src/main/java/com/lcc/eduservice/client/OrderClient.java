@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface OrderClient {
 
     /**
-     *        方法的路径  是提供服务方的完整路径，建议把路径和方法名一起复制过来
-     *   ！！！注意：@PathVariable  注解中一定要指定参数名称，否则会出错
+     * 方法的路径  是提供服务方的完整路径，建议把路径和方法名一起复制过来
+     * ！！！注意：@PathVariable  注解中一定要QWz指定参数名称，否则会出错
      *
      * @param courseId
      * @param memberId

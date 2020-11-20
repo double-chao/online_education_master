@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  * @Author: 一十六
  * @Description:
- * @Date: 2020/5/31 17:41
+ * @Date: 2020/5/31
  */
 @SpringBootApplication
 @EnableDiscoveryClient

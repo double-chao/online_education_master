@@ -17,6 +17,11 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
         </dependency>
+        <!--  Base64 -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

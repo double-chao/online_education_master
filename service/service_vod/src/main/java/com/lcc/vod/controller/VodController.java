@@ -29,7 +29,6 @@ import java.util.List;
 @Api(description = "阿里云视频")
 @RestController
 @RequestMapping("/eduvod/video")
-@CrossOrigin
 public class VodController {
 
     @Autowired
@@ -54,7 +53,6 @@ public class VodController {
             client.getAcsResponse(request);
             return Result.ok();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new BadException(20001, "删除视频失败");
         }
     }

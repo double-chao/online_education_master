@@ -17,5 +17,30 @@
             <artifactId>easyexcel</artifactId>
             <version>2.1.1</version>
         </dependency>
+
+        <!--    为了控制那些借口调用需要鉴权，那些不需要权限    -->
+        <dependency>
+            <groupId>com.hunan</groupId>
+            <artifactId>spring_security</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!--  webservice接口  -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>3.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>3.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-spring-boot-starter-jaxws</artifactId>
+            <version>3.3.4</version>
+        </dependency>
+
     </dependencies>
 </project>

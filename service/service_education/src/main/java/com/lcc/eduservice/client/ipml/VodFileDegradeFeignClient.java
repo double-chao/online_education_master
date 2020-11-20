@@ -16,6 +16,7 @@ public class VodFileDegradeFeignClient implements VodClient {
 
     @Override
     public Result removeAlyVideo(String id) {
+        System.out.println("执行了删除视频熔断器....");
         return Result.fail().message("删除视频出错了");
     }
 

@@ -28,7 +28,7 @@ public class TestVod {
         String accessKeyId = "LTAI4G3qQbaBSR4bNMuTcX3f";
         String accessKeySecret = "hGsyTJZhAdacvohIg2JI8DFKAg9NP0";
         String title = "1 - upload by sdk";   //上传之后文件名称
-        String fileName = "E:/Users/Administrator/Desktop/1.mp4";  //本地文件路径和名称
+        String fileName = "G:\\java_document_file\\2020.5在线教育网站资料\\项目资料\\1-阿里云上传测试视频\\1234.mp4";  //本地文件路径和名称
         //上传视频的方法
         UploadVideoRequest request = new UploadVideoRequest(accessKeyId, accessKeySecret, title, fileName);
         /* 可指定分片上传时每个分片的大小，默认为2M字节 */

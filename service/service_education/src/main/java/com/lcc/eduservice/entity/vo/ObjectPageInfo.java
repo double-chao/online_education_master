@@ -11,6 +11,6 @@ import java.util.List;
  */
 @Data
 public class ObjectPageInfo {
-    private long total;
-    private List list;
+    private long total; //总记录条数
+    private List list; //数据集合对象
 }

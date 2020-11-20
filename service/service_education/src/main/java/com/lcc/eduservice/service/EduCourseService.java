@@ -61,7 +61,7 @@ public interface EduCourseService extends IService<EduCourse> {
     void removeCourse(String courseId);
 
     /**
-     * 前端页面课程分页查询
+     * 前端页面---》课程分页查询
      * @param coursePage
      * @return
      */

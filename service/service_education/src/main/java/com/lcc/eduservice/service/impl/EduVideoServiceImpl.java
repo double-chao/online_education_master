@@ -6,6 +6,7 @@ import com.lcc.eduservice.client.VodClient;
 import com.lcc.eduservice.entity.EduVideo;
 import com.lcc.eduservice.mapper.EduVideoMapper;
 import com.lcc.eduservice.service.EduVideoService;
+import com.lcc.servicebase.exceptionhandler.BadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -29,24 +30,31 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
 
     @Override
     public void removeVideoByCourseId(String courseId) {  // 先删除视频（即小节表中的视频id），在删除小节
+        if (StringUtils.isEmpty(courseId)){
+            throw new BadException(20001,"所选删除的课程不存在");
+        }
         QueryWrapper<EduVideo> videoWrapper = new QueryWrapper<>();
         videoWrapper.eq("course_id", courseId);
         videoWrapper.select("video_source_id");
         List<EduVideo> videoList = baseMapper.selectList(videoWrapper); //根据课程id得到小节对象集合
-
-        List<String> videoSourceIdList = new ArrayList<>(videoList.size()); //
-        for (int i = 0; i < videoList.size(); i++) { //遍历  得到每个小节对象的视频id
-            EduVideo video = videoList.get(i);
-            String videoSourceId = video.getVideoSourceId();
-            if (!StringUtils.isEmpty(videoSourceId)) {
-                videoSourceIdList.add(videoSourceId);
+        if (!videoList.isEmpty()){
+            List<String> videoSourceIdList = new ArrayList<>(videoList.size()); //
+            for (int i = 0; i < videoList.size(); i++) { //遍历  得到每个小节对象的视频id
+                EduVideo video = videoList.get(i);
+                String videoSourceId = video.getVideoSourceId();
+                if (!StringUtils.isEmpty(videoSourceId)) {
+                    videoSourceIdList.add(videoSourceId);
+                }
             }
+            if (videoSourceIdList.size() > 0) {
+                vodClient.deleteBatch(videoSourceIdList); //删除课程时，删除多个小节视频（阿里云中的视频）
+            }
+            QueryWrapper<EduVideo> wrapper = new QueryWrapper<>();
+            wrapper.eq("course_id", courseId);
+            baseMapper.delete(wrapper); //删除小节
+        }else {
+            throw new BadException(20001,"该课程不存在章节");
         }
-        if (videoSourceIdList.size() > 0) {
-            vodClient.deleteBatch(videoSourceIdList); //删除课程时，删除多个小节视频（阿里云中的视频）
-        }
-        QueryWrapper<EduVideo> wrapper = new QueryWrapper<>();
-        wrapper.eq("course_id", courseId);
-        baseMapper.delete(wrapper); //删除小节
+
     }
 }

@@ -1,8 +1,10 @@
 package com.lcc.eduservice.entity.vo;
 
 import lombok.Data;
+
 /**
  * 课程发布显示信息
+ *
  * @author chaochao
  * @since 2020-05-26
  */

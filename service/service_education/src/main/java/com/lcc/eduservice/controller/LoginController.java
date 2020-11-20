@@ -7,12 +7,11 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @Author: 一十六
  * @Description: 登录
- * @Date: 2020/5/26 16:11
+ * @Date: 2020/5/26
  */
 @Api(description = "登录")
 @RestController
 @RequestMapping("/eduservice/user")
-@CrossOrigin  //解决跨域问题
 public class LoginController {
 
     @PostMapping("/login")

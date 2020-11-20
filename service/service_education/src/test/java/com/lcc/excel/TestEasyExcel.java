@@ -15,7 +15,6 @@ public class TestEasyExcel {
         //write方法两个参数：第一个参数文件路径名称，第二个参数实体类class
 //        EasyExcel.write(filename,DemoData.class).sheet("学生列表").doWrite(getData());
 
-
         //实现excel读操作
         String filename = "D:\\write.xlsx";
         EasyExcel.read(filename,DemoData.class,new ExcelListener()).sheet().doRead();

@@ -1,11 +1,10 @@
 package com.lcc.eduservice.controller;
 
-
 import com.lcc.eduservice.client.VodClient;
 import com.lcc.eduservice.entity.EduVideo;
 import com.lcc.eduservice.service.EduVideoService;
-import com.lcc.servicebase.exceptionhandler.BadException;
 import com.lcc.result.Result;
+import com.lcc.servicebase.exceptionhandler.BadException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 @Api(description = "小节数据")
 @RestController
 @RequestMapping("/eduservice/video")
-@CrossOrigin
 public class EduVideoController {
 
     @Autowired
@@ -55,6 +53,5 @@ public class EduVideoController {
         videoService.removeById(id); //删除小节
         return Result.ok();
     }
-
 }
 

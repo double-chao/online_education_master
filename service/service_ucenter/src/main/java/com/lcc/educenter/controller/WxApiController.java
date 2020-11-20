@@ -9,14 +9,12 @@ import com.lcc.servicebase.exceptionhandler.BadException;
 import com.lcc.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.net.URLEncoder;
 import java.util.HashMap;
 
-@CrossOrigin
 @Controller
 @RequestMapping("/api/ucenter/wx") //这个请求路径是为了本地测试，在域名中配置了请求到本地的路径地址
 public class WxApiController {

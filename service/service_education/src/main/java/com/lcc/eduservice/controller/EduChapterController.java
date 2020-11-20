@@ -23,7 +23,6 @@ import java.util.List;
 @Api(description = "课程章节")
 @RestController
 @RequestMapping("/eduservice/chapter")
-@CrossOrigin
 public class EduChapterController {
 
     @Autowired
@@ -63,11 +62,7 @@ public class EduChapterController {
     @DeleteMapping("{chapterId}")
     public Result deleteChapter(@PathVariable String chapterId) {
         boolean flag = chapterService.deleteChapter(chapterId);
-        if(flag) {
-            return Result.ok();
-        } else {
-            return Result.fail();
-        }
+        return flag ? Result.ok() : Result.fail();
     }
 
 }

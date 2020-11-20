@@ -14,6 +14,7 @@ public class OrderFileDegradeFeignClient implements OrderClient {
 
     @Override
     public boolean isBuyCourse(String courseId, String memberId) {
-        throw new BadException(20001,"查询课程是否购买失败");
+        System.out.println("执行了查询订单购买熔断器.........查询课程是否购买失败");
+        throw new BadException(20001, "查询课程是否购买失败");
     }
 }

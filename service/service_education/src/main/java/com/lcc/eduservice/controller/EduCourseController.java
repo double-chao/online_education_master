@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +28,6 @@ import java.util.List;
 @Api(description = "课程基本信息")
 @RestController
 @RequestMapping("/eduservice/course")
-@CrossOrigin
 public class EduCourseController {
 
     @Autowired
@@ -84,6 +84,7 @@ public class EduCourseController {
     }
 
     @ApiOperation("最终发布")
+    @CacheEvict(value = {"courseFront"}, key = "'getCourseFrontList'")
     @PostMapping("/publishCourse/{courseId}")
     public Result publishCourse(
             @ApiParam(name = "courseId", value = "课程id", required = true)
@@ -101,6 +102,5 @@ public class EduCourseController {
         courseService.removeCourse(courseId);
         return Result.ok();
     }
-
 }
 

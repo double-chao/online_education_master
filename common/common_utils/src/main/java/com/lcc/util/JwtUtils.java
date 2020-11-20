@@ -42,7 +42,9 @@ public class JwtUtils {
      * @return
      */
     public static boolean checkToken(String jwtToken) {
-        if (StringUtils.isEmpty(jwtToken)) return false;
+        if (StringUtils.isEmpty(jwtToken)){
+            return false;
+        }
         try {
             Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(jwtToken);
         } catch (Exception e) {
@@ -61,7 +63,9 @@ public class JwtUtils {
     public static boolean checkToken(HttpServletRequest request) {
         try {
             String jwtToken = request.getHeader("token");
-            if (StringUtils.isEmpty(jwtToken)) return false;
+            if (StringUtils.isEmpty(jwtToken)){
+                return false;
+            }
             Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(jwtToken);
         } catch (Exception e) {
             e.printStackTrace();

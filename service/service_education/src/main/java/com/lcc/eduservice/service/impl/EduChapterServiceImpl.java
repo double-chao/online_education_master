@@ -13,6 +13,9 @@ import com.lcc.servicebase.exceptionhandler.BadException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,8 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
 
     @Autowired
     private EduVideoService videoService;
+    @Autowired
+    private EduChapterService chapterService;
 
     @Override
     public List<ChapterVo> getChapterAndVideoById(String courseId) {
@@ -62,23 +67,27 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
         return chapterVoList;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public boolean deleteChapter(String chapterId) {
+        if (StringUtils.isEmpty(chapterId)) {
+            throw new BadException(20001, "所选的章节不存在");
+        }
         QueryWrapper<EduVideo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("chapter_id", chapterId);
         int count = videoService.count(queryWrapper);
         // 删除章节时，章节下有小节，章节就不能删除
-        if (count > 0){
-            throw new BadException(20001,"删除失败");
-        }else {
-            return baseMapper.deleteById(chapterId) >0 ; //章节下没有小节，删除章节
+        if (count > 0) {
+            throw new BadException(20001, "删除失败");
+        } else {
+            return chapterService.deleteChapter(chapterId); //章节下没有小节，删除章节
         }
     }
 
     @Override
     public void removeChapterByCourseId(String courseId) {
         QueryWrapper<EduChapter> wrapper = new QueryWrapper<>();
-        wrapper.eq("course_id",courseId);
+        wrapper.eq("course_id", courseId);
         baseMapper.delete(wrapper);
     }
 }

@@ -3,6 +3,9 @@ package com.lcc.servicebase.exceptionhandler;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 /**
  * <p>
@@ -19,4 +22,16 @@ import lombok.NoArgsConstructor;
 public class BadException extends RuntimeException {
     private Integer code;//状态码
     private String msg;//异常信息
+
+    private Integer status = BAD_REQUEST.value();
+
+    public BadException(Integer code, String msg){
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public BadException(HttpStatus status, String msg){
+        super(msg);
+        this.status = status.value();
+    }
 }

@@ -19,7 +19,11 @@ import com.lcc.eduservice.service.EduVideoService;
 import com.lcc.servicebase.exceptionhandler.BadException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
@@ -43,6 +47,8 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     private EduVideoService eduVideoService;
     @Autowired
     private EduChapterService chapterService;
+    @Autowired
+    private EduCourseService courseService;
 
     @Override
     public ObjectPageInfo selectAllCoursePageInfo(long current, long size, CourseQuery courseQuery) {
@@ -68,12 +74,14 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         return objectPageInfo;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @CacheEvict(value = {"courseFront"}, key = "'getCourseFrontList'")
     @Override
     public String saveCourseInfo(CourseInfoVo courseInfoVo) {
         EduCourse course = new EduCourse();
         BeanUtils.copyProperties(courseInfoVo, course);
-        int i = baseMapper.insert(course);
-        if (i > 0) { //还要添加课程描述
+        boolean b = courseService.save(course);
+        if (b) {
             String courseId = course.getId(); //得到添加后的课程id
             EduCourseDescription courseDescription = new EduCourseDescription();
             courseDescription.setId(courseId); //课程描述的id和课程id为一样的
@@ -95,18 +103,22 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         return courseInfoVo;
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @CacheEvict(value = {"courseFront"}, key = "'getCourseFrontList'")
     @Override
     public void updateCourseInfo(CourseInfoVo courseInfoVo) {
         EduCourse eduCourse = new EduCourse();
         BeanUtils.copyProperties(courseInfoVo, eduCourse);
-        int update = baseMapper.updateById(eduCourse);
-        if (update == 0) {
+        boolean b = courseService.updateById(eduCourse);
+        if (b) {
+            EduCourseDescription description = new EduCourseDescription();
+            description.setId(courseInfoVo.getId());
+            description.setDescription(courseInfoVo.getDescription());
+            courseDescriptionService.updateById(description);
+        } else {
             throw new BadException(20001, "修改课程信息失败");
         }
-        EduCourseDescription description = new EduCourseDescription();
-        description.setId(courseInfoVo.getId());
-        description.setDescription(courseInfoVo.getDescription());
-        courseDescriptionService.updateById(description);
+
     }
 
     @Override
@@ -114,17 +126,20 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         return baseMapper.selectPublishVoInfo(courseId);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @CacheEvict(value = {"courseFront"}, key = "'getCourseFrontList'")
     @Override
     public void removeCourse(String courseId) {
         eduVideoService.removeVideoByCourseId(courseId);
         chapterService.removeChapterByCourseId(courseId);
         courseDescriptionService.removeById(courseId);
-        int result = baseMapper.deleteById(courseId); //逻辑删除
-        if (result == 0) {
+        boolean b = courseService.removeById(courseId); // 逻辑删除
+        if (!b) {
             throw new BadException(20001, "删除失败！");
         }
     }
 
+    @Cacheable(value = {"courseFront"}, key = "#root.method.name")
     @Override
     public Map<String, Object> getCourseFrontList(Page<EduCourse> coursePage, CourseFrontVo courseFrontVo) {
         QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();

@@ -27,7 +27,7 @@ public class CodeGenerator {
         String projectPath = System.getProperty("user.dir"); //项目相对路径
 
         //这里采用绝对路径
-        gc.setOutputDir("E:\\UsersAdministrator\\online_education_master\\service\\service_education" + "/src/main/java");
+        gc.setOutputDir("D:\\JavaWorkpace\\ideaproject\\online_education_master\\service\\service_education" + "/src/main/java");
 
         gc.setAuthor("chaochao");  //类注释作者名字
         gc.setOpen(false); //生成后是否打开资源管理器
@@ -44,7 +44,7 @@ public class CodeGenerator {
 
         // 3、数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/online_edu?serverTimezone=GMT%2B8");
+        dsc.setUrl("jdbc:mysql://localhost:3306/online_education?serverTimezone=GMT%2B8");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("root");
@@ -67,7 +67,7 @@ public class CodeGenerator {
         // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
 
-        strategy.setInclude("edu_course","edu_course_description","edu_chapter","edu_video"); //数据库表名
+        strategy.setInclude("edu_article_category"); //数据库表名
 
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
         strategy.setTablePrefix(pc.getModuleName() + "_"); //生成实体时去掉表前缀

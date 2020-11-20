@@ -1,16 +1,21 @@
 package com.lcc.eduservice.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.util.Date;
-
-import java.io.Serializable;
-
+import com.lcc.servicebase.valid.AddGroup;
+import com.lcc.servicebase.valid.ListValue;
+import com.lcc.servicebase.valid.UpdateGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.hibernate.validator.constraints.URL;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -23,28 +28,35 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="EduTeacher对象", description="讲师")
+@ApiModel(value = "EduTeacher对象", description = "讲师")
 public class EduTeacher implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "讲师ID")
+    @NotNull(message = "修改时id不能为空", groups = {UpdateGroup.class})
+    @Null(message = "添加时id不能指定", groups = {AddGroup.class})
     @TableId(value = "id", type = IdType.ID_WORKER_STR) //id为字符串型，mybatisPlus自动生成UUID
     private String id;
 
     @ApiModelProperty(value = "讲师姓名")
+    @NotEmpty(message = "讲师姓名不能为空", groups = {UpdateGroup.class, AddGroup.class})
     private String name;
 
     @ApiModelProperty(value = "讲师简介")
+//    @Pattern(regexp = "^[a-zA-Z$]") 正则表达式校验，----->在前端js中正则表达式:/^[a-zA-Z$]/
     private String intro;
 
     @ApiModelProperty(value = "讲师资历,一句话说明讲师")
     private String career;
 
     @ApiModelProperty(value = "头衔 1高级讲师 2首席讲师")
+    @ListValue(values = {1, 2}, groups = {AddGroup.class}) //自定义注解，校验：添加时值只能为1,2
     private Integer level;
 
     @ApiModelProperty(value = "讲师头像")
+    @NotEmpty(message = "头像不能为空", groups = {AddGroup.class})
+    @URL(message = "头像必须是一个合法的url地址", groups = {UpdateGroup.class, AddGroup.class})
     private String avatar;
 
     @ApiModelProperty(value = "排序")

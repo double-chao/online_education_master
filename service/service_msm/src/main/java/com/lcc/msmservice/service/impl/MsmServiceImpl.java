@@ -20,8 +20,9 @@ public class MsmServiceImpl implements MsmService {
     //发送短信的方法
     @Override
     public boolean send(Map<String, Object> param, String phone) {
-        if (StringUtils.isEmpty(phone)) return false;
-
+        if (StringUtils.isEmpty(phone)){
+            return false;
+        }
         DefaultProfile profile =
                 DefaultProfile.getProfile("default", AliyunConstantUtils.ACCESS_KEY_ID,
                         AliyunConstantUtils.ACCESS_KEY_SECRET);
@@ -42,8 +43,7 @@ public class MsmServiceImpl implements MsmService {
         try {
             //最终发送
             CommonResponse response = client.getCommonResponse(request);
-            boolean success = response.getHttpResponse().isSuccess();
-            return success;
+            return response.getHttpResponse().isSuccess();
         } catch (Exception e) {
             e.printStackTrace();
             return false;

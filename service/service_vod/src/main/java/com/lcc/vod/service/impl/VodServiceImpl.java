@@ -8,13 +8,14 @@ import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
 import com.lcc.servicebase.exceptionhandler.BadException;
 import com.lcc.vod.service.VodService;
 import com.lcc.vod.utils.AliyunConstantUtils;
-import com.lcc.vod.vo.InitVodClient;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.util.List;
+
+import static com.lcc.vod.vo.InitVodClient.initVodClient;
 
 /**
  * <p>
@@ -58,16 +59,14 @@ public class VodServiceImpl implements VodService {
     @Override
     public void removeMoreAlyVideo(List<String> videoIdList) {
         try {
-            DefaultAcsClient client = InitVodClient.initVodClient(AliyunConstantUtils.ACCESS_KEY_ID, AliyunConstantUtils.ACCESS_KEY_SECRET);
+            DefaultAcsClient client = initVodClient(AliyunConstantUtils.ACCESS_KEY_ID, AliyunConstantUtils.ACCESS_KEY_SECRET);
             DeleteVideoRequest request = new DeleteVideoRequest();
             //利用apache包下的工具类，把集合转换成用逗号隔开的字符串形式 如："1,2,3"
             String ids = StringUtils.join(videoIdList.toArray(), ",");
             request.setVideoIds(ids); // 阿里云sdk方法是中间用逗号隔开
             client.getAcsResponse(request);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new BadException(20001, "删除视频失败");
         }
     }
-
 }

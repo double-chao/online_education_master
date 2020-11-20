@@ -15,6 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = "com.lcc")
 @MapperScan("com.lcc.eduservice.mapper")
 @EnableDiscoveryClient
+//@EnableCaching //spring cache 缓存注解
 public class CmsApplication {
     public static void main(String[] args) {
         SpringApplication.run(CmsApplication.class,args);

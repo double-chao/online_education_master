@@ -4,6 +4,7 @@ package com.lcc.educenter.controller;
 import com.lcc.educenter.entity.UcenterMember;
 import com.lcc.educenter.entity.vo.RegisterVo;
 import com.lcc.educenter.service.UcenterMemberService;
+import com.lcc.servicebase.valid.AddGroup;
 import com.lcc.util.JwtUtils;
 import com.lcc.result.Result;
 import com.lcc.vo.UserOrder;
@@ -11,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 @Api(description = "登录/注册")
 @RestController
 @RequestMapping("/educenter/member")
-@CrossOrigin
 public class UcenterMemberController {
 
     @Autowired
@@ -41,7 +42,7 @@ public class UcenterMemberController {
 
     @ApiOperation("注册")
     @PostMapping("/register")
-    public Result registerUser(@RequestBody RegisterVo registerVo) {
+    public Result registerUser(@Validated({AddGroup.class}) @RequestBody RegisterVo registerVo) {
         memberService.register(registerVo);
         return Result.ok();
     }
@@ -61,6 +62,13 @@ public class UcenterMemberController {
         UcenterMember ucenterMember = memberService.getById(id);
         BeanUtils.copyProperties(ucenterMember, userOrder);
         return userOrder;
+    }
+
+    @ApiOperation("统计某天注册人数")
+    @GetMapping("/countRegister/{day}")
+    public Result countRegister(@PathVariable String day) {
+        Integer count = memberService.countRegisterDay(day);
+        return Result.ok().data("countRegister", count);
     }
 
 }

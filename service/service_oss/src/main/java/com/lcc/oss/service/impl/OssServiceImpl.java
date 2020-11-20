@@ -2,19 +2,31 @@ package com.lcc.oss.service.impl;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.common.utils.BinaryUtil;
+import com.aliyun.oss.model.MatchMode;
+import com.aliyun.oss.model.PolicyConditions;
 import com.lcc.oss.service.OssService;
+import com.lcc.oss.utils.AliyunConstantProperties;
 import com.lcc.oss.utils.ConstantPropertiesUtil;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
  * @Author: 一十六
  * @Description: 上传文件
  * @Date: 2020/5/27 15:06
+ * <p>
+ * 1、这里还可以使用阿里提供的spring-could-oss-start提供的依赖，
+ * 2、然后在配置文件配置 end_point，id，key
+ * 3、在类中注入OSS实例：@Autowrite OSS ossClient;
+ * 4、然后就可以直接使用了,不用在去配置文件中读取end_point,id,key。
  */
 @Service
 public class OssServiceImpl implements OssService {
@@ -59,6 +71,47 @@ public class OssServiceImpl implements OssService {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public Map<String, String> uploadFile() {
+        // OSS中的值
+        String endpoint = AliyunConstantProperties.END_POINT; //地域节点
+        String accessKeyId = AliyunConstantProperties.ACCESS_KEY_ID; // id
+        String accessKeySecret = AliyunConstantProperties.ACCESS_KEY_SECRET; // 秘钥
+        String bucketName = AliyunConstantProperties.BUCKET_NAME; // 存储节点名字
+
+        String host = "https://" + bucketName + "." + endpoint; // host的格式为 bucketname.endpoint
+        String datePath = new DateTime().toString("yyyy/MM/dd");
+        String dir = datePath + "/";  // 用户上传文件时指定的前缀。
+        // 创建OSS实例。
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        try {
+            long expireTime = 30;
+            long expireEndTime = System.currentTimeMillis() + expireTime * 1000;
+            Date expiration = new Date(expireEndTime);
+            PolicyConditions policyConds = new PolicyConditions();
+            policyConds.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, 1048576000);
+            policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
+
+            String postPolicy = ossClient.generatePostPolicy(expiration, policyConds);
+            byte[] binaryData = postPolicy.getBytes("utf-8");
+            String encodedPolicy = BinaryUtil.toBase64String(binaryData);
+            String postSignature = ossClient.calculatePostSignature(postPolicy);
+            Map<String, String> respMap = new LinkedHashMap<>();
+            respMap.put("accessid", accessKeyId);
+            respMap.put("policy", encodedPolicy);
+            respMap.put("signature", postSignature);
+            respMap.put("dir", dir);
+            respMap.put("host", host);
+            respMap.put("expire", String.valueOf(expireEndTime / 1000));
+            return respMap;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        } finally {
+            ossClient.shutdown();
         }
     }
 }

@@ -19,8 +19,8 @@ import org.springframework.util.StringUtils;
  */
 public class SubjectExcelListener extends AnalysisEventListener<SubjectData> {
 
-    //因为SubjectExcelListener不能交给spring进行管理，需要自己new，不能注入其他对象
     //不能实现数据库操作
+    //SubjectExcelListener不能交给spring进行管理，需要自己new，不能注入其他对象
     public EduSubjectService subjectService;
 
     public SubjectExcelListener() {

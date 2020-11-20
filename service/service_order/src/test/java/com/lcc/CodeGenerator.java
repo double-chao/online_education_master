@@ -26,7 +26,7 @@ public class CodeGenerator {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir"); //项目相对路径
         //这里采用绝对路径
-        gc.setOutputDir("E:\\UsersAdministrator\\online_education_master\\service\\service_order" + "/src/main/java");
+        gc.setOutputDir("D:\\JavaWorkpace\\ideaproject\\online_education_master\\service\\service_order" + "/src/main/java");
 
         gc.setAuthor("chaochao");  //类注释作者名字
         gc.setOpen(false); //生成后是否打开资源管理器

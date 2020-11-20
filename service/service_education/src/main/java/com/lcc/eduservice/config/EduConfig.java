@@ -15,7 +15,7 @@ public class EduConfig {
      * 逻辑删除插件
      */
     @Bean
-    public ISqlInjector sqlInjector() {
+    public ISqlInjector sqlInjector() { // ！！！注意： 从3.1.1开始 不在需要这一步了
         return new LogicSqlInjector();
     }
 
@@ -26,4 +26,5 @@ public class EduConfig {
     public PaginationInterceptor paginationInterceptor() {
         return new PaginationInterceptor();
     }
+
 }
