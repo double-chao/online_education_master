@@ -55,7 +55,6 @@ public class EduTeacher implements Serializable {
     private Integer level;
 
     @ApiModelProperty(value = "讲师头像")
-    @NotEmpty(message = "头像不能为空", groups = {AddGroup.class})
     @URL(message = "头像必须是一个合法的url地址", groups = {UpdateGroup.class, AddGroup.class})
     private String avatar;
 

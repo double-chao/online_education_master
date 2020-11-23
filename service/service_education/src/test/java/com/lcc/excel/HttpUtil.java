@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import com.lcc.util.MD5;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -43,7 +44,7 @@ public class HttpUtil {
         String sendPostStr = sendPost(url, headJson.toJSONString(), bodyJson.toJSONString());
 
         JSONObject jsonObject = JSON.parseObject(sendPostStr);
-        JSONArray data= (JSONArray) jsonObject.get("data");
+        JSONArray data = (JSONArray) jsonObject.get("data");
         List<String> list = JSONArray.parseArray(data.toJSONString(), String.class);
         for (String s : list) {
             System.out.println(s);
@@ -65,7 +66,7 @@ public class HttpUtil {
             if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 return EntityUtils.toString(httpResponse.getEntity(), "utf-8");
             } else {
-                throw new BadException(20001, "请求失败。。。。。");
+                throw new BadException(CodeEnum.OPERATE_EXCEPTION);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

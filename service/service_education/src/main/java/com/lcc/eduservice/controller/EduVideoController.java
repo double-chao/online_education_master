@@ -4,7 +4,9 @@ import com.lcc.eduservice.client.VodClient;
 import com.lcc.eduservice.entity.EduVideo;
 import com.lcc.eduservice.service.EduVideoService;
 import com.lcc.result.Result;
+import com.lcc.result.ResultCode;
 import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -46,8 +48,8 @@ public class EduVideoController {
         String videoId = video.getVideoSourceId();
         if (!StringUtils.isEmpty(videoId)) {
             Result result = vodClient.removeAlyVideo(videoId);// 根据视频id 删除阿里云中的视频
-            if (result.getCode() == 20001){
-                throw new BadException(20001,"删除视频失败，熔断器执行了....");
+            if (result.getCode() != ResultCode.SUCCESS) {
+                throw new BadException(CodeEnum.DELETED_VIDEO_FAILED);
             }
         }
         videoService.removeById(id); //删除小节

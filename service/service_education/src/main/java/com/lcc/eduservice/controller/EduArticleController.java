@@ -6,10 +6,13 @@ import com.lcc.eduservice.entity.dto.ArticleDTO;
 import com.lcc.eduservice.entity.vo.ArticleInfoVO;
 import com.lcc.eduservice.service.EduArticleService;
 import com.lcc.result.Result;
+import com.lcc.security.annonation.AnonymousAccess;
+import com.lcc.servicebase.valid.AddGroup;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,16 +35,17 @@ public class EduArticleController {
     private EduArticleService articleService;
 
     @ApiOperation("添加文章-直接发布")
+    @AnonymousAccess
     @PostMapping("/directlyPublishArticle")
-
-    public Result directlyPublishArticle(@RequestBody ArticleInfoVO articleInfoVO, HttpServletRequest request) {
+    public Result directlyPublishArticle(@RequestBody ArticleInfoVO articleInfoVO,HttpServletRequest request) {
         boolean flag = articleService.directlyPublishArticle(articleInfoVO, request);
         return flag ? Result.ok() : Result.fail();
     }
 
     @ApiOperation("添加文章-存为草稿")
     @PostMapping("/insertArticle")
-    public Result insertArticle(@RequestBody ArticleInfoVO articleInfoVO, HttpServletRequest request) {
+    public Result insertArticle(@Validated({AddGroup.class}) @RequestBody ArticleInfoVO articleInfoVO,
+                                HttpServletRequest request) {
         boolean flag = articleService.saveArticle(articleInfoVO, request);
         return flag ? Result.ok() : Result.fail();
     }
@@ -58,6 +62,7 @@ public class EduArticleController {
     }
 
     @ApiOperation("分页获取所有文章")
+    @AnonymousAccess
     @PostMapping("/listArticle/{current}/{size}")
     public Result listArticle(@PathVariable long current, @PathVariable long size,
                               @RequestBody(required = false) ArticleDTO articleDTO) {
@@ -66,6 +71,7 @@ public class EduArticleController {
     }
 
     @ApiOperation("根据id查询文章详情")
+    @AnonymousAccess
     @GetMapping("/getArticleById/{id}")
     public Result getArticleById(@PathVariable String id) {
         ArticleInfoVO articleInfoVO = articleService.getArticleInfoVOById(id);

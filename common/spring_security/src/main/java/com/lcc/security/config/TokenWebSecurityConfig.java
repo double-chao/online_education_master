@@ -55,12 +55,12 @@ public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.applicationContext = applicationContext;
     }
 
-    /**
-     * 配置设置
-     *
-     * @param http
-     * @throws Exception
-     */
+        /**
+         * 配置设置
+         *
+         * @param http
+         * @throws Exception
+         */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 搜寻匿名标记 url： @AnonymousAccess

@@ -7,6 +7,7 @@ import com.lcc.eduservice.entity.EduSubject;
 import com.lcc.eduservice.entity.excel.SubjectData;
 import com.lcc.eduservice.service.EduSubjectService;
 import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import org.springframework.util.StringUtils;
 
 /**
@@ -39,7 +40,7 @@ public class SubjectExcelListener extends AnalysisEventListener<SubjectData> {
     @Override
     public void invoke(SubjectData subjectData, AnalysisContext analysisContext) {
         if (StringUtils.isEmpty(subjectData)) {
-            throw new BadException(20001, "文件数据为空");
+            throw new BadException(CodeEnum.SUBJECT_EXCEL_FILE_NULL);
         }
         //一行一行读取，每次读取有两个值，第一个值一级分类，第二个值二级分类
         //判断一级分类是否重复

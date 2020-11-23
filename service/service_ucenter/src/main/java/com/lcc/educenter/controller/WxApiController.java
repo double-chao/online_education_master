@@ -6,6 +6,7 @@ import com.lcc.educenter.service.UcenterMemberService;
 import com.lcc.educenter.utils.ConstantWxUtils;
 import com.lcc.educenter.utils.HttpClientUtils;
 import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import com.lcc.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -73,7 +74,7 @@ public class WxApiController {
             //返回首页面，通过路径传递token字符串
             return "redirect:http://localhost:3000?token=" + jwtToken;
         } catch (Exception e) {
-            throw new BadException(20001, "登录失败");
+            throw new BadException(CodeEnum.LOGIN_FAILED);
         }
     }
 

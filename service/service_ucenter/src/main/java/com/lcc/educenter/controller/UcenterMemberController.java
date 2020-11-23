@@ -4,6 +4,7 @@ package com.lcc.educenter.controller;
 import com.lcc.educenter.entity.UcenterMember;
 import com.lcc.educenter.entity.vo.RegisterVo;
 import com.lcc.educenter.service.UcenterMemberService;
+import com.lcc.security.annonation.AnonymousAccess;
 import com.lcc.servicebase.valid.AddGroup;
 import com.lcc.util.JwtUtils;
 import com.lcc.result.Result;
@@ -32,7 +33,7 @@ public class UcenterMemberController {
 
     @Autowired
     private UcenterMemberService memberService;
-
+    @AnonymousAccess
     @ApiOperation("登录")
     @PostMapping("/login")
     public Result loginUser(@RequestBody UcenterMember member) {
@@ -41,6 +42,7 @@ public class UcenterMemberController {
     }
 
     @ApiOperation("注册")
+    @AnonymousAccess
     @PostMapping("/register")
     public Result registerUser(@Validated({AddGroup.class}) @RequestBody RegisterVo registerVo) {
         memberService.register(registerVo);
@@ -48,6 +50,7 @@ public class UcenterMemberController {
     }
 
     @ApiOperation("获取用户信息")
+    @AnonymousAccess
     @GetMapping("/getMemberInfo")
     public Result getMemberInfo(HttpServletRequest request) {
         String memberId = JwtUtils.getMemberIdByJwtToken(request); //根据token得到用户id
@@ -56,6 +59,7 @@ public class UcenterMemberController {
     }
 
     @ApiOperation("根据用户id获取用户信息")
+    @AnonymousAccess
     @PostMapping("/getUserInfoOrder/{id}")
     public UserOrder getUserInfoOrder(@PathVariable String id) {
         UserOrder userOrder = new UserOrder();

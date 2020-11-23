@@ -17,6 +17,7 @@ import com.lcc.eduservice.service.EduCourseDescriptionService;
 import com.lcc.eduservice.service.EduCourseService;
 import com.lcc.eduservice.service.EduVideoService;
 import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -89,7 +90,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
             courseDescriptionService.save(courseDescription);
             return courseId;
         } else {
-            throw new BadException(20001, "添加课程信息失败");
+            throw new BadException(CodeEnum.INSERT_COURSE_FAILED);
         }
     }
 
@@ -116,7 +117,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
             description.setDescription(courseInfoVo.getDescription());
             courseDescriptionService.updateById(description);
         } else {
-            throw new BadException(20001, "修改课程信息失败");
+            throw new BadException(CodeEnum.UPDATE_COURSE_FAILED);
         }
 
     }
@@ -135,7 +136,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         courseDescriptionService.removeById(courseId);
         boolean b = courseService.removeById(courseId); // 逻辑删除
         if (!b) {
-            throw new BadException(20001, "删除失败！");
+            throw new BadException(CodeEnum.DELETED_COURSE_FAILED);
         }
     }
 
@@ -143,6 +144,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Override
     public Map<String, Object> getCourseFrontList(Page<EduCourse> coursePage, CourseFrontVo courseFrontVo) {
         QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+        wrapper.eq("status", "Normal");
         if (!StringUtils.isEmpty(courseFrontVo.getSubjectParentId())) {
             wrapper.eq("subject_parent_id", courseFrontVo.getSubjectParentId());
         }

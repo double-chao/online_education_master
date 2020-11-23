@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.URL;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -19,7 +20,9 @@ import java.util.Date;
  * @Date 2020/9/10
  */
 @Data
-public class ArticleInfoVO {
+public class ArticleInfoVO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "文章ID")
     @NotNull(message = "修改时id不能为空", groups = {UpdateGroup.class})
@@ -31,8 +34,8 @@ public class ArticleInfoVO {
     @NotNull(message = "会员id不能为空",groups = {AddGroup.class,UpdateGroup.class})
     private String memberId;
 
-    @ApiModelProperty(value = "文章类别id")
-    @NotNull(message = "文章类别id不能为空", groups = {AddGroup.class, UpdateGroup.class})
+    @ApiModelProperty(value = "文章类别ID")
+    @NotNull(message = "文章类别ID不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private String categoryId;
 
     @ApiModelProperty(value = "文章标题")

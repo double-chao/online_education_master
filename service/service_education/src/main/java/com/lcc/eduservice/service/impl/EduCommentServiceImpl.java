@@ -12,6 +12,7 @@ import com.lcc.eduservice.mapper.EduCommentMapper;
 import com.lcc.eduservice.service.EduCommentService;
 import com.lcc.eduservice.service.EduCourseService;
 import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import com.lcc.util.JwtUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +81,7 @@ public class EduCommentServiceImpl extends ServiceImpl<EduCommentMapper, EduComm
         if (checkToken) {
             String memberId = JwtUtils.getMemberIdByJwtToken(request);
             if (StringUtils.isEmpty(memberId)) {
-                throw new BadException(20001, "用户未登录，请登录后再发表评论");
+                throw new BadException(CodeEnum.USER_NO_LOGIN_EXCEPTION);
             }
             // 在课程详情页面,传过来课程id,可以根据课程id把讲师信息查出来，然后在进行赋值
             String courseId = comment.getCourseId();
@@ -94,10 +95,10 @@ public class EduCommentServiceImpl extends ServiceImpl<EduCommentMapper, EduComm
                 int i = this.baseMapper.insert(comment);
                 return i > 0;
             } else {
-                throw new BadException(20001, "课程信息不存在");
+                throw new BadException(CodeEnum.COURSE_INFO_NOT_EXITS);
             }
         } else {
-            throw new BadException(20001, "登录已过期");
+            throw new BadException(CodeEnum.LOGIN_EXPIRED_EXCEPTION);
         }
     }
 

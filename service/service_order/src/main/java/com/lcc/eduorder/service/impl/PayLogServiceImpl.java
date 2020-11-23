@@ -12,6 +12,7 @@ import com.lcc.eduorder.service.OrderService;
 import com.lcc.eduorder.service.PayLogService;
 import com.lcc.eduorder.utils.HttpClient;
 import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -78,7 +79,7 @@ public class PayLogServiceImpl extends ServiceImpl<PayLogMapper, PayLog> impleme
             map.put("code_url", resultMap.get("code_url")); //二维码地址
             return map;
         } catch (Exception e) {
-            throw new BadException(20001, e.getMessage());
+            throw new BadException(CodeEnum.CREATED_WEIXIN_CODE);
         }
     }
 
@@ -102,7 +103,7 @@ public class PayLogServiceImpl extends ServiceImpl<PayLogMapper, PayLog> impleme
 
     }
 
-    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void updateOrdersStatus(Map<String, String> map) {
         String orderNo = map.get("out_trade_no"); //获取订单id
@@ -132,7 +133,7 @@ public class PayLogServiceImpl extends ServiceImpl<PayLogMapper, PayLog> impleme
                 payLogService.save(payLog);
             }
         } catch (Exception e) {
-            throw new BadException(20001, "redisson获取锁失败.....");
+            throw new BadException(CodeEnum.GET_REDISSON_LOCK);
         } finally {
             lock.unlock();
         }

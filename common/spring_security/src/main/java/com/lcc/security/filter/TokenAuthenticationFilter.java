@@ -1,8 +1,6 @@
 package com.lcc.security.filter;
 
-import com.lcc.result.Result;
 import com.lcc.security.security.TokenManager;
-import com.lcc.util.ResponseUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,13 +50,13 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
         try {
             authentication = getAuthentication(req);
         } catch (Exception e) {
-            ResponseUtil.out(res, Result.fail());
+//            ResponseUtil.out(res, Result.fail());
         }
 
         if (authentication != null) {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } else {
-            ResponseUtil.out(res, Result.fail());
+//            ResponseUtil.out(res, Result.fail());
         }
         chain.doFilter(req, res);
     }

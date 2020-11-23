@@ -1,6 +1,5 @@
 package com.lcc.security.security;
 
-import com.lcc.util.MD5;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -27,8 +26,13 @@ public class DefaultPasswordEncoder implements PasswordEncoder {
 
     }
 
+//    public String encode(CharSequence rawPassword) {
+//        return MD5.getMD5String(rawPassword.toString());
+//    }
+
     public String encode(CharSequence rawPassword) {
-        return MD5.getMD5String(rawPassword.toString());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(rawPassword.toString());
     }
 
     public boolean matches(CharSequence rawPassword, String encodedPassword) {

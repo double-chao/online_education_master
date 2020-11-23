@@ -9,7 +9,6 @@ import java.util.Map;
 //统一返回结果的类
 @Data
 public class Result {
-
     @ApiModelProperty(value = "是否成功")
     private Boolean success;
 

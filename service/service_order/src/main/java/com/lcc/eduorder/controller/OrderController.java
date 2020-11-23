@@ -7,6 +7,7 @@ import com.lcc.eduorder.entity.Order;
 import com.lcc.eduorder.entity.vo.OrderQueryVo;
 import com.lcc.eduorder.service.OrderService;
 import com.lcc.result.Result;
+import com.lcc.security.annonation.AnonymousAccess;
 import com.lcc.util.JwtUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -50,6 +51,7 @@ public class OrderController {
     }
 
     @ApiOperation("课程是否被购买")
+    @AnonymousAccess
     @GetMapping("/isBuyCourse/{courseId}/{memberId}")
     public boolean isBuyCourse(@PathVariable String courseId, @PathVariable String memberId) {
         QueryWrapper<Order> wrapper = new QueryWrapper<>();

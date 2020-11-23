@@ -5,6 +5,7 @@ import com.lcc.eduservice.entity.EduSubject;
 import com.lcc.eduservice.entity.vo.subject.OneSubjectVO;
 import com.lcc.eduservice.service.EduSubjectService;
 import com.lcc.result.Result;
+import com.lcc.security.annonation.AnonymousAccess;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class EduSubjectController {
     }
 
     @ApiOperation("获取科目菜单信息")
+    @AnonymousAccess
     @GetMapping("/getAllSubject")
     public Result getAllSubject() {
         List<OneSubjectVO> subjectVOList = subjectService.getSubjectInfo();

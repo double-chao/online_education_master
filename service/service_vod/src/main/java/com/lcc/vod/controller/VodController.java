@@ -6,6 +6,7 @@ import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthRequest;
 import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthResponse;
 import com.lcc.servicebase.exceptionhandler.BadException;
 import com.lcc.result.Result;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import com.lcc.vod.service.VodService;
 import com.lcc.vod.utils.AliyunConstantUtils;
 import com.lcc.vod.vo.InitVodClient;
@@ -53,7 +54,7 @@ public class VodController {
             client.getAcsResponse(request);
             return Result.ok();
         } catch (Exception e) {
-            throw new BadException(20001, "删除视频失败");
+            throw new BadException(CodeEnum.DELETED_VIDEO_FAILED);
         }
     }
 
@@ -78,7 +79,7 @@ public class VodController {
             String playAuth = response.getPlayAuth();
             return Result.ok().data("playAuth", playAuth);
         } catch (Exception e) {
-            throw new BadException(20001, "获取凭证失败");
+            throw new BadException(CodeEnum.GET_VIDEO_PROOF_FAILED);
         }
     }
 

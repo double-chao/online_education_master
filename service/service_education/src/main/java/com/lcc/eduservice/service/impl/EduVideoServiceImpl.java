@@ -7,6 +7,7 @@ import com.lcc.eduservice.entity.EduVideo;
 import com.lcc.eduservice.mapper.EduVideoMapper;
 import com.lcc.eduservice.service.EduVideoService;
 import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -31,7 +32,7 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
     @Override
     public void removeVideoByCourseId(String courseId) {  // 先删除视频（即小节表中的视频id），在删除小节
         if (StringUtils.isEmpty(courseId)){
-            throw new BadException(20001,"所选删除的课程不存在");
+            throw new BadException(CodeEnum.COURSE_NOT_EXITS);
         }
         QueryWrapper<EduVideo> videoWrapper = new QueryWrapper<>();
         videoWrapper.eq("course_id", courseId);
@@ -53,7 +54,7 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
             wrapper.eq("course_id", courseId);
             baseMapper.delete(wrapper); //删除小节
         }else {
-            throw new BadException(20001,"该课程不存在章节");
+            throw new BadException(CodeEnum.SELECT_CHAPTER_NOT_EXITS);
         }
 
     }

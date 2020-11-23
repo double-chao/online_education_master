@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,6 +51,7 @@ public class EduTeacherController {
     }
 
     @ApiOperation("根据条件查询讲师分页")
+//    @PreAuthorize("@el.check('teacher.list')")
     @PostMapping("pageTeacherCondition/{current}/{size}")
     //使用@RequestBody(required = false)  前端传过来的成json格式数据封装成对象信息，false代表可以为空 ,且必须用post提交
     public Result pageTeacherCondition(@PathVariable long current, @PathVariable long size,
@@ -78,6 +79,7 @@ public class EduTeacherController {
     }
 
     @ApiOperation("更新讲师信息")
+//    @PreAuthorize("@el.check('teacher.update')")
     @CacheEvict(value = {"teacherFront"}, key = "'getTeacherFrontList'")
     @PostMapping("/updateTeacher")
     public Result updateTeacher(@Validated({UpdateGroup.class}) @RequestBody EduTeacher eduTeacher) {

@@ -74,7 +74,7 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
         // redis缓存设置key的名称.
         redisTemplate.opsForValue().set(user.getCurrentUserInfo().getUsername(), user.getPermissionValueList());
         ResponseUtil.out(res, Result.ok().data("token", token));
-        logger.error("登录成功");
+        logger.info("登录成功");
     }
 
     /**

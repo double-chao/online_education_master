@@ -10,6 +10,7 @@ import com.lcc.eduservice.mapper.EduChapterMapper;
 import com.lcc.eduservice.service.EduChapterService;
 import com.lcc.eduservice.service.EduVideoService;
 import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,14 +72,14 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
     @Override
     public boolean deleteChapter(String chapterId) {
         if (StringUtils.isEmpty(chapterId)) {
-            throw new BadException(20001, "所选的章节不存在");
+            throw new BadException(CodeEnum.SELECT_CHAPTER_NOT_EXITS);
         }
         QueryWrapper<EduVideo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("chapter_id", chapterId);
         int count = videoService.count(queryWrapper);
         // 删除章节时，章节下有小节，章节就不能删除
         if (count > 0) {
-            throw new BadException(20001, "删除失败");
+            throw new BadException(CodeEnum.DELETED_CHAPTER_FAILED);
         } else {
             return chapterService.deleteChapter(chapterId); //章节下没有小节，删除章节
         }

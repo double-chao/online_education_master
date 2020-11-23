@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lcc.eduservice.entity.EduArticleCategory;
 import com.lcc.eduservice.service.EduArticleCategoryService;
 import com.lcc.result.Result;
+import com.lcc.security.annonation.AnonymousAccess;
 import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import com.lcc.servicebase.valid.AddGroup;
 import com.lcc.servicebase.valid.UpdateGroup;
 import io.swagger.annotations.Api;
@@ -36,7 +38,15 @@ public class EduArticleCategoryController {
     @Autowired
     private EduArticleCategoryService categoryService;
 
-    @ApiOperation("查询所有类别")
+    @ApiOperation("获取所有文章类别")
+    @AnonymousAccess
+    @GetMapping("/getAllCategoryList")
+    public Result getAllCategoryList() {
+        List<EduArticleCategory> categoryList = categoryService.list(null);
+        return Result.ok().data("categoryList", categoryList);
+    }
+
+    @ApiOperation("分页查询所有类别")
     @PostMapping("/listCategory/{page}/{limit}")
     public Result listCategory(
             @ApiParam(name = "page", value = "当前页码", required = true)
@@ -63,7 +73,7 @@ public class EduArticleCategoryController {
         wrapper.eq("name", name);
         EduArticleCategory articleCategory = categoryService.getOne(wrapper);
         if (!StringUtils.isEmpty(articleCategory)) {
-            throw new BadException(20001, "文章分类已经存在");
+            throw new BadException(CodeEnum.ARTICLE_CATEGORY_EXITS);
         } else {
             boolean save = categoryService.save(category);
             return save ? Result.ok() : Result.fail();

@@ -7,6 +7,7 @@ import com.lcc.eduservice.entity.EduTeacher;
 import com.lcc.eduservice.service.EduCourseService;
 import com.lcc.eduservice.service.EduTeacherService;
 import com.lcc.result.Result;
+import com.lcc.security.annonation.AnonymousAccess;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -35,6 +36,7 @@ public class TeacherFrontController {
     private ThreadPoolExecutor poolExecutor;
 
     @ApiOperation("分页查询讲师")
+    @AnonymousAccess
     @PostMapping("/getTeacherFrontList/{current}/{size}")
     public Result getTeacherFrontList(@PathVariable long current, @PathVariable long size) {
         Page<EduTeacher> pageTeacher = new Page<>(current, size);
@@ -43,6 +45,7 @@ public class TeacherFrontController {
     }
 
     @ApiOperation("讲师详情")
+    @AnonymousAccess
     @GetMapping("/getTeacherFrontInfo/{teacherId}")
     public Result getTeacherFrontInfo(@PathVariable String teacherId) {
         EduTeacher eduTeacher = new EduTeacher();

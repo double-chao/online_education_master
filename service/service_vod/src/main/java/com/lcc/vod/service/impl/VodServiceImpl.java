@@ -6,6 +6,7 @@ import com.aliyun.vod.upload.resp.UploadStreamResponse;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
 import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import com.lcc.vod.service.VodService;
 import com.lcc.vod.utils.AliyunConstantUtils;
 import org.apache.commons.lang.StringUtils;
@@ -66,7 +67,7 @@ public class VodServiceImpl implements VodService {
             request.setVideoIds(ids); // 阿里云sdk方法是中间用逗号隔开
             client.getAcsResponse(request);
         } catch (Exception e) {
-            throw new BadException(20001, "删除视频失败");
+            throw new BadException(CodeEnum.DELETED_VIDEO_FAILED);
         }
     }
 }

@@ -9,7 +9,9 @@ import com.lcc.eduservice.entity.frontvo.CourseWebVo;
 import com.lcc.eduservice.service.EduChapterService;
 import com.lcc.eduservice.service.EduCourseService;
 import com.lcc.result.Result;
+import com.lcc.security.annonation.AnonymousAccess;
 import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import com.lcc.util.JwtUtils;
 import com.lcc.vo.CourseOrder;
 import io.swagger.annotations.Api;
@@ -48,6 +50,7 @@ public class CourseFrontController {
     private ThreadPoolExecutor poolExecutor;
 
     @ApiOperation("分页查询课程")
+    @AnonymousAccess
     @PostMapping("/getCourseFrontList/{current}/{size}")
     public Result getCourseFrontList(@PathVariable long current, @PathVariable long size,
                                      @RequestBody(required = false) CourseFrontVo courseFrontVo) {
@@ -57,13 +60,14 @@ public class CourseFrontController {
     }
 
     @ApiOperation("根据课程id查询课程信息")
+    @AnonymousAccess
     @GetMapping("/getFrontCourseInfo/{courseId}")
     public Result getFrontCourseInfo(@PathVariable String courseId, HttpServletRequest request) {
         boolean checkToken = JwtUtils.checkToken(request);
         if (checkToken) {
             String memberId = JwtUtils.getMemberIdByJwtToken(request);
             if (StringUtils.isEmpty(memberId)) {
-                throw new BadException(20001, "用户未登录，请先登录");
+                throw new BadException(CodeEnum.USER_NO_LOGIN_EXCEPTION);
             }
             CourseWebVo courseWebVo = new CourseWebVo();
             CompletableFuture<Void> courseWebVoFuture = CompletableFuture.runAsync(() -> {
@@ -84,13 +88,13 @@ public class CourseFrontController {
             }, poolExecutor);
 
             try {
-                CompletableFuture.allOf(courseWebVoFuture,chapterVideoListFuture,buyCourseFuture).get();
+                CompletableFuture.allOf(courseWebVoFuture, chapterVideoListFuture, buyCourseFuture).get();
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
             return Result.ok().data("courseWebVo", courseWebVo).data("chapterVideoList", chapterVideoList).data("isBuy", buyCourse);
         } else {
-            throw new BadException(20001, "用户登录身份已过期");
+            throw new BadException(CodeEnum.LOGIN_EXPIRED_EXCEPTION);
         }
     }
 

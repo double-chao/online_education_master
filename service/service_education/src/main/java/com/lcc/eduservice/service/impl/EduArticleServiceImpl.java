@@ -12,6 +12,7 @@ import com.lcc.eduservice.mapper.EduArticleMapper;
 import com.lcc.eduservice.service.EduArticleDescriptionService;
 import com.lcc.eduservice.service.EduArticleService;
 import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import com.lcc.util.JwtUtils;
 import com.lcc.vo.UserOrder;
 import org.springframework.beans.BeanUtils;
@@ -25,7 +26,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -60,10 +64,11 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
         if (checkToken) {
             String memberId = JwtUtils.getMemberIdByJwtToken(request);
             if (StringUtils.isEmpty(memberId)) {
-                throw new BadException(20001, "用户未登录，请登录后再新增文章");
+                throw new BadException(CodeEnum.USER_NO_LOGIN_EXCEPTION);
             }
             articleInfoVO.setMemberId(memberId);
             EduArticle article = new EduArticle();
+            article.setCategoryId(articleInfoVO.getCategoryId());
             article.setStatus("Normal");
             BeanUtils.copyProperties(articleInfoVO, article);
             boolean b = articleService.save(article);
@@ -73,10 +78,10 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
                 description.setDescription(articleInfoVO.getDescription());
                 return descriptionService.save(description);
             } else {
-                throw new BadException(20001, "添加文章失败");
+                throw new BadException(CodeEnum.OPERATE_EXCEPTION);
             }
         } else {
-            throw new BadException(20001, "登录已过期");
+            throw new BadException(CodeEnum.LOGIN_EXPIRED_EXCEPTION);
         }
     }
 
@@ -87,10 +92,11 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
         if (checkToken) {
             String memberId = JwtUtils.getMemberIdByJwtToken(request);
             if (StringUtils.isEmpty(memberId)) {
-                throw new BadException(20001, "用户未登录，请登录后再新增文章");
+                throw new BadException(CodeEnum.USER_NO_LOGIN_EXCEPTION);
             }
             articleInfoVO.setMemberId(memberId);
             EduArticle article = new EduArticle();
+            article.setCategoryId(articleInfoVO.getCategoryId());
             BeanUtils.copyProperties(articleInfoVO, article);
             boolean b = articleService.save(article);
             if (b) {
@@ -99,10 +105,10 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
                 description.setDescription(articleInfoVO.getDescription());
                 return descriptionService.save(description);
             } else {
-                throw new BadException(20001, "添加文章失败");
+                throw new BadException(CodeEnum.OPERATE_EXCEPTION);
             }
         } else {
-            throw new BadException(20001, "登录已过期");
+            throw new BadException(CodeEnum.LOGIN_EXPIRED_EXCEPTION);
         }
     }
 
@@ -168,7 +174,7 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
                 BeanUtils.copyProperties(article, articleInfoVO);
                 articleInfoVOList.add(articleInfoVO);
             } else {
-                throw new BadException(20001, "获取用户数据失败");
+                throw new BadException(CodeEnum.GET_USER_INFO_FAILED_EXCEPTION);
             }
         }
         long pageCurrent = articlePage.getCurrent();//当前页

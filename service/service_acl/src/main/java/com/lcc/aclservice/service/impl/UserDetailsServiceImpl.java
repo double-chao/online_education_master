@@ -4,6 +4,7 @@ import com.lcc.aclservice.entity.User;
 import com.lcc.aclservice.service.PermissionService;
 import com.lcc.aclservice.service.UserService;
 import com.lcc.security.entity.SecurityUser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ import java.util.List;
  * @author qy
  * @since 2019-11-08
  */
+@Slf4j
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
