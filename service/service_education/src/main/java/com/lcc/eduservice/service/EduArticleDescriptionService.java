@@ -18,5 +18,5 @@ public interface EduArticleDescriptionService extends IService<EduArticleDescrip
      * @param id
      * @return
      */
-    EduArticleDescription getByArticleId(String id);
+    EduArticleDescription getByArticleId(Integer id);
 }

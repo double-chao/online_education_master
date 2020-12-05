@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lcc.eduservice.mapper.EduArticleDescriptionMapper">
 
-    <select id="getArticleDescription" parameterType="java.lang.String"
+    <select id="getArticleDescription" parameterType="java.lang.Integer"
             resultType="com.lcc.eduservice.entity.EduArticleDescription">
         select * from edu_article_description where article_id = #{id}
     </select>

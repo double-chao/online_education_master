@@ -17,5 +17,5 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface UserClient {
 
     @PostMapping("/educenter/member/getUserInfoOrder/{id}")
-    UserOrder getUserInfoOrder(@PathVariable String id);
+    UserOrder getUserInfoOrder(@PathVariable Integer id);
 }

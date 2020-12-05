@@ -34,8 +34,8 @@ public class EduArticleCategory implements Serializable {
     @ApiModelProperty(value = "文章类别ID")
     @NotNull(message = "修改时id不能为空", groups = {UpdateGroup.class})
     @Null(message = "添加时id不能指定", groups = {AddGroup.class})
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
-    private String id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     @ApiModelProperty(value = "文章类别名")
     @NotEmpty(message = "文章类别名不能为空", groups = {UpdateGroup.class, AddGroup.class})

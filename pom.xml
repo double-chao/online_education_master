@@ -22,11 +22,10 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <guli.version>0.0.1-SNAPSHOT</guli.version>
         <mybatis-plus.version>3.0.5</mybatis-plus.version>
         <velocity.version>2.0</velocity.version>
         <swagger.version>2.7.0</swagger.version>
-        <aliyun.oss.version>2.8.3</aliyun.oss.version>
+        <aliyun.oss.version>3.1.0</aliyun.oss.version>
         <jodatime.version>2.10.1</jodatime.version>
         <poi.version>3.17</poi.version>
         <commons-fileupload.version>1.3.1</commons-fileupload.version>
@@ -47,6 +46,7 @@
         <cloud-alibaba.version>0.2.2.RELEASE</cloud-alibaba.version>
         <redisson.version>3.12.0</redisson.version>
         <dynamic-datasource.version>3.2.1</dynamic-datasource.version>
+        <pagehelper.version>5.1.4</pagehelper.version>
     </properties>
 
     <dependencyManagement>
@@ -74,11 +74,11 @@
                 <version>${mybatis-plus.version}</version>
             </dependency>
             <!-- mybatis-plus 多数据源-->
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-                <version>${dynamic-datasource.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.baomidou</groupId>-->
+<!--                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>-->
+<!--                <version>${dynamic-datasource.version}</version>-->
+<!--            </dependency>-->
 
             <!-- velocity 模板引擎, Mybatis Plus 代码生成器需要 -->
             <dependency>
@@ -177,11 +177,11 @@
                 <artifactId>aliyun-java-sdk-vod</artifactId>
                 <version>${aliyun-java-sdk-vod.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-vod-upload</artifactId>
-                <version>${aliyun-java-vod-upload.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.aliyun</groupId>-->
+<!--                <artifactId>aliyun-java-vod-upload</artifactId>-->
+<!--                <version>${aliyun-java-vod-upload.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-sdk-vod-upload</artifactId>
@@ -198,23 +198,30 @@
                 <version>${json.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>commons-dbutils</groupId>
-                <artifactId>commons-dbutils</artifactId>
-                <version>${commons-dbutils.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>commons-dbutils</groupId>-->
+<!--                <artifactId>commons-dbutils</artifactId>-->
+<!--                <version>${commons-dbutils.version}</version>-->
+<!--            </dependency>-->
 
-            <dependency>
-                <groupId>com.alibaba.otter</groupId>
-                <artifactId>canal.client</artifactId>
-                <version>${canal.client.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.alibaba.otter</groupId>-->
+<!--                <artifactId>canal.client</artifactId>-->
+<!--                <version>${canal.client.version}</version>-->
+<!--            </dependency>-->
 
             <!-- 以后使用redisson作为所有分布式锁，分布式对象等功能 -->
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson</artifactId>
                 <version>${redisson.version}</version>
+            </dependency>
+
+            <!-- 分页插件 -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper</artifactId>
+                <version>${pagehelper.version}</version>
             </dependency>
 
         </dependencies>

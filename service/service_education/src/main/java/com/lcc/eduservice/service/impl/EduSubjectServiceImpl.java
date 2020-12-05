@@ -86,7 +86,7 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
     }
 
     @Override
-    public boolean saveTwoSubjectById(String id, Integer sort, String title) {
+    public boolean saveTwoSubjectById(Integer id, Integer sort, String title) {
         EduSubject eduSubject = new EduSubject();
         eduSubject.setParentId(id);
         eduSubject.setSort(sort);

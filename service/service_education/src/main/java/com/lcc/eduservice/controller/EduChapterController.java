@@ -32,7 +32,7 @@ public class EduChapterController {
     @GetMapping("/getChapterVideo/{courseId}") // 因为只有课程有了后才有课程的章节
     public Result getChapterVideo(
             @ApiParam(name = "courseId", value = "课程id", required = true)
-            @PathVariable String courseId) {
+            @PathVariable Integer courseId) {
         List<ChapterVo> chapterVoList = chapterService.getChapterAndVideoById(courseId);
         return Result.ok().data("allChapterVideo", chapterVoList);
     }
@@ -46,7 +46,7 @@ public class EduChapterController {
 
     @ApiOperation("根据id查询章节")
     @GetMapping("/getChapterInfo/{chapterId}")
-    public Result getChapterInfo(@PathVariable String chapterId) {
+    public Result getChapterInfo(@PathVariable Integer chapterId) {
         EduChapter eduChapter = chapterService.getById(chapterId);
         return Result.ok().data("chapter",eduChapter);
     }
@@ -60,7 +60,7 @@ public class EduChapterController {
 
     @ApiOperation("根据章节id删除章节")
     @DeleteMapping("{chapterId}")
-    public Result deleteChapter(@PathVariable String chapterId) {
+    public Result deleteChapter(@PathVariable Integer chapterId) {
         boolean flag = chapterService.deleteChapter(chapterId);
         return flag ? Result.ok() : Result.fail();
     }

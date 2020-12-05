@@ -17,4 +17,11 @@ public interface VodService {
      * @param videoIdList
      */
     void removeMoreAlyVideo(List<String> videoIdList);
+
+    /**
+     * 基于OSS上传视频到阿里云
+     * @param localFile 需要上传到VOD的本地视频文件的完整路径，需要包含文件扩展名
+     * @return
+     */
+    String uploadVideoAlyByOSS(String localFile);
 }

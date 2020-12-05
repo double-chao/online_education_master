@@ -2,4 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lcc.eduservice.mapper.EduTeacherMapper">
 
+    <select id="selectTeacherList" resultType="com.lcc.eduservice.entity.EduTeacher"
+            parameterType="com.lcc.eduservice.entity.vo.TeacherQuery">
+        select * from edu_teacher where is_deleted = 0
+        <if test="name!=null">
+            and (name like concat(#{name},'%') or reverse_name like concat(#{reverseName},'%'))
+        </if>
+        <if test="level!=null">
+            and level = #{level}
+        </if>
+        <if test="begin!=null and end!=null">
+            and gmt_create between #{begin} and #{end}
+        </if>
+        order by gmt_create
+    </select>
 </mapper>

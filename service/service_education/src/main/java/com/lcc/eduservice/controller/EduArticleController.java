@@ -53,7 +53,8 @@ public class EduArticleController {
     @ApiOperation("添加文章-草稿-发布")
     @PostMapping("/publishArticle/{articleID}")
     public Result publishArticle(
-            @ApiParam(name = "articleID", value = "文章id", required = true) @PathVariable String articleID) {
+            @ApiParam(name = "articleID", value = "文章id", required = true)
+            @PathVariable Integer articleID) {
         EduArticle article = new EduArticle();
         article.setId(articleID);
         article.setStatus("Normal");
@@ -73,14 +74,15 @@ public class EduArticleController {
     @ApiOperation("根据id查询文章详情")
     @AnonymousAccess
     @GetMapping("/getArticleById/{id}")
-    public Result getArticleById(@PathVariable String id) {
+    public Result getArticleById(@PathVariable Integer id) {
         ArticleInfoVO articleInfoVO = articleService.getArticleInfoVOById(id);
         return Result.ok().data("articleInfoVO", articleInfoVO);
     }
 
     @ApiOperation("根据id删除文章")
     @DeleteMapping("{id}")
-    public Result delArticleById(@ApiParam(name = "id", value = "文章id", required = true) @PathVariable String id) {
+    public Result delArticleById(@ApiParam(name = "id", value = "文章id", required = true)
+                                     @PathVariable Integer id) {
         return articleService.removeById(id) ? Result.ok() : Result.fail();
     }
 }

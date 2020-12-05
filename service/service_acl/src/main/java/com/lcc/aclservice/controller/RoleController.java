@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -31,11 +31,8 @@ public class RoleController {
     @ApiOperation(value = "获取角色分页列表")
     @GetMapping("{page}/{limit}")
     public Result index(
-            @ApiParam(name = "page", value = "当前页码", required = true)
-            @PathVariable Long page,
-
-            @ApiParam(name = "limit", value = "每页记录数", required = true)
-            @PathVariable Long limit,
+            @ApiParam(name = "page", value = "当前页码", required = true) @PathVariable Long page,
+            @ApiParam(name = "limit", value = "每页记录数", required = true) @PathVariable Long limit,
             Role role) {
         Page<Role> pageParam = new Page<>(page, limit);
         QueryWrapper<Role> wrapper = new QueryWrapper<>();
@@ -48,7 +45,7 @@ public class RoleController {
 
     @ApiOperation(value = "获取角色")
     @GetMapping("get/{id}")
-    public Result get(@PathVariable String id) {
+    public Result get(@PathVariable Integer id) {
         Role role = roleService.getById(id);
         return Result.ok().data("item", role);
     }
@@ -69,15 +66,15 @@ public class RoleController {
 
     @ApiOperation(value = "删除角色")
     @DeleteMapping("remove/{id}")
-    public Result remove(@PathVariable String id) {
+    public Result remove(@PathVariable Integer id) {
         roleService.removeById(id);
         return Result.ok();
     }
 
     @ApiOperation(value = "根据id列表删除角色")
     @DeleteMapping("batchRemove")
-    public Result batchRemove(@RequestBody List<String> idList) {
-        roleService.removeByIds(idList);
+    public Result batchRemove(@RequestBody Set<Integer> idSet) {
+        roleService.removeByIds(idSet);
         return Result.ok();
     }
 }

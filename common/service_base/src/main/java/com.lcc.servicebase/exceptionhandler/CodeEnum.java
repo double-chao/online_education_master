@@ -40,6 +40,7 @@ public enum CodeEnum {
 
     DELETED_VIDEO_FAILED(14001, "删除视频失败"),
     GET_VIDEO_PROOF_FAILED(14002, "获取视频凭证失败"),
+    UPLOAD_VIDEO_FAILED(14003, "上传视频失败"),
 
     LOGIN_EXPIRED_EXCEPTION(15001, "登录已过期"),
     USER_NO_LOGIN_EXCEPTION(15002, "用户未登录"),

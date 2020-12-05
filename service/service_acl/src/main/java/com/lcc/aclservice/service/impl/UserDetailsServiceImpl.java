@@ -24,7 +24,7 @@ import java.util.List;
  * @since 2019-11-08
  */
 @Slf4j
-@Service("userDetailsService")
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired

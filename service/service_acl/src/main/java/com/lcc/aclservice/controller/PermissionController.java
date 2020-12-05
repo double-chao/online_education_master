@@ -36,25 +36,24 @@ public class PermissionController {
 
     @ApiOperation(value = "递归删除菜单")
     @DeleteMapping("/remove/{id}")
-    public Result remove(@PathVariable String id) {
+    public Result remove(@PathVariable Integer id) {
         permissionService.removeChildById(id);
         return Result.ok();
     }
 
     @ApiOperation(value = "给角色分配权限")
     @PostMapping("/doAssign")
-    public Result doAssign(String roleId, String[] permissionId) {
+    public Result doAssign(Integer roleId, Integer[] permissionId) {
         permissionService.saveRolePermissionRelationShip(roleId, permissionId);
         return Result.ok();
     }
 
     @ApiOperation(value = "根据角色获取菜单")
     @GetMapping("/toAssign/{roleId}")
-    public Result toAssign(@PathVariable String roleId) {
+    public Result toAssign(@PathVariable Integer roleId) {
         List<Permission> list = permissionService.selectAllMenu(roleId);
         return Result.ok().data("children", list);
     }
-
 
     @ApiOperation(value = "新增菜单")
     @PostMapping("/save")

@@ -32,14 +32,14 @@ public interface EduCourseService extends IService<EduCourse> {
      * 添加课程信息
      * @param courseInfoVo
      */
-    String saveCourseInfo(CourseInfoVo courseInfoVo);
+    Integer saveCourseInfo(CourseInfoVo courseInfoVo);
 
     /**
      * 根据id得到课程对象信息
      * @param courseId
      * @return
      */
-    CourseInfoVo getCourseInfo(String courseId);
+    CourseInfoVo getCourseInfo(Integer courseId);
 
     /**
      * 更新课程信息
@@ -52,13 +52,13 @@ public interface EduCourseService extends IService<EduCourse> {
      * @param courseId
      * @return
      */
-    CoursePublishVo getPublishVoInfo(String courseId);
+    CoursePublishVo getPublishVoInfo(Integer courseId);
 
     /**
      * 删除课程
      * @param courseId
      */
-    void removeCourse(String courseId);
+    void removeCourse(Integer courseId);
 
     /**
      * 前端页面---》课程分页查询
@@ -72,5 +72,5 @@ public interface EduCourseService extends IService<EduCourse> {
      * @param courseId
      * @return
      */
-    CourseWebVo getBaseCourseInfo(String courseId);
+    CourseWebVo getBaseCourseInfo(Integer courseId);
 }

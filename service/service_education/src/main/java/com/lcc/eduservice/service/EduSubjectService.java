@@ -47,5 +47,5 @@ public interface EduSubjectService extends IService<EduSubject> {
      * @param title 二级课程科目菜单名称
      * @return
      */
-    boolean saveTwoSubjectById(String id, Integer sort, String title);
+    boolean saveTwoSubjectById(Integer id, Integer sort, String title);
 }

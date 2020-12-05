@@ -1,21 +1,27 @@
 package com.lcc.eduservice.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.lcc.eduservice.entity.EduTeacher;
 import com.lcc.eduservice.entity.vo.ObjectPageInfo;
 import com.lcc.eduservice.entity.vo.TeacherQuery;
 import com.lcc.eduservice.service.EduTeacherService;
 import com.lcc.result.Result;
+import com.lcc.security.annonation.AnonymousAccess;
 import com.lcc.servicebase.valid.AddGroup;
 import com.lcc.servicebase.valid.UpdateGroup;
+import com.lcc.vo.PageVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotEmpty;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -43,15 +49,16 @@ public class EduTeacherController {
     }
 
     @ApiOperation("根据id逻辑删除讲师")
-//    @PreAuthorize("@el.check('teacher.remove')")
+    @PreAuthorize("@el.check('teacher.remove')")
     @CacheEvict(value = {"teacherFront"}, key = "'getTeacherFrontList'")
     @DeleteMapping("{id}")
-    public Result delTeacherById(@ApiParam(name = "id", value = "讲师id", required = true) @PathVariable String id) {
+    public Result delTeacherById(@ApiParam(name = "id", value = "讲师id", required = true)
+                                     @PathVariable Integer id) {
         return teacherService.removeById(id) ? Result.ok() : Result.fail();
     }
 
     @ApiOperation("根据条件查询讲师分页")
-//    @PreAuthorize("@el.check('teacher.list')")
+    @PreAuthorize("@el.check('teacher.list')")
     @PostMapping("pageTeacherCondition/{current}/{size}")
     //使用@RequestBody(required = false)  前端传过来的成json格式数据封装成对象信息，false代表可以为空 ,且必须用post提交
     public Result pageTeacherCondition(@PathVariable long current, @PathVariable long size,
@@ -62,27 +69,44 @@ public class EduTeacherController {
         return Result.ok().data("total", total).data("rows", records);
     }
 
+    @ApiOperation("讲师分页")
+    @AnonymousAccess
+    @PostMapping("listTeacher")
+    public Result listTeacher(PageVO pageVO, @RequestBody(required = false) TeacherQuery teacherQuery) {
+        PageInfo<EduTeacher> pageInfo = teacherService.listTeacher(pageVO, teacherQuery);
+        long total = pageInfo.getTotal();
+        List<EduTeacher> records = pageInfo.getList();
+        return Result.ok().data("total", total).data("rows", records);
+    }
+
     @ApiOperation("添加讲师")
-//    @PreAuthorize("@el.check('teacher.add')")
+    @PreAuthorize("@el.check('teacher.add')")
     @CacheEvict(value = {"teacherFront"}, key = "'getTeacherFrontList'")
     @PostMapping("/addTeacher")
     public Result addTeacher(@Validated({AddGroup.class}) @RequestBody EduTeacher eduTeacher) {
+        StringBuilder stringBuilder = new StringBuilder(eduTeacher.getName());
+        String reverseName = stringBuilder.reverse().toString();
+        eduTeacher.setReverseName(reverseName);
         boolean save = teacherService.save(eduTeacher);
         return save ? Result.ok() : Result.fail();
     }
 
     @ApiOperation("根据id查询讲师信息")
     @GetMapping("/getTeacher/{id}")
-    public Result getTeacher(@ApiParam(name = "id", value = "讲师id", required = true) @PathVariable String id) {
+    public Result getTeacher(@ApiParam(name = "id", value = "讲师id", required = true)
+                                 @PathVariable Integer id) {
         EduTeacher eduTeacher = teacherService.getById(id);
         return Result.ok().data("eduTeacher", eduTeacher);
     }
 
     @ApiOperation("更新讲师信息")
-//    @PreAuthorize("@el.check('teacher.update')")
+    @PreAuthorize("@el.check('teacher.update')")
     @CacheEvict(value = {"teacherFront"}, key = "'getTeacherFrontList'")
     @PostMapping("/updateTeacher")
     public Result updateTeacher(@Validated({UpdateGroup.class}) @RequestBody EduTeacher eduTeacher) {
+        StringBuilder stringBuilder = new StringBuilder(eduTeacher.getName());
+        String reverseName = stringBuilder.reverse().toString();
+        eduTeacher.setReverseName(reverseName);
         boolean flag = teacherService.updateById(eduTeacher);
         return flag ? Result.ok() : Result.fail();
     }

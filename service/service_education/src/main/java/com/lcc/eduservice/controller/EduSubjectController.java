@@ -5,10 +5,10 @@ import com.lcc.eduservice.entity.EduSubject;
 import com.lcc.eduservice.entity.vo.subject.OneSubjectVO;
 import com.lcc.eduservice.service.EduSubjectService;
 import com.lcc.result.Result;
-import com.lcc.security.annonation.AnonymousAccess;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +32,7 @@ public class EduSubjectController {
     private EduSubjectService subjectService;
 
     @ApiOperation("添加课程分类导入excel文件")
+    @PreAuthorize("@el.check('subject.import')")
     @PostMapping("/addSubject")
     public Result addSubject(MultipartFile file) {
         subjectService.saveSubjectFile(file, subjectService);
@@ -39,7 +40,7 @@ public class EduSubjectController {
     }
 
     @ApiOperation("获取科目菜单信息")
-    @AnonymousAccess
+    @PreAuthorize("@el.check('subject.list')")
     @GetMapping("/getAllSubject")
     public Result getAllSubject() {
         List<OneSubjectVO> subjectVOList = subjectService.getSubjectInfo();
@@ -55,14 +56,15 @@ public class EduSubjectController {
 
     @ApiOperation("添加二级科目菜单")
     @PostMapping("/insertTwoSubject/{id}/{sort}/{title}")
-    public Result insertTwoSubject(@PathVariable String id, @PathVariable Integer sort, @PathVariable String title) { //传过来的id为一级菜单的id
+    public Result insertTwoSubject(@PathVariable Integer id, @PathVariable Integer sort,
+                                   @PathVariable String title) { //传过来的id为一级菜单的id
         boolean b = subjectService.saveTwoSubjectById(id, sort, title);
         return b ? Result.ok() : Result.fail().message("添加二级课程科目失败");
     }
 
     @ApiOperation("批量删除")
     @DeleteMapping("/deleteRows")
-    public Result deleteRows(@RequestBody Set<String> idSets){
+    public Result deleteRows(@RequestBody Set<Integer> idSets){
         subjectService.removeByIds(idSets);
         return Result.ok();
     }

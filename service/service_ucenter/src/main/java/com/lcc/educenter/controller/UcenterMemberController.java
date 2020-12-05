@@ -53,7 +53,7 @@ public class UcenterMemberController {
     @AnonymousAccess
     @GetMapping("/getMemberInfo")
     public Result getMemberInfo(HttpServletRequest request) {
-        String memberId = JwtUtils.getMemberIdByJwtToken(request); //根据token得到用户id
+        Integer memberId = JwtUtils.getMemberIdByJwtToken(request); //根据token得到用户id
         UcenterMember member = memberService.getById(memberId);  //得到用户全部信息
         return Result.ok().data("userInfo", member);
     }
@@ -61,7 +61,7 @@ public class UcenterMemberController {
     @ApiOperation("根据用户id获取用户信息")
     @AnonymousAccess
     @PostMapping("/getUserInfoOrder/{id}")
-    public UserOrder getUserInfoOrder(@PathVariable String id) {
+    public UserOrder getUserInfoOrder(@PathVariable Integer id) {
         UserOrder userOrder = new UserOrder();
         UcenterMember ucenterMember = memberService.getById(id);
         BeanUtils.copyProperties(ucenterMember, userOrder);

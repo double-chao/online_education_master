@@ -28,14 +28,14 @@ public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
-    private String id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     @ApiModelProperty(value = "订单号")
     private String orderNo;
 
     @ApiModelProperty(value = "课程id")
-    private String courseId;
+    private Integer courseId;
 
     @ApiModelProperty(value = "课程名称")
     private String courseTitle;
@@ -47,7 +47,7 @@ public class Order implements Serializable {
     private String teacherName;
 
     @ApiModelProperty(value = "会员id")
-    private String memberId;
+    private Integer memberId;
 
     @ApiModelProperty(value = "会员昵称")
     private String nickname;

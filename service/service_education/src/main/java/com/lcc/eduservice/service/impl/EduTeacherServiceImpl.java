@@ -3,11 +3,15 @@ package com.lcc.eduservice.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.lcc.eduservice.entity.EduTeacher;
 import com.lcc.eduservice.entity.vo.ObjectPageInfo;
 import com.lcc.eduservice.entity.vo.TeacherQuery;
 import com.lcc.eduservice.mapper.EduTeacherMapper;
 import com.lcc.eduservice.service.EduTeacherService;
+import com.lcc.vo.PageVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -27,6 +31,9 @@ import java.util.Map;
 @Service
 public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeacher> implements EduTeacherService {
 
+    @Autowired
+    private EduTeacherMapper teacherMapper;
+
     @Override
     public ObjectPageInfo selectAllTeacherPageInfo(long current, long size, TeacherQuery teacherQuery) {
         // 分页  当前页，多少条
@@ -39,7 +46,9 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         String end = teacherQuery.getEnd();
         // 查询语句条件拼接  相当于动态sql
         if (!StringUtils.isEmpty(name)) {
-            wrapper.like("name", name); //双引号中的值为数据库语句中的字段名字
+            StringBuilder stringBuilder = new StringBuilder(name);
+            String reverseName = stringBuilder.reverse().toString();
+            wrapper.likeRight("name", name).or().likeRight("reverse_name", reverseName); //双引号中的值为数据库语句中的字段名字
         }
         if (!StringUtils.isEmpty(level)) {
             wrapper.eq("level", level);
@@ -60,7 +69,14 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         return objectPage;
     }
 
-    @Cacheable(value = {"teacherFront"},key = "#root.method.name")
+    @Override
+    public PageInfo<EduTeacher> listTeacher(PageVO pageVO, TeacherQuery teacherQuery) {
+        PageHelper.startPage(pageVO.getPage(), pageVO.getSize());
+        List<EduTeacher> eduTeachers = teacherMapper.selectTeacherList(teacherQuery);
+        return new PageInfo<>(eduTeachers);
+    }
+
+    @Cacheable(value = {"teacherFront"}, key = "#root.method.name")
     @Override
     public Map<String, Object> getTeacherFrontList(Page<EduTeacher> pageTeacher) {
         QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();

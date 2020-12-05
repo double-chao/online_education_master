@@ -30,11 +30,11 @@ public class EduArticleDescription implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "文章描述ID")
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
-    private String id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     @ApiModelProperty(value = "文章id")
-    private String articleId;
+    private Integer articleId;
 
     @ApiModelProperty(value = "文章内容")
     @NotEmpty(message = "文章内容不能为空", groups = {UpdateGroup.class, AddGroup.class})

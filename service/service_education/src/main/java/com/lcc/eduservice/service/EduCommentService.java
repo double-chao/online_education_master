@@ -42,6 +42,6 @@ public interface EduCommentService extends IService<EduComment> {
      * @param commentPage
      * @return
      */
-    Map<String, Object> listCourseFrontById(String courseId ,Page<EduComment> commentPage);
+    Map<String, Object> listCourseFrontById(Integer courseId ,Page<EduComment> commentPage);
 
 }

@@ -29,23 +29,23 @@ public class EduComment implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "评论ID")
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
-    private String id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     @ApiModelProperty(value = "评论父id")
-    private String parentId;
+    private Integer parentId;
 
     @ApiModelProperty(value = "课程id")
-    private String courseId;
+    private Integer courseId;
 
     @ApiModelProperty(value = "课程标题")
     private String courseTitle;
 
     @ApiModelProperty(value = "讲师id")
-    private String teacherId;
+    private Integer teacherId;
 
     @ApiModelProperty(value = "会员id")
-    private String memberId;
+    private Integer memberId;
 
     @ApiModelProperty(value = "会员昵称")
     private String nickname;

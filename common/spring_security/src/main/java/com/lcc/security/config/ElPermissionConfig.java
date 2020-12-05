@@ -1,7 +1,10 @@
 package com.lcc.security.config;
 
-import com.lcc.security.util.SecurityUtils;
+import com.lcc.servicebase.exceptionhandler.BadException;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -18,7 +21,11 @@ public class ElPermissionConfig {
 
     public Boolean check(String... permissions) {
         // 获取当前用户的所有权限
-        List<String> elPermissions = SecurityUtils.getCurrentUser().getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            throw new BadException(HttpStatus.UNAUTHORIZED, "当前登录状态过期");
+        }
+        List<String> elPermissions = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         // 判断当前用户的所有权限是否包含接口上定义的权限
         return elPermissions.contains("admin") || Arrays.stream(permissions).anyMatch(elPermissions::contains);
     }

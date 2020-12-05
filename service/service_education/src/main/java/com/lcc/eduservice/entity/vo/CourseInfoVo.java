@@ -12,16 +12,16 @@ import java.math.BigDecimal;
 @Data
 public class CourseInfoVo {
     @ApiModelProperty(value = "课程ID")
-    private String id;
+    private Integer id;
 
     @ApiModelProperty(value = "课程讲师ID")
-    private String teacherId;
+    private Integer teacherId;
 
     @ApiModelProperty(value = "课程所属类别ID")
-    private String subjectId;
+    private Integer subjectId;
 
     @ApiModelProperty(value = "一级分类ID")
-    private String subjectParentId;
+    private Integer subjectParentId;
 
     @ApiModelProperty(value = "课程标题")
     private String title;

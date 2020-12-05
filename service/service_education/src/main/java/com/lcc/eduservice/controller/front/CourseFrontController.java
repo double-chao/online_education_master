@@ -62,11 +62,11 @@ public class CourseFrontController {
     @ApiOperation("根据课程id查询课程信息")
     @AnonymousAccess
     @GetMapping("/getFrontCourseInfo/{courseId}")
-    public Result getFrontCourseInfo(@PathVariable String courseId, HttpServletRequest request) {
+    public Result getFrontCourseInfo(@PathVariable Integer courseId, HttpServletRequest request) {
         boolean checkToken = JwtUtils.checkToken(request);
         if (checkToken) {
-            String memberId = JwtUtils.getMemberIdByJwtToken(request);
-            if (StringUtils.isEmpty(memberId)) {
+            Integer memberId = JwtUtils.getMemberIdByJwtToken(request);
+            if (0 == memberId) {
                 throw new BadException(CodeEnum.USER_NO_LOGIN_EXCEPTION);
             }
             CourseWebVo courseWebVo = new CourseWebVo();
@@ -100,7 +100,7 @@ public class CourseFrontController {
 
     @ApiOperation("根据课程id查询-订单的课程信息")
     @PostMapping("/getOrderCourseInfo/{id}")
-    public CourseOrder getOrderCourseInfo(@PathVariable String id) {
+    public CourseOrder getOrderCourseInfo(@PathVariable Integer id) {
         CourseWebVo courseInfo = courseService.getBaseCourseInfo(id);
         CourseOrder courseOrder = new CourseOrder();
         BeanUtils.copyProperties(courseInfo, courseOrder);

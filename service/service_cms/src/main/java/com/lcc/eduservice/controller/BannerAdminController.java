@@ -64,7 +64,7 @@ public class BannerAdminController {
     @CacheEvict(value = {"bannerFront"}, key = "'selectAllBanner'")
     @DeleteMapping("/removeBanner/{id}")
     public Result remove(@ApiParam(name = "id", value = "轮播图id", required = true)
-                         @PathVariable String id) {
+                         @PathVariable Integer id) {
         bannerService.removeById(id);
         return Result.ok();
     }
@@ -72,7 +72,7 @@ public class BannerAdminController {
     @ApiOperation(value = "根据id查询轮播图")
     @GetMapping("/getBanner/{id}")
     public Result get(@ApiParam(name = "id", value = "轮播图id", required = true)
-                      @PathVariable String id) {
+                      @PathVariable Integer id) {
         CrmBanner banner = bannerService.getById(id);
         return Result.ok().data("item", banner);
     }

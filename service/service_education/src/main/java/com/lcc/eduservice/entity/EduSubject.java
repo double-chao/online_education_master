@@ -27,14 +27,14 @@ public class EduSubject implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "课程类别ID")
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
-    private String id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     @ApiModelProperty(value = "类别名称")
     private String title;
 
     @ApiModelProperty(value = "父ID")
-    private String parentId;
+    private Integer parentId;
 
     @ApiModelProperty(value = "排序字段")
     private Integer sort;

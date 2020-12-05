@@ -18,9 +18,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * @Author Administrator
- * @Description 首页
- * @Date 2020/11/21  18:18
+ * <p>
+ * 首页
+ * </p>
+ *
+ * @author chaochao
+ * @since 2020/11/21  18:18
  */
 @Service
 public class IndexFrontServiceImpl implements IndexFrontService {
@@ -43,9 +46,7 @@ public class IndexFrontServiceImpl implements IndexFrontService {
             wrapper.last("limit 8");  //查询前8条热门课程
             return courseService.list(wrapper);
         }, poolExecutor);
-        CompletableFuture<Void> voidCompletableFuture1 = listCourseFuture.thenAcceptAsync((res) -> {
-            eduList.addAll(res);
-        }, poolExecutor);
+        CompletableFuture<Void> voidCompletableFuture1 = listCourseFuture.thenAcceptAsync(eduList::addAll, poolExecutor);
 
         CompletableFuture<List<EduTeacher>> listTeacherFuture = CompletableFuture.supplyAsync(() -> {
             QueryWrapper<EduTeacher> wrapperTeacher = new QueryWrapper<>();
@@ -53,9 +54,7 @@ public class IndexFrontServiceImpl implements IndexFrontService {
             wrapperTeacher.last("limit 4");  //查询前4条名师
             return teacherService.list(wrapperTeacher);
         }, poolExecutor);
-        CompletableFuture<Void> voidCompletableFuture2 = listTeacherFuture.thenAcceptAsync((res) -> {
-            teacherList.addAll(res);
-        }, poolExecutor);
+        CompletableFuture<Void> voidCompletableFuture2 = listTeacherFuture.thenAcceptAsync(teacherList::addAll, poolExecutor);
 
         try {
             CompletableFuture.allOf(voidCompletableFuture1, voidCompletableFuture2).get();

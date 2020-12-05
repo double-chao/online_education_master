@@ -78,12 +78,12 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @CacheEvict(value = {"courseFront"}, key = "'getCourseFrontList'")
     @Override
-    public String saveCourseInfo(CourseInfoVo courseInfoVo) {
+    public Integer saveCourseInfo(CourseInfoVo courseInfoVo) {
         EduCourse course = new EduCourse();
         BeanUtils.copyProperties(courseInfoVo, course);
         boolean b = courseService.save(course);
         if (b) {
-            String courseId = course.getId(); //得到添加后的课程id
+            Integer courseId = course.getId(); //得到添加后的课程id
             EduCourseDescription courseDescription = new EduCourseDescription();
             courseDescription.setId(courseId); //课程描述的id和课程id为一样的
             courseDescription.setDescription(courseInfoVo.getDescription());
@@ -95,7 +95,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     }
 
     @Override
-    public CourseInfoVo getCourseInfo(String courseId) {
+    public CourseInfoVo getCourseInfo(Integer courseId) {
         CourseInfoVo courseInfoVo = new CourseInfoVo();
         EduCourse eduCourse = baseMapper.selectById(courseId);
         BeanUtils.copyProperties(eduCourse, courseInfoVo);
@@ -123,14 +123,14 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     }
 
     @Override
-    public CoursePublishVo getPublishVoInfo(String courseId) {
+    public CoursePublishVo getPublishVoInfo(Integer courseId) {
         return baseMapper.selectPublishVoInfo(courseId);
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @CacheEvict(value = {"courseFront"}, key = "'getCourseFrontList'")
     @Override
-    public void removeCourse(String courseId) {
+    public void removeCourse(Integer courseId) {
         eduVideoService.removeVideoByCourseId(courseId);
         chapterService.removeChapterByCourseId(courseId);
         courseDescriptionService.removeById(courseId);
@@ -180,7 +180,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     }
 
     @Override
-    public CourseWebVo getBaseCourseInfo(String courseId) {
+    public CourseWebVo getBaseCourseInfo(Integer courseId) {
         return baseMapper.selectWebCourseInfo(courseId);
     }
 }

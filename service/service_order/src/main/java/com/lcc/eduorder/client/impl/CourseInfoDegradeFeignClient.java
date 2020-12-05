@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class CourseInfoDegradeFeignClient implements CourseClient {
 
     @Override
-    public CourseOrder getOrderCourseInfo(String id) {
+    public CourseOrder getOrderCourseInfo(Integer id) {
         log.error("远程调用课程服务，执行了熔断器，获取课程信息失败");
         throw new BadException(CodeEnum.COURSE_INFO_NOT_EXITS);
     }

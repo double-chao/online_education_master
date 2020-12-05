@@ -36,14 +36,14 @@ public class OrderController {
 
     @ApiOperation("创建订单")
     @PostMapping("/createOrder/{courseId}")
-    public Result saveOrder(@PathVariable String courseId, HttpServletRequest request) {
+    public Result saveOrder(@PathVariable Integer courseId, HttpServletRequest request) {
         String orderNo = orderService.createOrders(courseId, JwtUtils.getMemberIdByJwtToken(request));
         return Result.ok().data("orderId", orderNo);
     }
 
     @ApiOperation("根据订单id-查询订单信息")
     @GetMapping("/getOrderInfo/{orderId}")
-    public Result getOrderInfo(@PathVariable String orderId) {
+    public Result getOrderInfo(@PathVariable Integer orderId) {
         QueryWrapper<Order> wrapper = new QueryWrapper<>();
         wrapper.eq("order_no", orderId);
         Order order = orderService.getOne(wrapper);
@@ -53,7 +53,7 @@ public class OrderController {
     @ApiOperation("课程是否被购买")
     @AnonymousAccess
     @GetMapping("/isBuyCourse/{courseId}/{memberId}")
-    public boolean isBuyCourse(@PathVariable String courseId, @PathVariable String memberId) {
+    public boolean isBuyCourse(@PathVariable Integer courseId, @PathVariable Integer memberId) {
         QueryWrapper<Order> wrapper = new QueryWrapper<>();
         wrapper.eq("course_id", courseId);
         wrapper.eq("member_id", memberId);
@@ -88,7 +88,7 @@ public class OrderController {
 
     @ApiOperation("根据订单id-删除订单")
     @DeleteMapping("/deleteOrderById/{orderId}")
-    public Result deleteOrderById(@PathVariable String orderId) {
+    public Result deleteOrderById(@PathVariable Integer orderId) {
         return orderService.removeById(orderId) ? Result.ok() : Result.fail();
     }
 }

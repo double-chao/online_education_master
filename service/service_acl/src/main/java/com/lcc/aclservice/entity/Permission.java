@@ -29,11 +29,11 @@ public class Permission implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "编号")
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
-    private String id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     @ApiModelProperty(value = "所属上级")
-    private String pid;
+    private Integer pid;
 
     @ApiModelProperty(value = "名称")
     private String name;
@@ -69,6 +69,7 @@ public class Permission implements Serializable {
     private boolean isSelect;
 
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
+    @TableLogic //逻辑删除注解
     private Boolean isDeleted;
 
     @ApiModelProperty(value = "创建时间")

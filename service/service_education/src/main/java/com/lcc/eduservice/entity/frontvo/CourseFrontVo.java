@@ -10,20 +10,20 @@ public class CourseFrontVo {
     private String title;
 
     @ApiModelProperty(value = "讲师id")
-    private String teacherId;
+    private Integer teacherId;
 
     @ApiModelProperty(value = "一级类别id")
-    private String subjectParentId;
+    private Integer subjectParentId;
 
     @ApiModelProperty(value = "二级类别id")
-    private String subjectId;
+    private Integer subjectId;
 
     @ApiModelProperty(value = "销量排序")
-    private String buyCountSort;
+    private Integer buyCountSort;
 
     @ApiModelProperty(value = "最新时间排序")
     private String gmtCreateSort;
 
     @ApiModelProperty(value = "价格排序")
-    private String priceSort;
+    private Integer priceSort;
 }

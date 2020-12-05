@@ -47,5 +47,5 @@ public interface EduArticleService extends IService<EduArticle> {
      * @param id
      * @return
      */
-    ArticleInfoVO getArticleInfoVOById(String id);
+    ArticleInfoVO getArticleInfoVOById(Integer id);
 }

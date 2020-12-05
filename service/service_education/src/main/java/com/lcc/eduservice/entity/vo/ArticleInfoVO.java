@@ -27,16 +27,16 @@ public class ArticleInfoVO implements Serializable {
     @ApiModelProperty(value = "文章ID")
     @NotNull(message = "修改时id不能为空", groups = {UpdateGroup.class})
     @Null(message = "添加时id不能指定", groups = {AddGroup.class})
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
-    private String id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     @ApiModelProperty(value = "会员id")
     @NotNull(message = "会员id不能为空",groups = {AddGroup.class,UpdateGroup.class})
-    private String memberId;
+    private Integer memberId;
 
     @ApiModelProperty(value = "文章类别ID")
     @NotNull(message = "文章类别ID不能为空", groups = {AddGroup.class, UpdateGroup.class})
-    private String categoryId;
+    private Integer categoryId;
 
     @ApiModelProperty(value = "文章标题")
     @NotEmpty(message = "文章标题不能为空", groups = {UpdateGroup.class, AddGroup.class})
@@ -51,10 +51,10 @@ public class ArticleInfoVO implements Serializable {
     private String description;
 
     @ApiModelProperty(value = "浏览数")
-    private Long scanNumber;
+    private Integer scanNumber;
 
     @ApiModelProperty(value = "点赞数")
-    private Long thumbsUp;
+    private Integer thumbsUp;
 
     @ApiModelProperty(value = "更新时间")
     private Date gmtModified;

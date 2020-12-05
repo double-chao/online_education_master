@@ -36,12 +36,15 @@ public class EduTeacher implements Serializable {
     @ApiModelProperty(value = "讲师ID")
     @NotNull(message = "修改时id不能为空", groups = {UpdateGroup.class})
     @Null(message = "添加时id不能指定", groups = {AddGroup.class})
-    @TableId(value = "id", type = IdType.ID_WORKER_STR) //id为字符串型，mybatisPlus自动生成UUID
-    private String id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     @ApiModelProperty(value = "讲师姓名")
     @NotEmpty(message = "讲师姓名不能为空", groups = {UpdateGroup.class, AddGroup.class})
     private String name;
+
+    @ApiModelProperty(value = "讲师姓名反转,模糊查询")
+    private String reverseName;
 
     @ApiModelProperty(value = "讲师简介")
 //    @Pattern(regexp = "^[a-zA-Z$]") 正则表达式校验，----->在前端js中正则表达式:/^[a-zA-Z$]/

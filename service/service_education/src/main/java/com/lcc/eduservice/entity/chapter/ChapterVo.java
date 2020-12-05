@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 public class ChapterVo {
 
-    private String id;
+    private Integer id;
 
     private String title;
 

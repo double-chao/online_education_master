@@ -47,12 +47,12 @@ public class SubjectExcelListener extends AnalysisEventListener<SubjectData> {
         EduSubject existOneSubject = this.existOneSubject(subjectService, subjectData.getOneSubjectName());
         if (StringUtils.isEmpty(existOneSubject)) { //没有相同一级分类，进行添加
             existOneSubject = new EduSubject();
-            existOneSubject.setParentId("0");
+            existOneSubject.setParentId(0);
             existOneSubject.setTitle(subjectData.getOneSubjectName());//一级分类名称
             subjectService.save(existOneSubject); //一级分类保存到数据库中
         }
         //获取一级分类id值
-        String pid = existOneSubject.getId();
+        Integer pid = existOneSubject.getId();
         //添加二级分类
         //判断二级分类是否重复
         EduSubject existTwoSubject = this.existTwoSubject(subjectService, subjectData.getTwoSubjectName(), pid);
@@ -87,7 +87,7 @@ public class SubjectExcelListener extends AnalysisEventListener<SubjectData> {
      * @param pid
      * @return
      */
-    private EduSubject existTwoSubject(EduSubjectService subjectService, String name, String pid) {
+    private EduSubject existTwoSubject(EduSubjectService subjectService, String name, Integer pid) {
         QueryWrapper<EduSubject> wrapper = new QueryWrapper<>();
         wrapper.eq("title", name);
         wrapper.eq("parent_id", pid);

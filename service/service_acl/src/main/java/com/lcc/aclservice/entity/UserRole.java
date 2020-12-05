@@ -28,16 +28,17 @@ public class UserRole implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主键id")
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
-    private String id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     @ApiModelProperty(value = "角色id")
-    private String roleId;
+    private Integer roleId;
 
     @ApiModelProperty(value = "用户id")
-    private String userId;
+    private Integer userId;
 
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
+    @TableLogic //逻辑删除注解
     private Boolean isDeleted;
 
     @ApiModelProperty(value = "创建时间")

@@ -20,11 +20,11 @@ public interface EduCourseMapper extends BaseMapper<EduCourse> {
      * @param courseId
      * @return
      */
-    CoursePublishVo selectPublishVoInfo(String courseId);
+    CoursePublishVo selectPublishVoInfo(Integer courseId);
 
     /**
      * 前端页面---》根据id查询课程信息
      * @return
      */
-    CourseWebVo selectWebCourseInfo(String courseId);
+    CourseWebVo selectWebCourseInfo(Integer courseId);
 }

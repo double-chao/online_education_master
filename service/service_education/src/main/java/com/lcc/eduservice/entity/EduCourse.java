@@ -28,17 +28,17 @@ public class EduCourse implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "课程ID")
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
-    private String id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     @ApiModelProperty(value = "课程讲师ID")
-    private String teacherId;
+    private Integer teacherId;
 
     @ApiModelProperty(value = "课程专业ID")
-    private String subjectId;
+    private Integer subjectId;
 
     @ApiModelProperty(value = "课程专业父级ID")
-    private String subjectParentId;
+    private Integer subjectParentId;
 
     @ApiModelProperty(value = "课程标题")
     private String title;
@@ -53,13 +53,13 @@ public class EduCourse implements Serializable {
     private String cover;
 
     @ApiModelProperty(value = "销售数量")
-    private Long buyCount;
+    private Integer buyCount;
 
     @ApiModelProperty(value = "浏览数量")
-    private Long viewCount;
+    private Integer viewCount;
 
     @ApiModelProperty(value = "乐观锁")
-    private Long version;
+    private Integer version;
 
     @ApiModelProperty(value = "课程状态 Draft未发布  Normal已发布")
     private String status;

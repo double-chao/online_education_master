@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class OrderFileDegradeFeignClient implements OrderClient {
 
     @Override
-    public boolean isBuyCourse(String courseId, String memberId) {
+    public boolean isBuyCourse(Integer courseId, Integer memberId) {
         log.error("远程调用订单服务，执行熔断器，查询课程是否购买失败");
         throw new BadException(CodeEnum.COURSE_IS_BUY_FAILED);
     }

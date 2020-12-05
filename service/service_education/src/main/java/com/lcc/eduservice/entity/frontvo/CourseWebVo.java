@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Data
 public class CourseWebVo {
 
-    private String id;
+    private Integer id;
 
     @ApiModelProperty(value = "课程标题")
     private String title;
@@ -23,16 +23,16 @@ public class CourseWebVo {
     private String cover;
 
     @ApiModelProperty(value = "销售数量")
-    private Long buyCount;
+    private Integer buyCount;
 
     @ApiModelProperty(value = "浏览数量")
-    private Long viewCount;
+    private Integer viewCount;
 
     @ApiModelProperty(value = "课程简介")
     private String description;
 
     @ApiModelProperty(value = "讲师ID")
-    private String teacherId;
+    private Integer teacherId;
 
     @ApiModelProperty(value = "讲师姓名")
     private String teacherName;
@@ -44,13 +44,13 @@ public class CourseWebVo {
     private String avatar;
 
     @ApiModelProperty(value = "课程一级类别ID")
-    private String subjectLevelOneId;
+    private Integer subjectLevelOneId;
 
     @ApiModelProperty(value = "类别一级名称")
     private String subjectLevelOne;
 
     @ApiModelProperty(value = "课程二级类别ID")
-    private String subjectLevelTwoId;
+    private Integer subjectLevelTwoId;
 
     @ApiModelProperty(value = "类别二级名称")
     private String subjectLevelTwo;

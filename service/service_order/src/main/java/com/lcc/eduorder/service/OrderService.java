@@ -19,6 +19,6 @@ public interface OrderService extends IService<Order> {
      * @param memberIdByJwtToken
      * @return
      */
-    String createOrders(String courseId, String memberIdByJwtToken);
+    String createOrders(Integer courseId, Integer memberIdByJwtToken);
 
 }

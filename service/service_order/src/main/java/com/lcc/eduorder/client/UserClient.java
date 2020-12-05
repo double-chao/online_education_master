@@ -22,6 +22,6 @@ public interface UserClient {
      * @return
      */
     @PostMapping("/educenter/member/getUserInfoOrder/{id}")
-    UserOrder getUserInfoOrder(@PathVariable("id") String id);
+    UserOrder getUserInfoOrder(@PathVariable("id") Integer id);
 
 }

@@ -17,10 +17,10 @@ import java.util.Map;
 public interface RoleService extends IService<Role> {
 
     //根据用户获取角色数据
-    Map<String, Object> findRoleByUserId(String userId);
+    Map<String, Object> findRoleByUserId(Integer userId);
 
     //根据用户分配角色
-    void saveUserRoleRealtionShip(String userId, String[] roleId);
+    void saveUserRoleRelationship(Integer userId, Integer[] roleId);
 
-    List<Role> selectRoleByUserId(String id);
+    List<Role> selectRoleByUserId(Integer id);
 }

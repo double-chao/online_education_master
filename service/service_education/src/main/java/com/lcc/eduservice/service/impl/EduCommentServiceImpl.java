@@ -62,7 +62,7 @@ public class EduCommentServiceImpl extends ServiceImpl<EduCommentMapper, EduComm
 
         List<CommentVO> commentVOList = new ArrayList<>(commentList.size()); //返回给管理系统的数据
         for (EduComment comment : commentList) {
-            String courseId = comment.getCourseId();
+            Integer courseId = comment.getCourseId();
             EduCourse eduCourse = courseService.getById(courseId);
             CommentVO commentVO = new CommentVO();
             commentVO.setTitle(eduCourse.getTitle());
@@ -79,12 +79,12 @@ public class EduCommentServiceImpl extends ServiceImpl<EduCommentMapper, EduComm
     public boolean saveComment(EduComment comment, HttpServletRequest request) {
         boolean checkToken = JwtUtils.checkToken(request);
         if (checkToken) {
-            String memberId = JwtUtils.getMemberIdByJwtToken(request);
-            if (StringUtils.isEmpty(memberId)) {
+            Integer memberId = JwtUtils.getMemberIdByJwtToken(request);
+            if (0 == memberId) {
                 throw new BadException(CodeEnum.USER_NO_LOGIN_EXCEPTION);
             }
             // 在课程详情页面,传过来课程id,可以根据课程id把讲师信息查出来，然后在进行赋值
-            String courseId = comment.getCourseId();
+            Integer courseId = comment.getCourseId();
             if (!StringUtils.isEmpty(courseId)) {
                 QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
                 wrapper.eq("id", courseId);
@@ -103,7 +103,7 @@ public class EduCommentServiceImpl extends ServiceImpl<EduCommentMapper, EduComm
     }
 
     @Override
-    public Map<String, Object> listCourseFrontById(String courseId, Page<EduComment> commentPage) {
+    public Map<String, Object> listCourseFrontById(Integer courseId, Page<EduComment> commentPage) {
         QueryWrapper<EduComment> wrapper = new QueryWrapper<>();
         if (!StringUtils.isEmpty(courseId)) {
             wrapper.eq("course_id", courseId);

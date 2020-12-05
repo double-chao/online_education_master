@@ -33,7 +33,7 @@
         and p.is_deleted = 0
     </select>
 
-    <select id="selectPermissionValueByUserId" resultType="String">
+    <select id="selectPermissionValueByUserId" resultType="java.lang.String" parameterType="java.lang.Integer">
     	select
         p.permission_value
         from acl_user_role ur
@@ -46,7 +46,7 @@
         and p.is_deleted = 0
     </select>
 
-    <select id="selectAllPermissionValue" resultType="String">
+    <select id="selectAllPermissionValue" resultType="java.lang.String">
         select
         permission_value
         from acl_permission

@@ -43,6 +43,14 @@ public class VodController {
         return Result.ok().data("videoId", videoId);
     }
 
+    @ApiOperation("基于OSS上传视频到阿里云")
+    @PostMapping("/uploadVideoAlyByOSS/{localFile}")
+    public Result uploadVideoAlyByOSS(@PathVariable String localFile) {
+        //返回上传视频id
+        String videoId = vodService.uploadVideoAlyByOSS(localFile);
+        return Result.ok().data("videoId", videoId);
+    }
+
     @ApiOperation("根据id删除阿里云的视频")
     @DeleteMapping("/removeAlyVideo/{id}")
     public Result removeAlyVideo(@ApiParam(name = "id", value = "视频id", required = true)

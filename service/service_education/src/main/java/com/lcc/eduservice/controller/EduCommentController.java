@@ -41,13 +41,13 @@ public class EduCommentController {
 
     @ApiOperation("根据id-删除评论")
     @DeleteMapping("/deleteComment/{id}")
-    public Result deleteComment(@PathVariable String id) {
+    public Result deleteComment(@PathVariable Integer id) {
         return commentService.removeById(id) ? Result.ok() : Result.fail();
     }
 
     @ApiOperation(value = "根据id列表-批量删除评论")
     @DeleteMapping("/batchRemove")
-    public Result batchRemove(@RequestBody Set<String> idList) {
+    public Result batchRemove(@RequestBody Set<Integer> idList) {
         commentService.removeByIds(idList);
         return Result.ok();
     }

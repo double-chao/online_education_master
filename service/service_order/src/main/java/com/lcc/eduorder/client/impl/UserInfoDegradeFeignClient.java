@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class UserInfoDegradeFeignClient implements UserClient {
 
     @Override
-    public UserOrder getUserInfoOrder(String id) {
+    public UserOrder getUserInfoOrder(Integer id) {
         log.info("远程调用用户服务，执行了熔断器，获取用户数据失败");
         throw new BadException(CodeEnum.GET_USER_INFO_FAILED_EXCEPTION);
     }

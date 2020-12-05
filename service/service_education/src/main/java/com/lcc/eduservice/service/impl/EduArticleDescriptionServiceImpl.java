@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class EduArticleDescriptionServiceImpl extends ServiceImpl<EduArticleDescriptionMapper, EduArticleDescription> implements EduArticleDescriptionService {
 
     @Override
-    public EduArticleDescription getByArticleId(String id) {
+    public EduArticleDescription getByArticleId(Integer id) {
         return this.baseMapper.getArticleDescription(id);
     }
 }

@@ -24,6 +24,6 @@ public interface OrderClient {
      * @return
      */
     @GetMapping("/eduorder/order/isBuyCourse/{courseId}/{memberId}")
-    boolean isBuyCourse(@PathVariable("courseId") String courseId, @PathVariable("memberId") String memberId);
+    boolean isBuyCourse(@PathVariable("courseId") Integer courseId, @PathVariable("memberId") Integer memberId);
 
 }

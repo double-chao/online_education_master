@@ -62,8 +62,8 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
     public boolean directlyPublishArticle(ArticleInfoVO articleInfoVO, HttpServletRequest request) {
         boolean checkToken = JwtUtils.checkToken(request);
         if (checkToken) {
-            String memberId = JwtUtils.getMemberIdByJwtToken(request);
-            if (StringUtils.isEmpty(memberId)) {
+            Integer memberId = JwtUtils.getMemberIdByJwtToken(request);
+            if (0 == memberId) {
                 throw new BadException(CodeEnum.USER_NO_LOGIN_EXCEPTION);
             }
             articleInfoVO.setMemberId(memberId);
@@ -90,8 +90,8 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
     public boolean saveArticle(ArticleInfoVO articleInfoVO, HttpServletRequest request) {
         boolean checkToken = JwtUtils.checkToken(request);
         if (checkToken) {
-            String memberId = JwtUtils.getMemberIdByJwtToken(request);
-            if (StringUtils.isEmpty(memberId)) {
+            Integer memberId = JwtUtils.getMemberIdByJwtToken(request);
+            if (0 == memberId) {
                 throw new BadException(CodeEnum.USER_NO_LOGIN_EXCEPTION);
             }
             articleInfoVO.setMemberId(memberId);
@@ -113,7 +113,7 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
     }
 
     @Override
-    public ArticleInfoVO getArticleInfoVOById(String id) {
+    public ArticleInfoVO getArticleInfoVOById(Integer id) {
         ArticleInfoVO articleInfoVO = new ArticleInfoVO();
         CompletableFuture<EduArticle> articleFuture = CompletableFuture.supplyAsync(
                 () -> this.baseMapper.selectById(id), poolExecutor);
@@ -123,10 +123,8 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
             articleInfoVO.setDescription(description.getDescription());
         }, poolExecutor);
 
-        CompletableFuture<Void> voidCompletableFuture = articleFuture.thenAcceptAsync((article) -> {
-            BeanUtils.copyProperties(article, articleInfoVO);
-        }, poolExecutor);
-
+        CompletableFuture<Void> voidCompletableFuture = articleFuture.thenAcceptAsync((article) ->
+                BeanUtils.copyProperties(article, articleInfoVO), poolExecutor);
         try {
             CompletableFuture.allOf(runAsync, voidCompletableFuture).get();
         } catch (InterruptedException | ExecutionException e) {
@@ -160,10 +158,10 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
         List<EduArticle> records = articlePage.getRecords(); //多少条记录数
         List<ArticleInfoVO> articleInfoVOList = new ArrayList<>();
         for (EduArticle article : records) {
-            String memberId = article.getMemberId();
+            Integer memberId = article.getMemberId();
             UserOrder userOrder = userClient.getUserInfoOrder(memberId);
             if (!StringUtils.isEmpty(userOrder)) {
-                String id = article.getId();
+                Integer id = article.getId();
                 EduArticleDescription description = descriptionService.getByArticleId(id);
                 ArticleInfoVO articleInfoVO = new ArticleInfoVO();
                 articleInfoVO.setDescription(description.getDescription());

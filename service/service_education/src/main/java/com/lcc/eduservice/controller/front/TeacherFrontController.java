@@ -8,6 +8,7 @@ import com.lcc.eduservice.service.EduCourseService;
 import com.lcc.eduservice.service.EduTeacherService;
 import com.lcc.result.Result;
 import com.lcc.security.annonation.AnonymousAccess;
+import com.lcc.vo.PageVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -47,7 +48,7 @@ public class TeacherFrontController {
     @ApiOperation("讲师详情")
     @AnonymousAccess
     @GetMapping("/getTeacherFrontInfo/{teacherId}")
-    public Result getTeacherFrontInfo(@PathVariable String teacherId) {
+    public Result getTeacherFrontInfo(@PathVariable Integer teacherId) {
         EduTeacher eduTeacher = new EduTeacher();
         CompletableFuture<Void> runAsyncTeacher = CompletableFuture.runAsync(() -> {
             //1 根据讲师id查询讲师基本信息

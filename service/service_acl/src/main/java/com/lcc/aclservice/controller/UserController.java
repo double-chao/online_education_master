@@ -14,8 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -38,14 +38,9 @@ public class UserController {
     @ApiOperation(value = "获取管理用户分页列表")
     @GetMapping("{page}/{limit}")
     public Result index(
-            @ApiParam(name = "page", value = "当前页码", required = true)
-            @PathVariable Long page,
-
-            @ApiParam(name = "limit", value = "每页记录数", required = true)
-            @PathVariable Long limit,
-
-            @ApiParam(name = "courseQuery", value = "查询对象", required = false)
-                    User userQueryVo) {
+            @ApiParam(name = "page", value = "当前页码", required = true) @PathVariable Long page,
+            @ApiParam(name = "limit", value = "每页记录数", required = true) @PathVariable Long limit,
+            @ApiParam(name = "courseQuery", value = "查询对象", required = false) User userQueryVo) {
         Page<User> pageParam = new Page<>(page, limit);
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         if(!StringUtils.isEmpty(userQueryVo.getUsername())) {
@@ -75,35 +70,35 @@ public class UserController {
 
     @ApiOperation(value = "删除管理用户")
     @DeleteMapping("remove/{id}")
-    public Result remove(@PathVariable String id) {
+    public Result remove(@PathVariable Integer id) {
         userService.removeById(id);
         return Result.ok();
     }
 
     @ApiOperation(value = "根据id列表删除管理用户")
     @DeleteMapping("batchRemove")
-    public Result batchRemove(@RequestBody List<String> idList) {
+    public Result batchRemove(@RequestBody Set<Integer> idList) {
         userService.removeByIds(idList);
         return Result.ok();
     }
 
     @ApiOperation(value = "根据用户获取角色数据")
     @GetMapping("/toAssign/{userId}")
-    public Result toAssign(@PathVariable String userId) {
+    public Result toAssign(@PathVariable Integer userId) {
         Map<String, Object> roleMap = roleService.findRoleByUserId(userId);
         return Result.ok().data(roleMap);
     }
 
     @ApiOperation(value = "根据用户分配角色")
     @PostMapping("/doAssign")
-    public Result doAssign(@RequestParam String userId,@RequestParam String[] roleId) {
-        roleService.saveUserRoleRealtionShip(userId,roleId);
+    public Result doAssign(@RequestParam Integer userId,@RequestParam Integer[] roleId) {
+        roleService.saveUserRoleRelationship(userId,roleId);
         return Result.ok();
     }
 
     @ApiOperation(value = "根据用户id获取用户数据")
     @GetMapping("/get/{userId}")
-    public Result get(@PathVariable String userId) {
+    public Result get(@PathVariable Integer userId) {
         User user = userService.getById(userId);
         return Result.ok().data("item",user);
     }

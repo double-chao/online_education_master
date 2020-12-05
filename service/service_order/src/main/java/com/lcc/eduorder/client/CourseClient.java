@@ -22,5 +22,5 @@ public interface CourseClient {
      * @return
      */
     @PostMapping("/eduservice/coursefront/getOrderCourseInfo/{id}")
-    CourseOrder getOrderCourseInfo(@PathVariable("id") String id);
+    CourseOrder getOrderCourseInfo(@PathVariable("id") Integer id);
 }

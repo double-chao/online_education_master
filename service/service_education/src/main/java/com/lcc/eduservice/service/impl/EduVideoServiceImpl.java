@@ -30,7 +30,7 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
     private VodClient vodClient;
 
     @Override
-    public void removeVideoByCourseId(String courseId) {  // 先删除视频（即小节表中的视频id），在删除小节
+    public void removeVideoByCourseId(Integer courseId) {  // 先删除视频（即小节表中的视频id），在删除小节
         if (StringUtils.isEmpty(courseId)){
             throw new BadException(CodeEnum.COURSE_NOT_EXITS);
         }

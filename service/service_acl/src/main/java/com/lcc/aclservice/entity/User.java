@@ -28,8 +28,8 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "会员id")
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
-    private String id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     @ApiModelProperty(value = "微信openid")
     private String username;
@@ -47,6 +47,7 @@ public class User implements Serializable {
     private String token;
 
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
+    @TableLogic //逻辑删除注解
     private Boolean isDeleted;
 
     @ApiModelProperty(value = "创建时间")

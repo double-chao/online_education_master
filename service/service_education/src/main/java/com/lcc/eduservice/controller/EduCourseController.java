@@ -54,7 +54,7 @@ public class EduCourseController {
     @ApiOperation("添加课程基本信息")
     @PostMapping("/addCourseInfo")
     public Result addCourseInfo(@RequestBody CourseInfoVo courseInfoVo){
-        String id = courseService.saveCourseInfo(courseInfoVo);
+        Integer id = courseService.saveCourseInfo(courseInfoVo);
         return Result.ok().data("courseId",id);
     }
 
@@ -62,7 +62,7 @@ public class EduCourseController {
     @GetMapping("/getCourseInfoById/{courseId}")
     public Result getCourseInfoById(
             @ApiParam(name = "courseId", value = "课程id", required = true)
-            @PathVariable String courseId) {
+            @PathVariable Integer courseId) {
         CourseInfoVo courseInfoVo = courseService.getCourseInfo(courseId);
         return Result.ok().data("courseInfoVo",courseInfoVo);
     }
@@ -78,7 +78,7 @@ public class EduCourseController {
     @GetMapping("/getPublishVoInfo/{courseId}")
     public Result getPublishVoInfo(
             @ApiParam(name = "courseId", value = "课程id", required = true)
-            @PathVariable String courseId){
+            @PathVariable Integer courseId){
         CoursePublishVo publishVoInfo = courseService.getPublishVoInfo(courseId);
         return Result.ok().data("publishVoInfo",publishVoInfo);
     }
@@ -88,7 +88,7 @@ public class EduCourseController {
     @PostMapping("/publishCourse/{courseId}")
     public Result publishCourse(
             @ApiParam(name = "courseId", value = "课程id", required = true)
-            @PathVariable String courseId) {
+            @PathVariable Integer courseId) {
         EduCourse eduCourse = new EduCourse();
         eduCourse.setId(courseId);
         eduCourse.setStatus("Normal"); //状态设置为已发布
@@ -98,7 +98,7 @@ public class EduCourseController {
 
     @ApiOperation("删除课程")
     @DeleteMapping("{courseId}")
-    public Result deleteCourse(@PathVariable String courseId) {
+    public Result deleteCourse(@PathVariable Integer courseId) {
         courseService.removeCourse(courseId);
         return Result.ok();
     }

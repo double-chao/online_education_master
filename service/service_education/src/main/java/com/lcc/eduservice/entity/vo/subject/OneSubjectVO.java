@@ -12,11 +12,11 @@ import java.util.List;
 @Data
 public class OneSubjectVO {
 
-    private String id; //id
+    private Integer id; //id
 
     private String title; //一级科目菜单名称
 
-    private String parentId; //一级菜单的父id 设置为0
+    private Integer parentId; //一级菜单的父id 设置为0
 
     private List<TwoSubjectVO> twoSubjectVOList; //一个一级菜单包含多个二级菜单
 }

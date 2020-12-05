@@ -23,10 +23,10 @@ public class CourseOrder {
     private String cover;
 
     @ApiModelProperty(value = "销售数量")
-    private Long buyCount;
+    private Integer buyCount;
 
     @ApiModelProperty(value = "浏览数量")
-    private Long viewCount;
+    private Integer viewCount;
 
     @ApiModelProperty(value = "课程简介")
     private String description;
@@ -44,13 +44,13 @@ public class CourseOrder {
     private String avatar;
 
     @ApiModelProperty(value = "课程一级类别ID")
-    private String subjectLevelOneId;
+    private Integer subjectLevelOneId;
 
     @ApiModelProperty(value = "类别一级名称")
     private String subjectLevelOne;
 
     @ApiModelProperty(value = "课程二级类别ID")
-    private String subjectLevelTwoId;
+    private Integer subjectLevelTwoId;
 
     @ApiModelProperty(value = "类别二级名称")
     private String subjectLevelTwo;

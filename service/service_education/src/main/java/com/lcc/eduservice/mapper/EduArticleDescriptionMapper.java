@@ -18,5 +18,5 @@ public interface EduArticleDescriptionMapper extends BaseMapper<EduArticleDescri
      * @param id
      * @return
      */
-    EduArticleDescription getArticleDescription(String id);
+    EduArticleDescription getArticleDescription(Integer id);
 }

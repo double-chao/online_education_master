@@ -43,7 +43,7 @@ public class EduVideoController {
     @ApiOperation("根据id删除小节")
     @DeleteMapping("{id}")
     public Result deleteVideo(@ApiParam(name = "id", value = "小节id", required = true)
-                              @PathVariable String id) {
+                              @PathVariable Integer id) {
         EduVideo video = videoService.getById(id); // 根据小节id 得到视频id
         String videoId = video.getVideoSourceId();
         if (!StringUtils.isEmpty(videoId)) {

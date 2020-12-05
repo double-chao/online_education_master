@@ -38,7 +38,7 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
     private EduChapterService chapterService;
 
     @Override
-    public List<ChapterVo> getChapterAndVideoById(String courseId) {
+    public List<ChapterVo> getChapterAndVideoById(Integer courseId) {
         QueryWrapper<EduChapter> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("course_id", courseId);
         List<EduChapter> chapterList = baseMapper.selectList(queryWrapper);
@@ -70,7 +70,7 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
-    public boolean deleteChapter(String chapterId) {
+    public boolean deleteChapter(Integer chapterId) {
         if (StringUtils.isEmpty(chapterId)) {
             throw new BadException(CodeEnum.SELECT_CHAPTER_NOT_EXITS);
         }
@@ -86,7 +86,7 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
     }
 
     @Override
-    public void removeChapterByCourseId(String courseId) {
+    public void removeChapterByCourseId(Integer courseId) {
         QueryWrapper<EduChapter> wrapper = new QueryWrapper<>();
         wrapper.eq("course_id", courseId);
         baseMapper.delete(wrapper);

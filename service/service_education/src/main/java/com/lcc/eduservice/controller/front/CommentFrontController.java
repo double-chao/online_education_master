@@ -31,7 +31,7 @@ public class CommentFrontController {
     @ApiOperation(value = "根据课程id-获取课程的评论")
     @AnonymousAccess
     @GetMapping("/listCommentByCourseId/{courseId}/{current}/{size}")
-    public Result listCommentByCourseId(@PathVariable String courseId, @PathVariable long current, @PathVariable long size) {
+    public Result listCommentByCourseId(@PathVariable Integer courseId, @PathVariable long current, @PathVariable long size) {
         Page<EduComment> commentPage = new Page<>(current, size);
         Map<String, Object> map = commentService.listCourseFrontById(courseId,commentPage);
         return Result.ok().data(map);

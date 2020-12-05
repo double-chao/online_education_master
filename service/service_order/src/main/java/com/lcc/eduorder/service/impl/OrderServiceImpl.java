@@ -29,7 +29,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private CourseClient courseClient;
 
     @Override
-    public String createOrders(String courseId, String memberId) {
+    public String createOrders(Integer courseId, Integer memberId) {
         //用户信息
         UserOrder userOrder = userClient.getUserInfoOrder(memberId);
         //课程信息
