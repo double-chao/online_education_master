@@ -47,6 +47,8 @@
         <redisson.version>3.12.0</redisson.version>
         <dynamic-datasource.version>3.2.1</dynamic-datasource.version>
         <pagehelper.version>5.1.4</pagehelper.version>
+        <aop.version>2.2.6.RELEASE</aop.version>
+<!--        <seata.version>2.2.0.RELEASE</seata.version>-->
     </properties>
 
     <dependencyManagement>
@@ -67,6 +69,21 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!--  引入aspectj  -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-aop</artifactId>
+                <version>${aop.version}</version>
+            </dependency>
+
+            <!--  分布式事务 -->
+<!--            <dependency>-->
+<!--                <groupId>com.alibaba.cloud</groupId>-->
+<!--                <artifactId>spring-cloud-starter-alibaba-seata</artifactId>-->
+<!--                <version>${seata.version}</version>-->
+<!--            </dependency>-->
+
             <!--mybatis-plus 持久层-->
             <dependency>
                 <groupId>com.baomidou</groupId>

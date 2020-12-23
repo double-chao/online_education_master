@@ -7,12 +7,10 @@ import com.lcc.eduservice.entity.vo.ArticleInfoVO;
 import com.lcc.eduservice.service.EduArticleService;
 import com.lcc.result.Result;
 import com.lcc.security.annonation.AnonymousAccess;
-import com.lcc.servicebase.valid.AddGroup;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,30 +32,21 @@ public class EduArticleController {
     @Autowired
     private EduArticleService articleService;
 
-    @ApiOperation("添加文章-直接发布")
+    @ApiOperation("添加文章-直接发布/存为草稿")
     @AnonymousAccess
-    @PostMapping("/directlyPublishArticle")
-    public Result directlyPublishArticle(@RequestBody ArticleInfoVO articleInfoVO,HttpServletRequest request) {
-        boolean flag = articleService.directlyPublishArticle(articleInfoVO, request);
-        return flag ? Result.ok() : Result.fail();
-    }
-
-    @ApiOperation("添加文章-存为草稿")
-    @PostMapping("/insertArticle")
-    public Result insertArticle(@Validated({AddGroup.class}) @RequestBody ArticleInfoVO articleInfoVO,
-                                HttpServletRequest request) {
-        boolean flag = articleService.saveArticle(articleInfoVO, request);
+    @PostMapping("/directlyPublishOrInsertArticle")
+    public Result directlyPublishOrInsertArticle(@RequestBody ArticleInfoVO articleInfoVO,
+                                                 HttpServletRequest request) {
+        boolean flag = articleService.directlyPublishOrInsertArticle(articleInfoVO, request);
         return flag ? Result.ok() : Result.fail();
     }
 
     @ApiOperation("添加文章-草稿-发布")
     @PostMapping("/publishArticle/{articleID}")
-    public Result publishArticle(
-            @ApiParam(name = "articleID", value = "文章id", required = true)
-            @PathVariable Integer articleID) {
+    public Result publishArticle(@ApiParam(name = "articleID", value = "文章id", required = true) @PathVariable Integer articleID) {
         EduArticle article = new EduArticle();
         article.setId(articleID);
-        article.setStatus("Normal");
+        article.setStatus(true);
         articleService.updateById(article);
         return Result.ok();
     }
@@ -82,8 +71,7 @@ public class EduArticleController {
     @ApiOperation("根据id删除文章")
     @DeleteMapping("{id}")
     public Result delArticleById(@ApiParam(name = "id", value = "文章id", required = true)
-                                     @PathVariable Integer id) {
+                                 @PathVariable Integer id) {
         return articleService.removeById(id) ? Result.ok() : Result.fail();
     }
 }
-

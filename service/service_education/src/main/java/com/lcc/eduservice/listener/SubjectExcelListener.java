@@ -75,8 +75,7 @@ public class SubjectExcelListener extends AnalysisEventListener<SubjectData> {
         QueryWrapper<EduSubject> wrapper = new QueryWrapper<>();
         wrapper.eq("title", name);
         wrapper.eq("parent_id", "0");
-        EduSubject oneSubject = subjectService.getOne(wrapper); //数据库中查询一级分类是否存在
-        return oneSubject;
+        return subjectService.getOne(wrapper);
     }
 
     /**
@@ -91,8 +90,7 @@ public class SubjectExcelListener extends AnalysisEventListener<SubjectData> {
         QueryWrapper<EduSubject> wrapper = new QueryWrapper<>();
         wrapper.eq("title", name);
         wrapper.eq("parent_id", pid);
-        EduSubject twoSubject = subjectService.getOne(wrapper); //数据库中查询二级分类是否存在
-        return twoSubject;
+        return subjectService.getOne(wrapper);
     }
 
     @Override

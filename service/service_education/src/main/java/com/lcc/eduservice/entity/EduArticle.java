@@ -59,13 +59,13 @@ public class EduArticle implements Serializable {
     private Boolean isDeleted;
 
     @ApiModelProperty(value = "浏览数")
-    private Long scanNumber;
+    private Integer scanNumber;
 
-    @ApiModelProperty(value = "文章状态 Draft未发布  Normal已发布")
-    private String status;
+    @ApiModelProperty(value = "文章状态 0未发布  1已发布")
+    private Boolean status;
 
     @ApiModelProperty(value = "点赞数")
-    private Long thumbsUp;
+    private Integer thumbsUp;
 
     @ApiModelProperty(value = "创建时间")
     @TableField(fill = FieldFill.INSERT)

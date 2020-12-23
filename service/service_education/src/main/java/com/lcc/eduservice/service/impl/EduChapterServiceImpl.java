@@ -34,8 +34,6 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
 
     @Autowired
     private EduVideoService videoService;
-    @Autowired
-    private EduChapterService chapterService;
 
     @Override
     public List<ChapterVo> getChapterAndVideoById(Integer courseId) {
@@ -81,7 +79,7 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
         if (count > 0) {
             throw new BadException(CodeEnum.DELETED_CHAPTER_FAILED);
         } else {
-            return chapterService.deleteChapter(chapterId); //章节下没有小节，删除章节
+            return this.baseMapper.deleteById(chapterId) > 0;//章节下没有小节，删除章节
         }
     }
 

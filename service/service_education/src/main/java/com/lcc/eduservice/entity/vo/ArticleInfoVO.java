@@ -64,4 +64,7 @@ public class ArticleInfoVO implements Serializable {
 
     @ApiModelProperty(value = "会员头像")
     private String avatar;
+
+    @ApiModelProperty(value = "0存为草稿  1直接发布 前端根据按钮传值")
+    private String flag;
 }

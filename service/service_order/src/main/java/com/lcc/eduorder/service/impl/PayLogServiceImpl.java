@@ -46,9 +46,6 @@ public class PayLogServiceImpl extends ServiceImpl<PayLogMapper, PayLog> impleme
     @Autowired
     private CourseClient courseClient; // TODO 暂未写调用远程的方法
 
-    @Autowired
-    private PayLogService payLogService;
-
     @Override
     public Map<String, Object> createNative(String orderNo) {
         try {
@@ -110,7 +107,7 @@ public class PayLogServiceImpl extends ServiceImpl<PayLogMapper, PayLog> impleme
         QueryWrapper<Order> wrapper = new QueryWrapper<>();
         wrapper.eq("order_no", orderNo);
         Order order = orderService.getOne(wrapper);
-        if (order.getStatus().intValue() == 1) {
+        if (order.getStatus() == 1) {
             return;
         }
         order.setStatus(1);
@@ -130,7 +127,7 @@ public class PayLogServiceImpl extends ServiceImpl<PayLogMapper, PayLog> impleme
                 payLog.setTradeState(map.get("trade_state")); //交易状态
                 payLog.setTransactionId(map.get("transaction_id")); //订单流水号
                 payLog.setAttr(JSONObject.toJSONString(map));
-                payLogService.save(payLog);
+                this.baseMapper.insert(payLog);
             }
         } catch (Exception e) {
             throw new BadException(CodeEnum.GET_REDISSON_LOCK);

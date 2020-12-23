@@ -48,4 +48,16 @@ public class MsmController {
             return Result.fail().message("短信发送失败");
         }
     }
+
+
+    @ApiOperation("发送短信获取验证码-2")
+    @GetMapping("/sendMsmGetCode/{phone}")
+    public Result sendMsmGetCode(@PathVariable String phone) {
+        boolean flag = msmService.sendMsm(phone);
+        if (flag) {
+            return Result.ok();
+        } else {
+            return Result.fail().message("短信发送失败");
+        }
+    }
 }

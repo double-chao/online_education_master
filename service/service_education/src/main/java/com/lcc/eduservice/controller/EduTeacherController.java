@@ -13,15 +13,12 @@ import com.lcc.vo.PageVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotEmpty;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -53,7 +50,7 @@ public class EduTeacherController {
     @CacheEvict(value = {"teacherFront"}, key = "'getTeacherFrontList'")
     @DeleteMapping("{id}")
     public Result delTeacherById(@ApiParam(name = "id", value = "讲师id", required = true)
-                                     @PathVariable Integer id) {
+                                 @PathVariable Integer id) {
         return teacherService.removeById(id) ? Result.ok() : Result.fail();
     }
 
@@ -94,7 +91,7 @@ public class EduTeacherController {
     @ApiOperation("根据id查询讲师信息")
     @GetMapping("/getTeacher/{id}")
     public Result getTeacher(@ApiParam(name = "id", value = "讲师id", required = true)
-                                 @PathVariable Integer id) {
+                             @PathVariable Integer id) {
         EduTeacher eduTeacher = teacherService.getById(id);
         return Result.ok().data("eduTeacher", eduTeacher);
     }

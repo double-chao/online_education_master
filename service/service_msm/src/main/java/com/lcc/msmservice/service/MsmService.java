@@ -10,4 +10,11 @@ public interface MsmService {
      * @return
      */
     boolean send(Map<String, Object> param, String phone);
+
+    /**
+     * 发送短信的方法-2
+     * @param phone
+     * @return
+     */
+    boolean sendMsm(String phone);
 }

@@ -48,8 +48,6 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     private EduVideoService eduVideoService;
     @Autowired
     private EduChapterService chapterService;
-    @Autowired
-    private EduCourseService courseService;
 
     @Override
     public ObjectPageInfo selectAllCoursePageInfo(long current, long size, CourseQuery courseQuery) {
@@ -81,8 +79,8 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     public Integer saveCourseInfo(CourseInfoVo courseInfoVo) {
         EduCourse course = new EduCourse();
         BeanUtils.copyProperties(courseInfoVo, course);
-        boolean b = courseService.save(course);
-        if (b) {
+        int insert = this.baseMapper.insert(course);
+        if (insert > 0) {
             Integer courseId = course.getId(); //得到添加后的课程id
             EduCourseDescription courseDescription = new EduCourseDescription();
             courseDescription.setId(courseId); //课程描述的id和课程id为一样的
@@ -104,14 +102,37 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         return courseInfoVo;
     }
 
+    /**
+     * 关于本地事务的讲解：
+     * a(),b(),c()这三个方法都在不同的Service，因为若是都在同一个Service中，做任何设置都是没有用的，都是和a共用一个事务
+     * public void a(){}
+     * public void b(){}
+     * public void c(){}
+     * 因为事务Transactional是代理对象，同一对象内事务调用默认失效，原因绕过了代理对象
+     * 解决办法，使用代理对象：
+     * 1、引入spring-boot-start-aop;引入aspectj
+     * 2、@EnableAspectJAutoProxy(exposeProxy = true)开启
+     * 3、EduCourseService courseService = (EduCourseService)AopContext.currentProxy();
+     * 1、传播行为：REQUIRED, 当A方法中调用B方法和C方法, 当B方法用的传播行为和A一致时, 当在A方法中发生异常时, B方法会回滚,
+     * C方法不会回滚, 因为A方法和B方法使用的是REQUIRED传播行为，并且A事务的所有设置传播发了B事务。
+     * PROPAGATION_REQUIRES_NEW，C方法使用的是这个事务，C方法就不会回滚，因为C方法是用了另外的一个事务。
+     * 2、隔离级别：Isolation.READ_UNCOMMITTED 读未提交： 读取另外事务为未提交的数据，会产生脏读现象
+     * Isolation.READ_COMMITTED 读已提交，读取事务已经提交的数据，oracle和sqlServer的默认隔离级别，
+     * Isolation.REPEATABLE_READ 可重复读，MYSQL的默认的隔离级别，当读取完一个数据后，另外一个事务改了数据，
+     * 我读取到的还是最初读取到的数据，会出现幻读的现象，
+     * 可以通过innodb引擎的next-key locks机制来避免幻读
+     */
+//    @GlobalTransactional // 分布式事务的注解,若使用AT（自动事务）模式，需要数据库中建立一张UNDO_LOG表
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @CacheEvict(value = {"courseFront"}, key = "'getCourseFrontList'")
     @Override
     public void updateCourseInfo(CourseInfoVo courseInfoVo) {
         EduCourse eduCourse = new EduCourse();
         BeanUtils.copyProperties(courseInfoVo, eduCourse);
-        boolean b = courseService.updateById(eduCourse);
-        if (b) {
+//        EduCourseService courseService = (EduCourseService) AopContext.currentProxy(); // 使用动态代理,若要调动当前类的其他方法，并保证事务注解起作用
+//        boolean b = courseService.updateById(eduCourse);
+        int i = this.baseMapper.updateById(eduCourse);
+        if (i > 0) {
             EduCourseDescription description = new EduCourseDescription();
             description.setId(courseInfoVo.getId());
             description.setDescription(courseInfoVo.getDescription());
@@ -134,8 +155,8 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         eduVideoService.removeVideoByCourseId(courseId);
         chapterService.removeChapterByCourseId(courseId);
         courseDescriptionService.removeById(courseId);
-        boolean b = courseService.removeById(courseId); // 逻辑删除
-        if (!b) {
+        int i = this.baseMapper.deleteById(courseId);// 逻辑删除
+        if (i == 0) {
             throw new BadException(CodeEnum.DELETED_COURSE_FAILED);
         }
     }

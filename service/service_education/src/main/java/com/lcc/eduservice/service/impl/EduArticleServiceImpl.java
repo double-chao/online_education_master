@@ -49,9 +49,6 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
     private EduArticleDescriptionService descriptionService;
 
     @Autowired
-    private EduArticleService articleService;
-
-    @Autowired
     private UserClient userClient;
 
     @Autowired
@@ -59,7 +56,7 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
-    public boolean directlyPublishArticle(ArticleInfoVO articleInfoVO, HttpServletRequest request) {
+    public boolean directlyPublishOrInsertArticle(ArticleInfoVO articleInfoVO, HttpServletRequest request) {
         boolean checkToken = JwtUtils.checkToken(request);
         if (checkToken) {
             Integer memberId = JwtUtils.getMemberIdByJwtToken(request);
@@ -69,37 +66,12 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
             articleInfoVO.setMemberId(memberId);
             EduArticle article = new EduArticle();
             article.setCategoryId(articleInfoVO.getCategoryId());
-            article.setStatus("Normal");
-            BeanUtils.copyProperties(articleInfoVO, article);
-            boolean b = articleService.save(article);
-            if (b) {
-                EduArticleDescription description = new EduArticleDescription();
-                description.setArticleId(article.getId());
-                description.setDescription(articleInfoVO.getDescription());
-                return descriptionService.save(description);
-            } else {
-                throw new BadException(CodeEnum.OPERATE_EXCEPTION);
+            if ("1".equals(articleInfoVO.getFlag())) { // 直接发布
+                article.setStatus(true);
             }
-        } else {
-            throw new BadException(CodeEnum.LOGIN_EXPIRED_EXCEPTION);
-        }
-    }
-
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    @Override
-    public boolean saveArticle(ArticleInfoVO articleInfoVO, HttpServletRequest request) {
-        boolean checkToken = JwtUtils.checkToken(request);
-        if (checkToken) {
-            Integer memberId = JwtUtils.getMemberIdByJwtToken(request);
-            if (0 == memberId) {
-                throw new BadException(CodeEnum.USER_NO_LOGIN_EXCEPTION);
-            }
-            articleInfoVO.setMemberId(memberId);
-            EduArticle article = new EduArticle();
-            article.setCategoryId(articleInfoVO.getCategoryId());
             BeanUtils.copyProperties(articleInfoVO, article);
-            boolean b = articleService.save(article);
-            if (b) {
+            int insert = this.baseMapper.insert(article);
+            if (insert > 0) {
                 EduArticleDescription description = new EduArticleDescription();
                 description.setArticleId(article.getId());
                 description.setDescription(articleInfoVO.getDescription());
@@ -140,24 +112,29 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
         String lastPublish = articleDTO.getLastPublish();
         String hot = articleDTO.getHot();
         String everyDay = articleDTO.getEveryDay();
-        wrapper.eq("status", "Normal");
-        if (!StringUtils.isEmpty(lastPublish)) { // 最新发表
-            wrapper.orderByDesc("gmt_create");
-        }
-        if (!StringUtils.isEmpty(hot)) { // 热点推荐
-            wrapper.orderByDesc("scan_number");
-            wrapper.orderByDesc("thumbs_up");
-        }
-        if (!StringUtils.isEmpty(everyDay)) { // 每日一博
-            LocalDateTime startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
-            LocalDateTime endTime = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
-            wrapper.ge("gmt_modified", startTime);
-            wrapper.le("gmt_modified", endTime);
+        String categoryId = articleDTO.getCategoryId();
+        wrapper.eq("status", 1); // 已发布
+        if (!"".equals(categoryId)) { // 文章种类id不为空
+            wrapper.eq("category_id", Integer.valueOf(categoryId));
+        } else {
+            if (!StringUtils.isEmpty(lastPublish)) { // 最新发表
+                wrapper.orderByDesc("gmt_create");
+            }
+            if (!StringUtils.isEmpty(hot)) { // 热点推荐
+                wrapper.orderByDesc("scan_number");
+                wrapper.orderByDesc("thumbs_up");
+            }
+            if (!StringUtils.isEmpty(everyDay)) { // 每日一博
+                LocalDateTime startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+                LocalDateTime endTime = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+                wrapper.ge("gmt_modified", startTime);
+                wrapper.le("gmt_modified", endTime);
+            }
         }
         this.baseMapper.selectPage(articlePage, wrapper);
         List<EduArticle> records = articlePage.getRecords(); //多少条记录数
         List<ArticleInfoVO> articleInfoVOList = new ArrayList<>();
-        for (EduArticle article : records) {
+        records.forEach(article -> {
             Integer memberId = article.getMemberId();
             UserOrder userOrder = userClient.getUserInfoOrder(memberId);
             if (!StringUtils.isEmpty(userOrder)) {
@@ -174,7 +151,7 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
             } else {
                 throw new BadException(CodeEnum.GET_USER_INFO_FAILED_EXCEPTION);
             }
-        }
+        });
         long pageCurrent = articlePage.getCurrent();//当前页
         long pages = articlePage.getPages();//共多少页
         long pageSize = articlePage.getSize(); //一页多少条

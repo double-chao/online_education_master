@@ -24,6 +24,7 @@ public enum CodeEnum {
 
     GET_REDISSON_LOCK(10001, "redisson获取锁失败"),
     CREATED_WEIXIN_CODE(10002, "创建微信二维码失败"),
+    UPLOAD_FILE_FAILED_EXCEPTION(10003, "上传文件失败"),
 
     COURSE_IS_BUY_FAILED(11001, "查询课程购买失败"),
     COURSE_NOT_EXITS(11002, "课程不存在"),

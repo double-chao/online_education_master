@@ -19,20 +19,12 @@ import java.util.Map;
 public interface EduArticleService extends IService<EduArticle> {
 
     /**
-     * 新增文章 ->直接发布
+     * 新增文章 ->直接发布/存为草稿
      * @param articleInfoVO
      * @param request
      * @return
      */
-    boolean directlyPublishArticle(ArticleInfoVO articleInfoVO, HttpServletRequest request);
-
-    /**
-     * 新增文章 ->存为草稿，暂未发布
-     * @param articleInfoVO
-     * @param request
-     * @return
-     */
-    boolean saveArticle(ArticleInfoVO articleInfoVO, HttpServletRequest request);
+    boolean directlyPublishOrInsertArticle(ArticleInfoVO articleInfoVO, HttpServletRequest request);
 
     /**
      * 分页查询 文章信息

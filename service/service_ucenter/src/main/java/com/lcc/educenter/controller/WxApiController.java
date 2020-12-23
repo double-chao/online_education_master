@@ -100,8 +100,7 @@ public class WxApiController {
 
         }
         //设置%s里面值
-        String url = String.format(baseUrl, ConstantWxUtils.WX_OPEN_APP_ID, redirectUrl, "zdonline"
-        );
+        String url = String.format(baseUrl, ConstantWxUtils.WX_OPEN_APP_ID, redirectUrl, "zdonline");
         //重定向到请求微信地址里面
         return "redirect:" + url;
     }

@@ -1,31 +1,30 @@
 package com.lcc.eduorder.utils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 订单号工具类
  *
- * @author qy
+ * @author chaochao
  * @since 1.0
  */
 public class OrderNoUtil {
-
     /**
-     * 获取订单号
+     * 生成随机订单号
      *
      * @return
      */
     public static String getOrderNo() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-        String newDate = sdf.format(new Date());
-        String result = "";
-        Random random = new Random();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss"); // 线程安全，代替 SimpleDateFormat
+        LocalDateTime localDateTime = LocalDateTime.now(); // 使用Instant 代替 Date，LocalDateTime 代替 Calendar
+        String newDate = formatter.format(localDateTime);
+        StringBuilder stringBuilder = new StringBuilder();
+        ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
         for (int i = 0; i < 3; i++) {
-            result += random.nextInt(10);
+            stringBuilder.append(threadLocalRandom.nextInt(10));
         }
-        return newDate + result;
+        return newDate + stringBuilder.toString();
     }
-
 }

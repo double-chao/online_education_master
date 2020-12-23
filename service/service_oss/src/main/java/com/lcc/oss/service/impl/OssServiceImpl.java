@@ -7,7 +7,8 @@ import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
 import com.lcc.oss.service.OssService;
 import com.lcc.oss.utils.AliyunConstantProperties;
-import com.lcc.oss.utils.ConstantPropertiesUtil;
+import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,10 +36,10 @@ public class OssServiceImpl implements OssService {
     @Override
     public String uploadFileAvatar(MultipartFile file) {
         // OSS中的值
-        String endpoint = ConstantPropertiesUtil.END_POINT; //地域节点
-        String accessKeyId = ConstantPropertiesUtil.ACCESS_KEY_ID; // id
-        String accessKeySecret = ConstantPropertiesUtil.ACCESS_KEY_SECRET; // 秘钥
-        String bucketName = ConstantPropertiesUtil.BUCKET_NAME; // 存储节点名字
+        String endpoint = AliyunConstantProperties.END_POINT; //地域节点
+        String accessKeyId = AliyunConstantProperties.ACCESS_KEY_ID; // id
+        String accessKeySecret = AliyunConstantProperties.ACCESS_KEY_SECRET; // 秘钥
+        String bucketName = AliyunConstantProperties.BUCKET_NAME; // 存储节点名字
 
         try {
             // 创建OSS实例。
@@ -66,8 +67,7 @@ public class OssServiceImpl implements OssService {
             //把上传之后文件路径返回
             //需要把上传到阿里云oss路径手动拼接出来
             //https://edu-online-chao.oss-cn-shenzhen.aliyuncs.com/xxx.jpg ,在oos控制配置中查看文件存储的路径格式
-            String url = "https://" + bucketName + "." + endpoint + "/" + fileName;
-            return url;
+            return "https://" + bucketName + "." + endpoint + "/" + fileName;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -108,8 +108,7 @@ public class OssServiceImpl implements OssService {
             respMap.put("expire", String.valueOf(expireEndTime / 1000));
             return respMap;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
+            throw  new BadException(CodeEnum.UPLOAD_FILE_FAILED_EXCEPTION);
         } finally {
             ossClient.shutdown();
         }

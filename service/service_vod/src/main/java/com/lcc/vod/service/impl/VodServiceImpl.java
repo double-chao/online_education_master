@@ -81,13 +81,9 @@ public class VodServiceImpl implements VodService {
 
     @Override
     public String uploadVideoAlyByOSS(String localFile) {
-        //您的AccessKeyId
-        String accessKeyId = "LTAI4G3qQbaBSR4bNMuTcX3f";
-        //您的AccessKeySecret
-        String accessKeySecret = "hGsyTJZhAdacvohIg2JI8DFKAg9NP0";
         try {
             // 初始化VOD客户端并获取上传地址和凭证
-            DefaultAcsClient vodClient = initVodClient(accessKeyId, accessKeySecret);
+            DefaultAcsClient vodClient = initVodClient(AliyunConstantUtils.ACCESS_KEY_ID, AliyunConstantUtils.ACCESS_KEY_SECRET);
             CreateUploadVideoResponse createUploadVideoResponse = createUploadVideo(vodClient);
 
             // 执行成功会返回VideoId、UploadAddress和UploadAuth

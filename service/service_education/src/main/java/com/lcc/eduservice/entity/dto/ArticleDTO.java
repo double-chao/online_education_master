@@ -19,4 +19,7 @@ public class ArticleDTO {
 
     @ApiModelProperty(value = "每日一博")
     private String everyDay;
+
+    @ApiModelProperty(value = "文章种类id")
+    private String categoryId;
 }
