@@ -6,7 +6,6 @@ import com.lcc.eduservice.entity.vo.ObjectPageInfo;
 import com.lcc.eduservice.entity.vo.TeacherQuery;
 import com.lcc.eduservice.service.EduTeacherService;
 import com.lcc.result.Result;
-import com.lcc.security.annonation.AnonymousAccess;
 import com.lcc.servicebase.valid.AddGroup;
 import com.lcc.servicebase.valid.UpdateGroup;
 import com.lcc.vo.PageVO;
@@ -15,7 +14,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +44,7 @@ public class EduTeacherController {
     }
 
     @ApiOperation("根据id逻辑删除讲师")
-    @PreAuthorize("@el.check('teacher.remove')")
+//    @PreAuthorize("@el.check('teacher.remove')")
     @CacheEvict(value = {"teacherFront"}, key = "'getTeacherFrontList'")
     @DeleteMapping("{id}")
     public Result delTeacherById(@ApiParam(name = "id", value = "讲师id", required = true)
@@ -55,7 +53,7 @@ public class EduTeacherController {
     }
 
     @ApiOperation("根据条件查询讲师分页")
-    @PreAuthorize("@el.check('teacher.list')")
+//    @PreAuthorize("@el.check('teacher.list')")
     @PostMapping("pageTeacherCondition/{current}/{size}")
     //使用@RequestBody(required = false)  前端传过来的成json格式数据封装成对象信息，false代表可以为空 ,且必须用post提交
     public Result pageTeacherCondition(@PathVariable long current, @PathVariable long size,
@@ -67,7 +65,7 @@ public class EduTeacherController {
     }
 
     @ApiOperation("讲师分页")
-    @AnonymousAccess
+//    @AnonymousAccess
     @PostMapping("listTeacher")
     public Result listTeacher(PageVO pageVO, @RequestBody(required = false) TeacherQuery teacherQuery) {
         PageInfo<EduTeacher> pageInfo = teacherService.listTeacher(pageVO, teacherQuery);
@@ -77,7 +75,7 @@ public class EduTeacherController {
     }
 
     @ApiOperation("添加讲师")
-    @PreAuthorize("@el.check('teacher.add')")
+//    @PreAuthorize("@el.check('teacher.add')")
     @CacheEvict(value = {"teacherFront"}, key = "'getTeacherFrontList'")
     @PostMapping("/addTeacher")
     public Result addTeacher(@Validated({AddGroup.class}) @RequestBody EduTeacher eduTeacher) {
@@ -97,7 +95,7 @@ public class EduTeacherController {
     }
 
     @ApiOperation("更新讲师信息")
-    @PreAuthorize("@el.check('teacher.update')")
+//    @PreAuthorize("@el.check('teacher.update')")
     @CacheEvict(value = {"teacherFront"}, key = "'getTeacherFrontList'")
     @PostMapping("/updateTeacher")
     public Result updateTeacher(@Validated({UpdateGroup.class}) @RequestBody EduTeacher eduTeacher) {

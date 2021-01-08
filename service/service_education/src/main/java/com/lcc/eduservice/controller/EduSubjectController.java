@@ -8,7 +8,6 @@ import com.lcc.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,7 +31,7 @@ public class EduSubjectController {
     private EduSubjectService subjectService;
 
     @ApiOperation("添加课程分类导入excel文件")
-    @PreAuthorize("@el.check('subject.import')")
+//    @PreAuthorize("@el.check('subject.import')")
     @PostMapping("/addSubject")
     public Result addSubject(MultipartFile file) {
         subjectService.saveSubjectFile(file, subjectService);
@@ -40,7 +39,7 @@ public class EduSubjectController {
     }
 
     @ApiOperation("获取科目菜单信息")
-    @PreAuthorize("@el.check('subject.list')")
+//    @PreAuthorize("@el.check('subject.list')")
     @GetMapping("/getAllSubject")
     public Result getAllSubject() {
         List<OneSubjectVO> subjectVOList = subjectService.getSubjectInfo();

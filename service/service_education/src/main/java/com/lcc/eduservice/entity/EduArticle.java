@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -49,10 +48,6 @@ public class EduArticle implements Serializable {
     @ApiModelProperty(value = "文章标题")
     @NotEmpty(message = "文章标题不能为空", groups = {UpdateGroup.class, AddGroup.class})
     private String title;
-
-    @ApiModelProperty(value = "文章图片")
-    @URL(message = "文章图片必须是一个合法的url地址", groups = {UpdateGroup.class, AddGroup.class})
-    private String picture;
 
     @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
     @TableLogic

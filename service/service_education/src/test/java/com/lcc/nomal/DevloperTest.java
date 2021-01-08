@@ -1,6 +1,6 @@
 package com.lcc.nomal;
 
-import java.util.Objects;
+import java.time.LocalDate;
 
 /**
  * @Author Administrator
@@ -10,12 +10,11 @@ import java.util.Objects;
 public class DevloperTest {
 
     public static void main(String[] args) {
-        String s = "123";
-        String s1 = new String("123");
-        if (Objects.equals(s, s1)) {
-
-        }
-
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDate today = LocalDate.now();
+//        String yesterday = formatter.format(today.plusDays(-1));
+        String yesterday = LocalDate.now().plusDays(-1).toString();
+        System.out.println(yesterday);
     }
 
 }

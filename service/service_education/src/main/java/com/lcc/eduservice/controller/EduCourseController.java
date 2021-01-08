@@ -8,7 +8,6 @@ import com.lcc.eduservice.entity.vo.CourseQuery;
 import com.lcc.eduservice.entity.vo.ObjectPageInfo;
 import com.lcc.eduservice.service.EduCourseService;
 import com.lcc.result.Result;
-import com.lcc.security.annonation.AnonymousAccess;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -53,7 +52,7 @@ public class EduCourseController {
     }
 
     @ApiOperation("添加课程基本信息")
-    @AnonymousAccess
+//    @AnonymousAccess
     @PostMapping("/addCourseInfo")
     public Result addCourseInfo(@RequestBody CourseInfoVo courseInfoVo){
         Integer id = courseService.saveCourseInfo(courseInfoVo);

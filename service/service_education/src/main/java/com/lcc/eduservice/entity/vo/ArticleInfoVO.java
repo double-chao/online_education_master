@@ -6,7 +6,6 @@ import com.lcc.servicebase.valid.AddGroup;
 import com.lcc.servicebase.valid.UpdateGroup;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -41,10 +40,6 @@ public class ArticleInfoVO implements Serializable {
     @ApiModelProperty(value = "文章标题")
     @NotEmpty(message = "文章标题不能为空", groups = {UpdateGroup.class, AddGroup.class})
     private String title;
-
-    @ApiModelProperty(value = "文章图片")
-    @URL(message = "文章图片必须是一个合法的url地址", groups = {UpdateGroup.class, AddGroup.class})
-    private String picture;
 
     @ApiModelProperty(value = "文章内容")
     @NotEmpty(message = "文章内容不能为空", groups = {UpdateGroup.class, AddGroup.class})

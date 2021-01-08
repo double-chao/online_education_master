@@ -33,9 +33,9 @@ public class DateUtil {
      * @param amount 要加的天数，可能为负数
      */
     public static Date addDays(Date date, int amount) {
-        Calendar now =Calendar.getInstance();
+        Calendar now = Calendar.getInstance();
         now.setTime(date);
-        now.set(Calendar.DATE,now.get(Calendar.DATE)+amount);
+        now.set(Calendar.DATE, now.get(Calendar.DATE) + amount);
         return now.getTime();
     }
 

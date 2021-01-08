@@ -6,7 +6,6 @@ import com.lcc.eduservice.entity.dto.ArticleDTO;
 import com.lcc.eduservice.entity.vo.ArticleInfoVO;
 import com.lcc.eduservice.service.EduArticleService;
 import com.lcc.result.Result;
-import com.lcc.security.annonation.AnonymousAccess;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -33,7 +32,7 @@ public class EduArticleController {
     private EduArticleService articleService;
 
     @ApiOperation("添加文章-直接发布/存为草稿")
-    @AnonymousAccess
+//    @AnonymousAccess
     @PostMapping("/directlyPublishOrInsertArticle")
     public Result directlyPublishOrInsertArticle(@RequestBody ArticleInfoVO articleInfoVO,
                                                  HttpServletRequest request) {
@@ -52,7 +51,7 @@ public class EduArticleController {
     }
 
     @ApiOperation("分页获取所有文章")
-    @AnonymousAccess
+//    @AnonymousAccess
     @PostMapping("/listArticle/{current}/{size}")
     public Result listArticle(@PathVariable long current, @PathVariable long size,
                               @RequestBody(required = false) ArticleDTO articleDTO) {
@@ -61,9 +60,10 @@ public class EduArticleController {
     }
 
     @ApiOperation("根据id查询文章详情")
-    @AnonymousAccess
+//    @AnonymousAccess
     @GetMapping("/getArticleById/{id}")
-    public Result getArticleById(@PathVariable Integer id) {
+    public Result getArticleById(@ApiParam(name = "id", value = "文章id", required = true)
+            @PathVariable Integer id) {
         ArticleInfoVO articleInfoVO = articleService.getArticleInfoVOById(id);
         return Result.ok().data("articleInfoVO", articleInfoVO);
     }

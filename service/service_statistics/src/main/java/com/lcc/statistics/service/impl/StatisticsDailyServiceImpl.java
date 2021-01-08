@@ -61,8 +61,7 @@ public class StatisticsDailyServiceImpl extends ServiceImpl<StatisticsDailyMappe
         List<String> date_calculatedList = new ArrayList<>();
         List<Integer> numDataList = new ArrayList<>();
 
-        for (int i = 0; i < staList.size(); i++) {
-            StatisticsDaily daily = staList.get(i);
+        staList.forEach(daily -> {
             date_calculatedList.add(daily.getDateCalculated());
             switch (type) {
                 case "login_num":
@@ -80,8 +79,27 @@ public class StatisticsDailyServiceImpl extends ServiceImpl<StatisticsDailyMappe
                 default:
                     break;
             }
-        }
-        Map<String, Object> map = new HashMap<>();
+        });
+//        for (StatisticsDaily daily : staList) {
+//            date_calculatedList.add(daily.getDateCalculated());
+//            switch (type) {
+//                case "login_num":
+//                    numDataList.add(daily.getLoginNum());
+//                    break;
+//                case "register_num":
+//                    numDataList.add(daily.getRegisterNum());
+//                    break;
+//                case "video_view_num":
+//                    numDataList.add(daily.getVideoViewNum());
+//                    break;
+//                case "course_num":
+//                    numDataList.add(daily.getCourseNum());
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+        Map<String, Object> map = new HashMap<>(date_calculatedList.size() + numDataList.size());
         map.put("date_calculatedList", date_calculatedList);
         map.put("numDataList", numDataList);
         return map;

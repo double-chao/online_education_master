@@ -114,7 +114,7 @@ public class EduArticleServiceImpl extends ServiceImpl<EduArticleMapper, EduArti
         String everyDay = articleDTO.getEveryDay();
         String categoryId = articleDTO.getCategoryId();
         wrapper.eq("status", 1); // 已发布
-        if (!"".equals(categoryId)) { // 文章种类id不为空
+        if (!StringUtils.isEmpty(categoryId)) { // 文章种类id不为空
             wrapper.eq("category_id", Integer.valueOf(categoryId));
         } else {
             if (!StringUtils.isEmpty(lastPublish)) { // 最新发表

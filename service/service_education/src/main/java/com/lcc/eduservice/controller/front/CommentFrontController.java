@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lcc.eduservice.entity.EduComment;
 import com.lcc.eduservice.service.EduCommentService;
 import com.lcc.result.Result;
-import com.lcc.security.annonation.AnonymousAccess;
 import com.lcc.servicebase.valid.AddGroup;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,7 +28,6 @@ public class CommentFrontController {
     private EduCommentService commentService;
 
     @ApiOperation(value = "根据课程id-获取课程的评论")
-    @AnonymousAccess
     @GetMapping("/listCommentByCourseId/{courseId}/{current}/{size}")
     public Result listCommentByCourseId(@PathVariable Integer courseId, @PathVariable long current, @PathVariable long size) {
         Page<EduComment> commentPage = new Page<>(current, size);

@@ -4,7 +4,6 @@ import com.lcc.eduservice.service.EduCourseService;
 import com.lcc.eduservice.service.EduTeacherService;
 import com.lcc.eduservice.service.IndexFrontService;
 import com.lcc.result.Result;
-import com.lcc.security.annonation.AnonymousAccess;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class IndexFrontController {
     private IndexFrontService indexFrontService;
 
     @ApiOperation("首页课程、名师热门信息")
-    @AnonymousAccess
+//    @AnonymousAccess
     @GetMapping("/index")
     @Cacheable(value = {"courseAndTeacherHot"}, key = "#root.method.name")
     public Result index() {

@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lcc.eduservice.entity.EduArticleCategory;
 import com.lcc.eduservice.service.EduArticleCategoryService;
 import com.lcc.result.Result;
-import com.lcc.security.annonation.AnonymousAccess;
 import com.lcc.servicebase.exceptionhandler.BadException;
 import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import com.lcc.servicebase.valid.AddGroup;
@@ -39,7 +38,7 @@ public class EduArticleCategoryController {
     private EduArticleCategoryService categoryService;
 
     @ApiOperation("获取所有文章类别")
-    @AnonymousAccess
+//    @AnonymousAccess
     @GetMapping("/getAllCategoryList")
     public Result getAllCategoryList() {
         List<EduArticleCategory> categoryList = categoryService.list(null);

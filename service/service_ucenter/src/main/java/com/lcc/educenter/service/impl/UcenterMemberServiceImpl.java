@@ -46,8 +46,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
             throw new BadException(CodeEnum.PHONE_NOT_REGISTER_EXCEPTION);
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encode = passwordEncoder.encode(password);
-        if (!passwordEncoder.matches(password, encode)) {
+        if (!passwordEncoder.matches(password, mobileMember.getPassword())) {
             throw new BadException(CodeEnum.PASSWORD_ERROR);
         }
         if (mobileMember.getIsDisabled()) {

@@ -16,17 +16,17 @@ import java.util.Map;
 public interface StatisticsDailyService extends IService<StatisticsDaily> {
 
     /**
-     *
-     * @param day
+     * 某一天的注册人数
+     * @param day 天
      */
     void registerCount(String day);
 
     /**
-     *
-     * @param type
-     * @param begin
-     * @param end
-     * @return
+     * 获取统计数据
+     * @param type 统计数据的类型
+     * @param begin 开始时间
+     * @param end 结束时间
+     * @return 返回值
      */
     Map<String, Object> getShowData(String type, String begin, String end);
 }

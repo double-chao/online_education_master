@@ -36,11 +36,8 @@ public class DefaultPasswordEncoder implements PasswordEncoder {
     }
 
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        passwordEncoder.matches(rawPassword, passwordEncoder.encode(rawPassword.toString()));
-        return passwordEncoder.matches(rawPassword, passwordEncoder.encode(rawPassword.toString()));
-
+        return passwordEncoder.matches(rawPassword, encodedPassword);
 //        return encodedPassword.equals(MD5.getMD5String(rawPassword.toString())); // 这个是MD5加密的，没有加盐值
     }
 }

@@ -9,7 +9,6 @@ import com.lcc.eduservice.entity.frontvo.CourseWebVo;
 import com.lcc.eduservice.service.EduChapterService;
 import com.lcc.eduservice.service.EduCourseService;
 import com.lcc.result.Result;
-import com.lcc.security.annonation.AnonymousAccess;
 import com.lcc.servicebase.exceptionhandler.BadException;
 import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import com.lcc.util.JwtUtils;
@@ -50,7 +49,7 @@ public class CourseFrontController {
     private ThreadPoolExecutor poolExecutor;
 
     @ApiOperation("分页查询课程")
-    @AnonymousAccess
+//    @AnonymousAccess
     @PostMapping("/getCourseFrontList/{current}/{size}")
     public Result getCourseFrontList(@PathVariable long current, @PathVariable long size,
                                      @RequestBody(required = false) CourseFrontVo courseFrontVo) {
@@ -60,7 +59,7 @@ public class CourseFrontController {
     }
 
     @ApiOperation("根据课程id查询课程信息")
-    @AnonymousAccess
+//    @AnonymousAccess
     @GetMapping("/getFrontCourseInfo/{courseId}")
     public Result getFrontCourseInfo(@PathVariable Integer courseId, HttpServletRequest request) {
         boolean checkToken = JwtUtils.checkToken(request);
