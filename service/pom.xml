@@ -23,6 +23,7 @@
         <module>service_order</module>
         <module>service_statistics</module>
         <module>service_elasticsearch</module>
+        <module>service-oa</module>
     </modules>
 
     <dependencies>

@@ -25,7 +25,7 @@ import java.util.List;
  * @author chaochao
  * @since 2020-05-28
  */
-@Api(description = "课程基本信息")
+@Api(tags = "课程基本信息")
 @RestController
 @RequestMapping("/eduservice/course")
 public class EduCourseController {
@@ -92,7 +92,7 @@ public class EduCourseController {
             @PathVariable Integer courseId) {
         EduCourse eduCourse = new EduCourse();
         eduCourse.setId(courseId);
-        eduCourse.setStatus("Normal"); //状态设置为已发布
+        eduCourse.setStatus(true); //状态设置为已发布
         courseService.updateById(eduCourse);
         return Result.ok();
     }

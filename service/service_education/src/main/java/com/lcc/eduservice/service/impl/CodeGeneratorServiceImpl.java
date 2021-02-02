@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.lcc.eduservice.service.CodeGeneratorService;
 import com.lcc.servicebase.exceptionhandler.BadException;
 import com.lcc.vo.CreateCodeVO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,11 +21,25 @@ import org.springframework.stereotype.Service;
  * @Description 代码生成器
  * @Date 2020/12/9  17:58
  */
+@Slf4j
 @Service
 public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 
+    @Value("${spring.datasource.url}")
+    private String sqlUrl;
+
+    @Value("${spring.datasource.driver-class-name}")
+    private String driverName;
+
+    @Value("${spring.datasource.username}")
+    private String username;
+
+    @Value("${spring.datasource.password}")
+    private String password;
+
     @Override
     public boolean createCode(CreateCodeVO createCodeVO) {
+        log.info(createCodeVO.toString());
         try {
             // 1、创建代码生成器
             AutoGenerator mpg = new AutoGenerator();
@@ -43,10 +59,14 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 
             // 3、数据源配置
             DataSourceConfig dsc = new DataSourceConfig();
-            dsc.setUrl(createCodeVO.getSqlUrl());
-            dsc.setDriverName(createCodeVO.getDriverName());
-            dsc.setUsername(createCodeVO.getUsername());
-            dsc.setPassword(createCodeVO.getPassword());
+//            dsc.setUrl(createCodeVO.getSqlUrl());
+//            dsc.setDriverName(createCodeVO.getDriverName());
+//            dsc.setUsername(createCodeVO.getUsername());
+//            dsc.setPassword(createCodeVO.getPassword());
+            dsc.setUrl(sqlUrl);
+            dsc.setDriverName(driverName);
+            dsc.setUsername(username);
+            dsc.setPassword(password);
             dsc.setDbType(DbType.MYSQL);
             mpg.setDataSource(dsc);
 

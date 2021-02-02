@@ -70,6 +70,7 @@ public class VodController {
     @DeleteMapping("/delete-batch")
     public Result deleteBatch(@ApiParam(name = "videoIdList", value = "阿里云视频id集合", required = true)
                               @RequestParam("videoIdList") List<String> videoIdList) {
+        // 后期建议把List<String> 集合改成为 Set<String>
         vodService.removeMoreAlyVideo(videoIdList);
         return Result.ok();
     }

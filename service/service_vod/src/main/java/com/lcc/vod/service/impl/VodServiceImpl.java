@@ -42,6 +42,7 @@ public class VodServiceImpl implements VodService {
         try {
             String fileName = file.getOriginalFilename();
             //title：上传之后显示名称
+            assert fileName != null;
             String title = fileName.substring(0, fileName.lastIndexOf("."));
             //inputStream：上传文件输入流
             InputStream inputStream = file.getInputStream();

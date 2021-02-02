@@ -107,7 +107,7 @@ public class HttpClient {
      */
     private void setEntity(HttpEntityEnclosingRequestBase http) {
         if (param != null) {
-            List<NameValuePair> nvps = new LinkedList<NameValuePair>();
+            List<NameValuePair> nvps = new LinkedList<>();
             for (String key : param.keySet())
                 nvps.add(new BasicNameValuePair(key, param.get(key))); // 参数
             http.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8)); // 设置参数

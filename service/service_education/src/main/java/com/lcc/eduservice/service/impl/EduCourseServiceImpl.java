@@ -61,7 +61,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
             wrapper.like("title", title);
         }
         if (!StringUtils.isEmpty(status)) {
-            wrapper.eq("status", status);
+            wrapper.eq("status", Integer.valueOf(status));
         }
         wrapper.orderByDesc("gmt_create"); //创建时间排序
         page(coursePage, wrapper);
@@ -165,7 +165,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Override
     public Map<String, Object> getCourseFrontList(Page<EduCourse> coursePage, CourseFrontVo courseFrontVo) {
         QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
-        wrapper.eq("status", "Normal");
+        wrapper.eq("status", 1);
         if (!StringUtils.isEmpty(courseFrontVo.getSubjectParentId())) {
             wrapper.eq("subject_parent_id", courseFrontVo.getSubjectParentId());
         }

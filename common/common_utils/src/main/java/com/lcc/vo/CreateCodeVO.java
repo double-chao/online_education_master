@@ -19,14 +19,12 @@ public class CreateCodeVO {
     private String authorName;
 
     @ApiModelProperty(value = "重新生成时文件是否覆盖")
-    private boolean override = false;
+    private boolean override;
 
     @ApiModelProperty(value = "数据库的url")
-    @Value("${spring.datasource.url}")
     private String sqlUrl;
 
     @ApiModelProperty(value = "数据库的驱动名")
-    @Value("${spring.datasource.driver-class-name}")
     private String driverName;
 
     @ApiModelProperty(value = "数据库的用户名")
@@ -34,7 +32,6 @@ public class CreateCodeVO {
     private String username;
 
     @ApiModelProperty(value = "数据库的密码")
-    @Value("${spring.datasource.password}")
     private String password;
 
     @ApiModelProperty(value = "父包模块名")
@@ -47,6 +44,6 @@ public class CreateCodeVO {
     private String tableName;
 
     @ApiModelProperty(value = "去掉生成实体时去掉表前缀")
-    private boolean deletePrefix = true;
+    private boolean deletePrefix;
 
 }
