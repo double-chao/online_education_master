@@ -18,12 +18,11 @@ public class MyRedissonConfig {
 
     @Bean(destroyMethod="shutdown")
     public RedissonClient redisson() throws IOException {
-        // 单Redis节点模式
+        // 单Redis节点模式  前缀使用redis://   若是使用SSL方式，则使用rediss:// 连接
         // 1、创建配置
         Config config = new Config();
         config.useSingleServer().setAddress("redis://192.168.233.129:6379");
         // 2、根据config创建RedissonClient示例
-        RedissonClient redisson = Redisson.create(config);
-        return redisson;
+        return Redisson.create(config);
     }
 }

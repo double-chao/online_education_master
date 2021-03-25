@@ -1,9 +1,11 @@
-package com.lcc.oaservice.vo;
+package com.lcc.oaservice.vo.company;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author Administrator
@@ -32,4 +34,12 @@ public class CompanyVO {
 
     @ApiModelProperty(value = "创建时间")
     private Date gmtCreate;
+
+    @ApiModelProperty(value = "层级")
+    @TableField(exist = false)  //在数据表中不存在 自己定义的
+    private Integer level;
+
+    @ApiModelProperty(value = "下级公司")
+    @TableField(exist = false) //在数据表中不存在 自己定义的
+    private List<CompanyVO> children;
 }

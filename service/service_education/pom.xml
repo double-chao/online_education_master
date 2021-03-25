@@ -18,6 +18,19 @@
             <version>2.1.1</version>
         </dependency>
 
+        <!--Sentinel场景启动器 - 流量控制、熔断降级、系统负载保护等多个维度保护服务的稳定性 -->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>-->
+<!--            <version>1.6.3</version>-->
+<!--        </dependency>-->
+
+        <!--sentinel的-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
+<!--        </dependency>-->
+
         <!--    为了控制那些借口调用需要鉴权，那些不需要权限    -->
 <!--        <dependency>-->
 <!--            <groupId>com.hunan</groupId>-->

@@ -61,9 +61,6 @@ public class EduCourse implements Serializable {
     @ApiModelProperty(value = "乐观锁")
     private Integer version;
 
-//    @ApiModelProperty(value = "课程状态 Draft未发布  Normal已发布")
-//    private String status;
-
     @ApiModelProperty(value = "课程状态 0未发布  1已发布")
     private boolean status;
 

@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.lcc.oaservice.dto.CompanyQueryDTO;
 import com.lcc.oaservice.entity.TCompany;
-import com.lcc.oaservice.vo.CompanyVO;
+import com.lcc.oaservice.vo.company.CompanyInfoVO;
+import com.lcc.oaservice.vo.company.CompanyVO;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -25,4 +29,34 @@ public interface CompanyService extends IService<TCompany> {
      * @return 返回公司列表
      */
     PageInfo<CompanyVO> listCompanyByCondition(CompanyQueryDTO companyQueryDTO, Integer current, Integer size);
+
+    /**
+     * 获取公司列表-id,名称,父公司id
+     *
+     * @return
+     */
+    List<CompanyInfoVO> listCompany();
+
+    /**
+     * 获取公司列表-树形结构展示
+     *
+     * @return
+     */
+    List<CompanyVO> listCompanyByTree();
+
+    /**
+     * 根据公司id-递归删除公司
+     *
+     * @param id 公司id
+     * @return
+     */
+    boolean removeAndChildrenById(Integer id);
+
+    /**
+     * 批量递归删除公司及其子公司
+     *
+     * @param idSets
+     * @return
+     */
+    boolean removeCompanyByIds(Set<Integer> idSets);
 }

@@ -26,7 +26,7 @@ public class ThreadPoolConstantUtils implements InitializingBean {
     public static long KEEP_ALIVE_TIME;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         CORE_SIZE = coreSize;
         MAX_SIZE = maxSize;
         KEEP_ALIVE_TIME = keepAliveTime;

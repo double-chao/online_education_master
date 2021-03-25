@@ -46,23 +46,38 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
         List<EduVideo> videoList = videoService.list(videoQueryWrapper);
 
         List<ChapterVo> chapterVoList = new ArrayList<>(chapterList.size());
-        for (int i = 0; i < chapterList.size(); i++) {
-            EduChapter chapter = chapterList.get(i);
+
+        chapterList.forEach(chapter -> {
             ChapterVo chapterVo = new ChapterVo();
             BeanUtils.copyProperties(chapter, chapterVo);
             chapterVoList.add(chapterVo);
 
             List<VideoVo> videoVoList = new ArrayList<>(videoList.size());
-            for (int i1 = 0; i1 < videoList.size(); i1++) {
-                EduVideo video = videoList.get(i1);
+            videoList.forEach(video -> {
                 if (video.getChapterId().equals(chapter.getId())) { //小节的章节id == 章节的id
                     VideoVo videoVo = new VideoVo();
                     BeanUtils.copyProperties(video, videoVo);
                     videoVoList.add(videoVo);
                 }
-            }
+            });
             chapterVo.setChildren(videoVoList);
-        }
+        });
+
+//        for (EduChapter chapter : chapterList) {
+//            ChapterVo chapterVo = new ChapterVo();
+//            BeanUtils.copyProperties(chapter, chapterVo);
+//            chapterVoList.add(chapterVo);
+//
+//            List<VideoVo> videoVoList = new ArrayList<>(videoList.size());
+//            for (EduVideo video : videoList) {
+//                if (video.getChapterId().equals(chapter.getId())) { //小节的章节id == 章节的id
+//                    VideoVo videoVo = new VideoVo();
+//                    BeanUtils.copyProperties(video, videoVo);
+//                    videoVoList.add(videoVo);
+//                }
+//            }
+//            chapterVo.setChildren(videoVoList);
+//        }
         return chapterVoList;
     }
 

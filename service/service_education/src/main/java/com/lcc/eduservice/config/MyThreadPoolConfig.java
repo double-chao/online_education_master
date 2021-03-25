@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Configuration
 public class MyThreadPoolConfig {
-
     @Bean
     public ThreadPoolExecutor threadPoolExecutor(ThreadPoolConstantUtils pool) {
         return new ThreadPoolExecutor(
@@ -30,4 +29,16 @@ public class MyThreadPoolConfig {
         );
     }
 
+//    @Bean
+//    public ThreadPoolExecutor threadPoolExecutor() {
+//        return new ThreadPoolExecutor(
+//                ThreadPoolConstantUtils.CORE_SIZE,
+//                ThreadPoolConstantUtils.MAX_SIZE,
+//                ThreadPoolConstantUtils.KEEP_ALIVE_TIME,
+//                TimeUnit.SECONDS,
+//                new LinkedBlockingDeque<>(10000),
+//                Executors.defaultThreadFactory(),
+//                new ThreadPoolExecutor.CallerRunsPolicy()
+//        );
+//    }
 }

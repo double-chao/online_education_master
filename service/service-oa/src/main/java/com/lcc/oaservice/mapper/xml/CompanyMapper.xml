@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lcc.oaservice.mapper.CompanyMapper">
 
-    <select id="selectListCompanyByCondition" resultType="com.lcc.oaservice.vo.CompanyVO"
+    <select id="selectListCompanyByCondition" resultType="com.lcc.oaservice.vo.company.CompanyVO"
             parameterType="com.lcc.oaservice.dto.CompanyQueryDTO">
         select id, pid, name, short_name, intro, sort, gmt_create from t_company
         where is_deleted =0
@@ -12,6 +12,31 @@
         <if test="begin!=null and end!=null">
             and gmt_create between #{begin} and #{end}
         </if>
+        ORDER BY id
+    </select>
+
+
+    <select id="selectListCompany" resultType="com.lcc.oaservice.vo.company.CompanyInfoVO">
+        select id,pid,name from t_company where is_deleted = 0 ORDER BY id
+    </select>
+
+
+    <select id="selectListCompanyByTree" resultType="com.lcc.oaservice.vo.company.CompanyVO">
+        select id, pid, name, short_name, intro, sort, gmt_create from t_company
+        where is_deleted =0 ORDER BY id
+    </select>
+
+
+    <select id="selectCompanyById" resultType="com.lcc.oaservice.entity.TCompany" parameterType="java.lang.Integer">
+        select id,pid from t_company where is_deleted = 0 and pid = #{id}
+    </select>
+
+
+    <select id="selectSetsCompany" resultType="com.lcc.oaservice.entity.TCompany" parameterType="java.lang.Integer">
+        select id,pid from t_company where is_deleted = 0 and pid in
+        <foreach collection="idSets" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </select>
 
 </mapper>
