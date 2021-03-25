@@ -14,13 +14,15 @@ package com.lcc.servicebase.exceptionhandler;
  *  13：课程科目
  *  14: 视频
  *  15: 用户
- *
+ *  16: 订单
  *
  */
 public enum CodeEnum {
     UNKNOWN_EXCEPTION(20002, "系统未知异常"),
     OPERATE_EXCEPTION(20003, "操作异常"),
     DATA_CHECK_EXCEPTION(20004, "数据校验异常"),
+
+    TOO_MANY_RREQUEST(20005, "当前请求人数过多，请稍后再试"),
 
     GET_REDISSON_LOCK(10001, "redisson获取锁失败"),
     CREATED_WEIXIN_CODE(10002, "创建微信二维码失败"),
@@ -53,7 +55,9 @@ public enum CodeEnum {
     PHONE_REGISTER(15008, "手机号已注册"),
     ACCOUNT_PASSWORD_NICKNAME_CODE_NOT_NULL(15009, "账号、密码、昵称、验证码不能为空"),
     PHONE_CODE_ERROR_EXCEPTION(15010, "手机验证码错误"),
-    LOGIN_FAILED(15011, "登录失败");
+    LOGIN_FAILED(15011, "登录失败"),
+
+    CREATE_ORDER_EXCEPTION(16001, "创建订单失败");
 
     private int code;
     private String msg;

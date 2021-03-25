@@ -1,6 +1,7 @@
 package com.lcc.eduservice.controller.front;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lcc.constant.OrderConstant;
 import com.lcc.eduservice.client.OrderClient;
 import com.lcc.eduservice.entity.EduCourse;
 import com.lcc.eduservice.entity.chapter.ChapterVo;
@@ -17,13 +18,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -47,6 +49,8 @@ public class CourseFrontController {
     private OrderClient orderClient;
     @Autowired
     private ThreadPoolExecutor poolExecutor;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @ApiOperation("分页查询课程")
 //    @AnonymousAccess
@@ -91,6 +95,10 @@ public class CourseFrontController {
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
+
+            // redis中添加一个随机Token
+            stringRedisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberId, UUID.randomUUID().toString());
+
             return Result.ok().data("courseWebVo", courseWebVo).data("chapterVideoList", chapterVideoList).data("isBuy", buyCourse);
         } else {
             throw new BadException(CodeEnum.LOGIN_EXPIRED_EXCEPTION);

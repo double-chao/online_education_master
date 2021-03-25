@@ -25,7 +25,7 @@ import java.util.List;
  * @author chaochao
  * @since 2020-06-02
  */
-@Api(description = "订单")
+@Api(value = "订单")
 @RestController
 @RequestMapping("/eduorder/order")
 public class OrderController {
