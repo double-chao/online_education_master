@@ -6,5 +6,5 @@ package com.lcc.constant;
  * @Date 2021/3/25  21:41
  */
 public class OrderConstant {
-    public static final String USER_ORDER_TOKEN_PREFIX = "order:token";
+    public static final String USER_ORDER_TOKEN_PREFIX = "order:token:";
 }

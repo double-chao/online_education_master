@@ -22,7 +22,7 @@ public class OrderNoUtil {
         String newDate = formatter.format(localDateTime);
         StringBuilder stringBuilder = new StringBuilder();
         ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
             stringBuilder.append(threadLocalRandom.nextInt(10));
         }
         return newDate + stringBuilder.toString();

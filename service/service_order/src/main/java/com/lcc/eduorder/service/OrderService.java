@@ -15,10 +15,12 @@ public interface OrderService extends IService<Order> {
 
     /**
      * 创建订单
+     *
      * @param courseId
-     * @param memberIdByJwtToken
+     * @param token
+     * @param memberId
      * @return
      */
-    String createOrders(Integer courseId, Integer memberIdByJwtToken);
+    String createOrders(Integer courseId, String token, Integer memberId);
 
 }

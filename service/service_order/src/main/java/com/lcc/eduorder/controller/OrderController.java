@@ -34,9 +34,9 @@ public class OrderController {
     private OrderService orderService;
 
     @ApiOperation("创建订单")
-    @PostMapping("/createOrder/{courseId}")
-    public Result saveOrder(@PathVariable Integer courseId, HttpServletRequest request) {
-        String orderNo = orderService.createOrders(courseId, JwtUtils.getMemberIdByJwtToken(request));
+    @PostMapping("/createOrder/{courseId}/{token}")
+    public Result saveOrder(@PathVariable Integer courseId, @PathVariable String token, HttpServletRequest request) {
+        String orderNo = orderService.createOrders(courseId, token, JwtUtils.getMemberIdByJwtToken(request));
         return Result.ok().data("orderId", orderNo);
     }
 
