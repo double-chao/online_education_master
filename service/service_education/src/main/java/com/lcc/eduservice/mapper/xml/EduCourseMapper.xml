@@ -20,7 +20,7 @@
                  ec.id = #{courseId}
     </select>
 
-    <select id="selectWebCourseInfo" parameterType="java.lang.String"
+    <select id="selectWebCourseInfo" parameterType="java.lang.Integer"
             resultType="com.lcc.eduservice.entity.frontvo.CourseWebVo">
             SELECT
                 ec.id,ec.title,ec.cover,ec.price,ec.lesson_num AS lessonNum,

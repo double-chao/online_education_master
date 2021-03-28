@@ -54,4 +54,7 @@ public class CourseWebVo {
 
     @ApiModelProperty(value = "类别二级名称")
     private String subjectLevelTwo;
+
+    @ApiModelProperty(value = "生成订单的token,用作重复验证")
+    private String token;
 }

@@ -16,12 +16,14 @@ import com.lcc.util.JwtUtils;
 import com.lcc.vo.CourseOrder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -96,8 +99,15 @@ public class CourseFrontController {
                 e.printStackTrace();
             }
 
-            // redis中添加一个随机Token
-            stringRedisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberId, UUID.randomUUID().toString());
+            BigDecimal price = courseWebVo.getPrice();
+            BigDecimal freePrice = new BigDecimal("0");
+            boolean isBuy = buyCourse.get();
+            if (price.compareTo(freePrice) != 0 && isBuy == false) { // 课程的价格不为0并且没有购买的课程，需要生成订单的token
+                String token = UUID.randomUUID().toString().replace("-", "");
+                courseWebVo.setToken(token); // 客户端保存一个防重令牌
+                // redis中添加一个随机Token 防重令牌 设置过期时间，30分钟
+                stringRedisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberId, token,30, TimeUnit.MINUTES);
+            }
 
             return Result.ok().data("courseWebVo", courseWebVo).data("chapterVideoList", chapterVideoList).data("isBuy", buyCourse);
         } else {
