@@ -19,7 +19,7 @@ import java.util.Map;
  * @Description 前端页面controller-课程评论
  * @Date 2020/9/25
  */
-@Api(description = "课程评论-前台")
+@Api(value = "课程评论-前台")
 @RestController
 @RequestMapping("/eduservice/front/comment")
 public class CommentFrontController {

@@ -18,7 +18,7 @@ import java.util.Map;
  * @author chaochao
  * @since 2020-06-02
  */
-@Api(description = "订单支付")
+@Api(value = "订单支付")
 @RestController
 @RequestMapping("/eduorder/paylog")
 public class PayLogController {

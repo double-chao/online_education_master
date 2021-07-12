@@ -1,21 +1,29 @@
 package com.lcc.eduservice.service.impl;
 
+import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lcc.eduservice.entity.EduTeacher;
+import com.lcc.eduservice.entity.excel.TeacherData;
 import com.lcc.eduservice.entity.vo.ObjectPageInfo;
 import com.lcc.eduservice.entity.vo.TeacherQuery;
+import com.lcc.eduservice.listener.TeacherExcelListener;
 import com.lcc.eduservice.mapper.EduTeacherMapper;
 import com.lcc.eduservice.service.EduTeacherService;
+import com.lcc.servicebase.exceptionhandler.BadException;
+import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import com.lcc.vo.PageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +54,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         String end = teacherQuery.getEnd();
         // 查询语句条件拼接  相当于动态sql
         if (!StringUtils.isEmpty(name)) {
-            StringBuilder stringBuilder = new StringBuilder(name);
-            String reverseName = stringBuilder.reverse().toString();
-            wrapper.likeRight("name", name).or().likeRight("reverse_name", reverseName); //双引号中的值为数据库语句中的字段名字
+            wrapper.like("name", name); //双引号中的值为数据库语句中的字段名字
         }
         if (!StringUtils.isEmpty(level)) {
             wrapper.eq("level", level);
@@ -98,5 +104,16 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         map.put("hasNext", hasNext);
         map.put("hasPrevious", hasPrevious);
         return map;
+    }
+
+    @Override
+    public boolean importExcelTeacher(MultipartFile file, EduTeacherService teacherService) {
+        try (InputStream inputStream = file.getInputStream()) {
+            EasyExcel.read(inputStream, TeacherData.class,new TeacherExcelListener(teacherService)).sheet().doRead();
+        } catch (IOException e) {
+            throw new BadException(CodeEnum.IMPORT_EXCEL_TEACHER_EXCEPTION.getCode(),
+                    CodeEnum.IMPORT_EXCEL_TEACHER_EXCEPTION.getMsg());
+        }
+        return true;
     }
 }

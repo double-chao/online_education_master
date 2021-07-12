@@ -18,7 +18,7 @@ import java.util.Map;
  * @author chaochao
  * @since 2020-06-03
  */
-@Api(description = "统计")
+@Api(value = "统计")
 @RestController
 @RequestMapping("/statistics/daily")
 public class StatisticsDailyController {

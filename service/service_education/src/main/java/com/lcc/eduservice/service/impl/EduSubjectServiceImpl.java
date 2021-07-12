@@ -51,15 +51,15 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
         List<EduSubject> twoSubject = baseMapper.selectList(twoWrapper); //二级菜单
 
         List<OneSubjectVO> oneSubjectVOList = new ArrayList<>(oneSubject.size());
-        for (int i = 0; i < oneSubject.size(); i++) {
-            EduSubject subject1 = oneSubject.get(i); //从一级菜单中取基本信息
+        //从一级菜单中取基本信息
+        for (EduSubject subject1 : oneSubject) {
             OneSubjectVO oneSubjectVO = new OneSubjectVO();
             BeanUtils.copyProperties(subject1, oneSubjectVO); //赋值
             oneSubjectVOList.add(oneSubjectVO); //添加到集合中
 
             List<TwoSubjectVO> twoSubjectVOList = new ArrayList<>(twoSubject.size());
-            for (int j = 0; j < twoSubject.size(); j++) {
-                EduSubject subject2 = twoSubject.get(j); //二级菜菜单的信息
+            //二级菜菜单的信息
+            for (EduSubject subject2 : twoSubject) {
                 if (subject2.getParentId().equals(subject1.getId())) {  //二级菜单的父id等于一级菜单的id
                     TwoSubjectVO twoSubjectVO = new TwoSubjectVO();
                     BeanUtils.copyProperties(subject2, twoSubjectVO); //赋值

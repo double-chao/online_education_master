@@ -21,11 +21,14 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         //属性名称，不是字段名称
         this.setFieldValByName("gmtCreate", new Date(), metaObject);
         this.setFieldValByName("gmtModified", new Date(), metaObject);
+        this.setFieldValByName("createTime", new Date(), metaObject);
+        this.setFieldValByName("modifiedTime", new Date(), metaObject);
         this.setFieldValByName("payTime",new Date(),metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         this.setFieldValByName("gmtModified", new Date(), metaObject);
+        this.setFieldValByName("modifiedTime", new Date(), metaObject);
     }
 }

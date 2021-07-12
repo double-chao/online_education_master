@@ -25,7 +25,7 @@ import java.util.List;
  * @author chaochao
  * @since 2020-05-28
  */
-@Api(tags = "课程基本信息")
+@Api(value = "课程基本信息")
 @RestController
 @RequestMapping("/eduservice/course")
 public class EduCourseController {

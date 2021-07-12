@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Description 代码生成器
  * @Date 2020/12/9  17:05
  */
-@Api(description = "代码生成器")
+@Api(value = "代码生成器")
 @RestController
 @RequestMapping("/eduservice/code")
 public class CodeGeneratorController {

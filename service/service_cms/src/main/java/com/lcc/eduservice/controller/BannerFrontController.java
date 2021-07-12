@@ -22,7 +22,7 @@ import java.util.List;
  * @author chaochao
  * @since 2020-05-30
  */
-@Api(description = "轮播图-前台显示")
+@Api(value = "轮播图-前台显示")
 @RestController
 @RequestMapping("/educms/bannerfront")
 public class BannerFrontController {

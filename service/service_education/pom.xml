@@ -38,13 +38,6 @@
 <!--            <version>0.0.1-SNAPSHOT</version>-->
 <!--        </dependency>-->
 
-        <!--  分布式事务 -->
-<!--        <dependency>-->
-<!--            <groupId>io.seata</groupId>-->
-<!--            <artifactId>seata-spring-boot-starter</artifactId>-->
-<!--            <version>1.4.0</version>-->
-<!--        </dependency>-->
-
         <!--  webservice接口  -->
         <dependency>
             <groupId>org.apache.cxf</groupId>

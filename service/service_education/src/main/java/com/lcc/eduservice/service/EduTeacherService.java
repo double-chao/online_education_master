@@ -7,6 +7,7 @@ import com.lcc.eduservice.entity.EduTeacher;
 import com.lcc.eduservice.entity.vo.ObjectPageInfo;
 import com.lcc.eduservice.entity.vo.TeacherQuery;
 import com.lcc.vo.PageVO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -23,6 +24,7 @@ public interface EduTeacherService extends IService<EduTeacher> {
 
     /**
      * 后台管理 ---》讲师列表分页展示
+     *
      * @param current
      * @param size
      * @param teacherQuery
@@ -32,6 +34,7 @@ public interface EduTeacherService extends IService<EduTeacher> {
 
     /**
      * 后台管理 ---》讲师列表分页展示 ---> 自己写sql语句，不用mybatisplus的api
+     *
      * @param pageVO
      * @param teacherQuery
      * @return
@@ -40,8 +43,17 @@ public interface EduTeacherService extends IService<EduTeacher> {
 
     /**
      * 前台---》首页--讲师分页
+     *
      * @param pageTeacher
      * @return
      */
     Map<String, Object> getTeacherFrontList(Page<EduTeacher> pageTeacher);
+
+    /***
+     * excel导入讲师信息
+     * @param file excel文件
+     * @param teacherService 注入对象
+     * @return 成功与否
+     */
+    boolean importExcelTeacher(MultipartFile file, EduTeacherService teacherService);
 }

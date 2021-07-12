@@ -21,7 +21,7 @@ import java.util.Set;
  * @author chaochao
  * @since 2020-06-06
  */
-@Api(description = "课程评论")
+@Api(value = "课程评论")
 @RestController
 @RequestMapping("/eduservice/comment")
 public class EduCommentController {

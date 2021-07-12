@@ -29,7 +29,7 @@ import java.util.Set;
  * @author chaochao
  * @since 2020-10-16
  */
-@Api(description = "文章类别")
+@Api(value = "文章类别")
 @RestController
 @RequestMapping("/eduservice/category")
 public class EduArticleCategoryController {

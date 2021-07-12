@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(description = "短信服务")
+@Api(value = "短信服务")
 @RestController
 @RequestMapping("/edumsm/msm")
 public class MsmController {

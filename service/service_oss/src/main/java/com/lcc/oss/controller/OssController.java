@@ -18,7 +18,7 @@ import java.util.Map;
  * @Description: 传输文件控制层
  * @Date: 2020/5/27 15:02
  */
-@Api(description = "文件上传")
+@Api(value = "文件上传")
 @RestController
 @RequestMapping("/eduoss/fileoss")
 public class OssController {

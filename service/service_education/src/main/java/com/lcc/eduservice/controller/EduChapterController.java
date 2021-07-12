@@ -20,7 +20,7 @@ import java.util.List;
  * @author chaochao
  * @since 2020-05-28
  */
-@Api(description = "课程章节")
+@Api(value = "课程章节")
 @RestController
 @RequestMapping("/eduservice/chapter")
 public class EduChapterController {

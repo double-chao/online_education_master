@@ -48,8 +48,9 @@
         <dynamic-datasource.version>3.2.1</dynamic-datasource.version>
         <pagehelper.version>5.1.4</pagehelper.version>
         <aop.version>2.2.6.RELEASE</aop.version>
-<!--        <seata.version>2.2.0.RELEASE</seata.version>-->
+        <seata.version>2.2.0.RELEASE</seata.version>
         <flowable.spring.version>6.4.0</flowable.spring.version>
+        <rabbitmq.version>2.1.5.RELEASE</rabbitmq.version>
     </properties>
 
     <dependencyManagement>
@@ -79,11 +80,11 @@
             </dependency>
 
             <!--  分布式事务 -->
-<!--            <dependency>-->
-<!--                <groupId>com.alibaba.cloud</groupId>-->
-<!--                <artifactId>spring-cloud-starter-alibaba-seata</artifactId>-->
-<!--                <version>${seata.version}</version>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+                <version>${seata.version}</version>
+            </dependency>
 
             <!--mybatis-plus 持久层-->
             <dependency>
@@ -250,10 +251,11 @@
             </dependency>
 
             <!-- RabbitMQ  -->
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-starter-amqp</artifactId>-->
-<!--            </dependency>-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+                <version>${rabbitmq.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>

@@ -22,7 +22,7 @@ import java.util.Set;
  * @author chaochao
  * @since 2020-05-27
  */
-@Api(description = "课程分类")
+@Api(value = "课程分类")
 @RestController
 @RequestMapping("/eduservice/subject")
 public class EduSubjectController {
@@ -31,7 +31,6 @@ public class EduSubjectController {
     private EduSubjectService subjectService;
 
     @ApiOperation("添加课程分类导入excel文件")
-//    @PreAuthorize("@el.check('subject.import')")
     @PostMapping("/addSubject")
     public Result addSubject(MultipartFile file) {
         subjectService.saveSubjectFile(file, subjectService);
@@ -39,7 +38,6 @@ public class EduSubjectController {
     }
 
     @ApiOperation("获取科目菜单信息")
-//    @PreAuthorize("@el.check('subject.list')")
     @GetMapping("/getAllSubject")
     public Result getAllSubject() {
         List<OneSubjectVO> subjectVOList = subjectService.getSubjectInfo();

@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -27,7 +29,7 @@ import java.util.List;
  * @author chaochao
  * @since 2020-05-25
  */
-@Api(description = "讲师管理")  //接口文当中有说明
+@Api(value = "讲师管理")  //接口文当中有说明
 @RestController
 @RequestMapping("/eduservice/teacher")
 //@CrossOrigin //解决跨域问题
@@ -44,7 +46,6 @@ public class EduTeacherController {
     }
 
     @ApiOperation("根据id逻辑删除讲师")
-//    @PreAuthorize("@el.check('teacher.remove')")
     @CacheEvict(value = {"teacherFront"}, key = "'getTeacherFrontList'")
     @DeleteMapping("{id}")
     public Result delTeacherById(@ApiParam(name = "id", value = "讲师id", required = true)
@@ -52,8 +53,14 @@ public class EduTeacherController {
         return teacherService.removeById(id) ? Result.ok() : Result.fail();
     }
 
+    @ApiOperation("批量逻辑删除逻辑删除讲师")
+    @CacheEvict(value = {"teacherFront"}, key = "'getTeacherFrontList'")
+    @DeleteMapping("/removeBatchTeacher")
+    public Result removeBatchTeacher(@RequestBody Set<Integer> teacherIdSet) {
+        return teacherService.removeByIds(teacherIdSet) ? Result.ok() : Result.fail();
+    }
+
     @ApiOperation("根据条件查询讲师分页")
-//    @PreAuthorize("@el.check('teacher.list')")
     @PostMapping("pageTeacherCondition/{current}/{size}")
     //使用@RequestBody(required = false)  前端传过来的成json格式数据封装成对象信息，false代表可以为空 ,且必须用post提交
     public Result pageTeacherCondition(@PathVariable long current, @PathVariable long size,
@@ -65,7 +72,6 @@ public class EduTeacherController {
     }
 
     @ApiOperation("讲师分页")
-//    @AnonymousAccess
     @PostMapping("listTeacher")
     public Result listTeacher(PageVO pageVO, @RequestBody(required = false) TeacherQuery teacherQuery) {
         PageInfo<EduTeacher> pageInfo = teacherService.listTeacher(pageVO, teacherQuery);
@@ -75,13 +81,9 @@ public class EduTeacherController {
     }
 
     @ApiOperation("添加讲师")
-//    @PreAuthorize("@el.check('teacher.add')")
     @CacheEvict(value = {"teacherFront"}, key = "'getTeacherFrontList'")
     @PostMapping("/addTeacher")
     public Result addTeacher(@Validated({AddGroup.class}) @RequestBody EduTeacher eduTeacher) {
-        StringBuilder stringBuilder = new StringBuilder(eduTeacher.getName());
-        String reverseName = stringBuilder.reverse().toString();
-        eduTeacher.setReverseName(reverseName);
         boolean save = teacherService.save(eduTeacher);
         return save ? Result.ok() : Result.fail();
     }
@@ -95,16 +97,18 @@ public class EduTeacherController {
     }
 
     @ApiOperation("更新讲师信息")
-//    @PreAuthorize("@el.check('teacher.update')")
     @CacheEvict(value = {"teacherFront"}, key = "'getTeacherFrontList'")
     @PostMapping("/updateTeacher")
     public Result updateTeacher(@Validated({UpdateGroup.class}) @RequestBody EduTeacher eduTeacher) {
-        StringBuilder stringBuilder = new StringBuilder(eduTeacher.getName());
-        String reverseName = stringBuilder.reverse().toString();
-        eduTeacher.setReverseName(reverseName);
         boolean flag = teacherService.updateById(eduTeacher);
         return flag ? Result.ok() : Result.fail();
     }
 
+    @ApiOperation("excel导入讲师信息")
+    @CacheEvict(value = {"teacherFront"}, key = "'getTeacherFrontList'")
+    @PostMapping("/excelImportTeacher")
+    public Result excelImportTeacher(MultipartFile file) {
+        boolean flag = teacherService.importExcelTeacher(file, teacherService);
+        return flag ? Result.ok() : Result.fail();
+    }
 }
-

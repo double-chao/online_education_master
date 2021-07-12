@@ -14,10 +14,12 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
  */
 public class BadException extends RuntimeException {
 
-    public BadException(){}
+    public BadException() {}
 
     private CodeEnum codeEnum;
     private Integer status = BAD_REQUEST.value();
+    private int code;
+    private String msg;
 
     public BadException(CodeEnum codeEnum) {
         this.codeEnum = codeEnum;
@@ -26,5 +28,11 @@ public class BadException extends RuntimeException {
     public BadException(HttpStatus status, String msg) {
         super(msg);
         this.status = status.value();
+    }
+
+    public BadException(int code, String msg) {
+        super(msg);
+        this.code = code;
+        this.msg = msg;
     }
 }

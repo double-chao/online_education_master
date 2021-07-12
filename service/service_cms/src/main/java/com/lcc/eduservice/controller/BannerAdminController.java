@@ -26,7 +26,7 @@ import java.util.List;
  * @author chaochao
  * @since 2020-05-30
  */
-@Api(description = "轮播图-后台管理")
+@Api(value = "轮播图-后台管理")
 @RestController
 @RequestMapping("/educms/banneradmin")
 public class BannerAdminController {

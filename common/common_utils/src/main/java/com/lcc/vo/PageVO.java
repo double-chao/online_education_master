@@ -14,7 +14,7 @@ import lombok.Getter;
 public class PageVO {
     @ApiModelProperty("页码")
     private Integer page;
-    @ApiModelProperty("页大小，默认10")
+    @ApiModelProperty("页大小，默认20")
     private Integer size;
 
     public PageVO(Integer page, Integer size) {
@@ -31,7 +31,7 @@ public class PageVO {
 
     public void setSize(Integer size) {
         if (size == null || size <= 0) {
-            size = 10;
+            size = 20;
         }
         this.size = size;
     }

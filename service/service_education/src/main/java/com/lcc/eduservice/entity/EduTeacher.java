@@ -43,9 +43,6 @@ public class EduTeacher implements Serializable {
     @NotEmpty(message = "讲师姓名不能为空", groups = {UpdateGroup.class, AddGroup.class})
     private String name;
 
-    @ApiModelProperty(value = "讲师姓名反转,模糊查询")
-    private String reverseName;
-
     @ApiModelProperty(value = "讲师简介")
 //    @Pattern(regexp = "^[a-zA-Z$]") 正则表达式校验，----->在前端js中正则表达式:/^[a-zA-Z$]/
     private String intro;

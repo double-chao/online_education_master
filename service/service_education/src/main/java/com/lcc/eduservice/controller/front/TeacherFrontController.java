@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 
-@Api(description = "前台讲师")
+@Api(value = "前台讲师")
 @RestController
 @RequestMapping("/eduservice/teacherfront")
 public class TeacherFrontController {

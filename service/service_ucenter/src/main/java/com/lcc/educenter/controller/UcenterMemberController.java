@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author chaochao
  * @since 2020-05-31
  */
-@Api(description = "登录/注册")
+@Api(value = "登录/注册")
 @RestController
 @RequestMapping("/educenter/member")
 public class UcenterMemberController {

@@ -27,7 +27,7 @@ import java.util.List;
  * @author chaochao
  * @since 2020-05-30
  */
-@Api(description = "阿里云视频")
+@Api(value = "阿里云视频")
 @RestController
 @RequestMapping("/eduvod/video")
 public class VodController {

@@ -15,6 +15,7 @@ package com.lcc.servicebase.exceptionhandler;
  *  14: 视频
  *  15: 用户
  *  16: 订单
+ *  17: 讲师
  *
  */
 public enum CodeEnum {
@@ -57,10 +58,13 @@ public enum CodeEnum {
     PHONE_CODE_ERROR_EXCEPTION(15010, "手机验证码错误"),
     LOGIN_FAILED(15011, "登录失败"),
 
-    CREATE_ORDER_EXCEPTION(16001, "创建订单失败");
+    CREATE_ORDER_EXCEPTION(16001, "创建订单失败"),
 
-    private int code;
-    private String msg;
+    IMPORT_EXCEL_TEACHER_EXCEPTION(17001,"导入讲师信息失败"),
+    IMPORT_EXCEL_TEACHER_NULL_EXCEPTION(17001,"导入讲师信息为空");
+
+    private final int code;
+    private final String msg;
 
     CodeEnum(int code, String msg) {
         this.code = code;

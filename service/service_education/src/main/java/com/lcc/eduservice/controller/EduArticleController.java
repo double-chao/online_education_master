@@ -23,7 +23,7 @@ import java.util.Map;
  * @author chaochao
  * @since 2020-09-10
  */
-@Api(description = "文章")
+@Api(value = "文章")
 @RestController
 @RequestMapping("/eduservice/article")
 public class EduArticleController {

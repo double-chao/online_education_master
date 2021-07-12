@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
 
-@Api(description = "首页热门课程名师展示")
+@Api(value = "首页热门课程名师展示")
 @RestController
 @RequestMapping("/eduservice/indexfront")
 public class IndexFrontController {

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
  * @author chaochao
  * @since 2020-05-28
  */
-@Api(description = "小节数据")
+@Api(value = "小节数据")
 @RestController
 @RequestMapping("/eduservice/video")
 public class EduVideoController {

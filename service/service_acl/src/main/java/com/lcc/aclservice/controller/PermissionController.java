@@ -19,7 +19,7 @@ import java.util.List;
  * @author Admin
  * @since 2020-01-12
  */
-@Api(description = "权限/菜单管理")
+@Api(value = "权限/菜单管理")
 @RestController
 @RequestMapping("/admin/acl/permission")
 public class PermissionController {
