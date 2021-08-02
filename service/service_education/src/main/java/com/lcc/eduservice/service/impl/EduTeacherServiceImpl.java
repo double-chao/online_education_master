@@ -6,24 +6,29 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.lcc.eduservice.constant.TeacherLevelEnum;
 import com.lcc.eduservice.entity.EduTeacher;
 import com.lcc.eduservice.entity.excel.TeacherData;
 import com.lcc.eduservice.entity.vo.ObjectPageInfo;
-import com.lcc.eduservice.entity.vo.TeacherQuery;
+import com.lcc.eduservice.entity.vo.teacher.TeacherQuery;
+import com.lcc.eduservice.entity.vo.teacher.TeacherVO;
 import com.lcc.eduservice.listener.TeacherExcelListener;
 import com.lcc.eduservice.mapper.EduTeacherMapper;
 import com.lcc.eduservice.service.EduTeacherService;
+import com.lcc.result.Result;
 import com.lcc.servicebase.exceptionhandler.BadException;
 import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import com.lcc.vo.PageVO;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,9 +44,6 @@ import java.util.Map;
 @Service
 public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeacher> implements EduTeacherService {
 
-    @Autowired
-    private EduTeacherMapper teacherMapper;
-
     @Override
     public ObjectPageInfo selectAllTeacherPageInfo(long current, long size, TeacherQuery teacherQuery) {
         // 分页  当前页，多少条
@@ -49,7 +51,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         // 构建查询对象
         QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
         String name = teacherQuery.getName();
-        Integer level = teacherQuery.getLevel();
+        Integer level = TeacherLevelEnum.getCodeByName(teacherQuery.getLevel());
         String begin = teacherQuery.getBegin();
         String end = teacherQuery.getEnd();
         // 查询语句条件拼接  相当于动态sql
@@ -76,10 +78,27 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     }
 
     @Override
-    public PageInfo<EduTeacher> listTeacher(PageVO pageVO, TeacherQuery teacherQuery) {
+    public Result listTeacher(PageVO pageVO, TeacherQuery teacherQuery) {
         PageHelper.startPage(pageVO.getPage(), pageVO.getSize());
-        List<EduTeacher> eduTeachers = teacherMapper.selectTeacherList(teacherQuery);
-        return new PageInfo<>(eduTeachers);
+        String level = teacherQuery.getLevel();
+        if (!StringUtils.isEmpty(level)) {
+            Integer levelCode = TeacherLevelEnum.getCodeByName(level);
+            if (!ObjectUtils.isEmpty(levelCode)) {
+                teacherQuery.setLevel(levelCode.toString());
+            }
+        }
+        List<EduTeacher> eduTeachers = baseMapper.selectTeacherList(teacherQuery);
+        PageInfo<EduTeacher> pageInfo = new PageInfo<>(eduTeachers);
+        long total = pageInfo.getTotal();
+        List<EduTeacher> teacherList = pageInfo.getList();
+        List<TeacherVO> teacherVOList = new ArrayList<>(teacherList.size());
+        for (EduTeacher eduTeacher : teacherList) {
+            TeacherVO teacherVO = new TeacherVO();
+            BeanUtils.copyProperties(eduTeacher, teacherVO);
+            teacherVO.setLevel(TeacherLevelEnum.getNameByCode(eduTeacher.getLevel()));
+            teacherVOList.add(teacherVO);
+        }
+        return Result.ok().data("total", total).data("rows", teacherVOList);
     }
 
     @Cacheable(value = {"teacherFront"}, key = "#root.method.name")
@@ -109,7 +128,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     @Override
     public boolean importExcelTeacher(MultipartFile file, EduTeacherService teacherService) {
         try (InputStream inputStream = file.getInputStream()) {
-            EasyExcel.read(inputStream, TeacherData.class,new TeacherExcelListener(teacherService)).sheet().doRead();
+            EasyExcel.read(inputStream, TeacherData.class, new TeacherExcelListener(teacherService)).sheet().doRead();
         } catch (IOException e) {
             throw new BadException(CodeEnum.IMPORT_EXCEL_TEACHER_EXCEPTION.getCode(),
                     CodeEnum.IMPORT_EXCEL_TEACHER_EXCEPTION.getMsg());

@@ -16,7 +16,7 @@ public class BadException extends RuntimeException {
 
     public BadException() {}
 
-    private CodeEnum codeEnum;
+    private static CodeEnum codeEnum;
     private Integer status = BAD_REQUEST.value();
     private int code;
     private String msg;
@@ -34,5 +34,9 @@ public class BadException extends RuntimeException {
         super(msg);
         this.code = code;
         this.msg = msg;
+    }
+
+    public static CodeEnum getCodeEnum() {
+        return codeEnum;
     }
 }

@@ -2,10 +2,10 @@ package com.lcc.eduservice.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.github.pagehelper.PageInfo;
 import com.lcc.eduservice.entity.EduTeacher;
 import com.lcc.eduservice.entity.vo.ObjectPageInfo;
-import com.lcc.eduservice.entity.vo.TeacherQuery;
+import com.lcc.eduservice.entity.vo.teacher.TeacherQuery;
+import com.lcc.result.Result;
 import com.lcc.vo.PageVO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,27 +25,28 @@ public interface EduTeacherService extends IService<EduTeacher> {
     /**
      * 后台管理 ---》讲师列表分页展示
      *
-     * @param current
-     * @param size
-     * @param teacherQuery
-     * @return
+     * @param current      当前页
+     * @param size         多少条
+     * @param teacherQuery 查询条件
+     * @return 返回讲师集合信息
      */
+    @Deprecated
     ObjectPageInfo selectAllTeacherPageInfo(long current, long size, TeacherQuery teacherQuery);
 
     /**
-     * 后台管理 ---》讲师列表分页展示 ---> 自己写sql语句，不用mybatisplus的api
+     * 后台管理 ---》讲师列表分页展示 ---> 自己写sql语句，不用mybatis-plus的api
      *
-     * @param pageVO
-     * @param teacherQuery
-     * @return
+     * @param pageVO       分页对象
+     * @param teacherQuery 查询条件
+     * @return 讲师返回信息集合
      */
-    PageInfo<EduTeacher> listTeacher(PageVO pageVO, TeacherQuery teacherQuery);
+    Result listTeacher(PageVO pageVO, TeacherQuery teacherQuery);
 
     /**
      * 前台---》首页--讲师分页
      *
-     * @param pageTeacher
-     * @return
+     * @param pageTeacher 分页对象
+     * @return 返回值
      */
     Map<String, Object> getTeacherFrontList(Page<EduTeacher> pageTeacher);
 

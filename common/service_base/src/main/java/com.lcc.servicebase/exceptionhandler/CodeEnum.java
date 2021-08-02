@@ -16,6 +16,7 @@ package com.lcc.servicebase.exceptionhandler;
  *  15: 用户
  *  16: 订单
  *  17: 讲师
+ *  18: 全文搜索
  *
  */
 public enum CodeEnum {
@@ -61,7 +62,10 @@ public enum CodeEnum {
     CREATE_ORDER_EXCEPTION(16001, "创建订单失败"),
 
     IMPORT_EXCEL_TEACHER_EXCEPTION(17001,"导入讲师信息失败"),
-    IMPORT_EXCEL_TEACHER_NULL_EXCEPTION(17001,"导入讲师信息为空");
+    GET_TEACHER_INFO_EXCEPTION(17002,"获取讲师信息失败"),
+    IMPORT_EXCEL_TEACHER_NULL_EXCEPTION(17003,"导入讲师信息为空"),
+
+    CREATE_ELASTIC_SEARCH_INDEX_EXCEPTION(18001,"创建elasticSearch索引失败");
 
     private final int code;
     private final String msg;

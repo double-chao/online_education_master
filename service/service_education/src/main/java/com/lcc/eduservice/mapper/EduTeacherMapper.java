@@ -2,7 +2,8 @@ package com.lcc.eduservice.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lcc.eduservice.entity.EduTeacher;
-import com.lcc.eduservice.entity.vo.TeacherQuery;
+import com.lcc.eduservice.entity.vo.teacher.TeacherQuery;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,10 +17,11 @@ import java.util.List;
  */
 public interface EduTeacherMapper extends BaseMapper<EduTeacher> {
 
-   /**
-    * 获取讲师信息
-    * @param teacherQuery
-    * @return
-    */
-   List<EduTeacher> selectTeacherList(TeacherQuery teacherQuery);
+    /**
+     * 讲师列表查询信息
+     *
+     * @param teacherQuery 查询条件
+     * @return 讲师集合信息
+     */
+    List<EduTeacher> selectTeacherList(@Param("teacherQuery") TeacherQuery teacherQuery);
 }

@@ -22,10 +22,11 @@ public class TokenManager {
     private final String tokenSignKey = "123456";
 
     public String createToken(String username) {
-        String token = Jwts.builder().setSubject(username)
+        return Jwts.builder().setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + tokenExpiration))
-                .signWith(SignatureAlgorithm.HS512, tokenSignKey).compressWith(CompressionCodecs.GZIP).compact();
-        return token;
+                .signWith(SignatureAlgorithm.HS512, tokenSignKey)
+                .compressWith(CompressionCodecs.GZIP)
+                .compact();
     }
 
     public String getUserFromToken(String token) {

@@ -3,21 +3,34 @@
 <mapper namespace="com.lcc.eduservice.mapper.EduTeacherMapper">
 
     <sql id="queryCondition">
-        <if test="name!=null and name!=''">
-            and (name like concat(#{name},'%'))
+        <if test="teacherQuery.name!=null and teacherQuery.name!=''">
+            and (name like concat('%',#{teacherQuery.name},'%'))
         </if>
-        <if test="level!=null">
-            and level = #{level}
+        <if test="teacherQuery.level!=null and teacherQuery.level!=''">
+            and level = #{teacherQuery.level}
         </if>
-        <if test="begin!=null and end!=null">
-            and gmt_create between #{begin} and #{end}
+        <if test="teacherQuery.begin!=null and teacherQuery.end!=null">
+            and gmt_create between #{teacherQuery.begin} and #{teacherQuery.end}
         </if>
     </sql>
 
+    <!-- 讲师列表查询信息 -->
     <select id="selectTeacherList" resultType="com.lcc.eduservice.entity.EduTeacher"
-            parameterType="com.lcc.eduservice.entity.vo.TeacherQuery">
-        select * from edu_teacher where is_deleted = 0
+            parameterType="com.lcc.eduservice.entity.vo.teacher.TeacherQuery">
+        SELECT
+            id,
+            name,
+            intro,
+            career,
+            avatar,
+            level,
+            gmt_create
+        FROM
+            edu_teacher
+        WHERE
+            is_deleted = 0
         <include refid="queryCondition"/>
-        order by gmt_create
+        ORDER BY
+            gmt_create DESC
     </select>
 </mapper>

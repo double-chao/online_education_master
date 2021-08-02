@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lcc.eduservice.mapper.EduCourseMapper">
 
+    <sql id="queryCondition">
+        <if test="courseQuery.title!=null and courseQuery.title!=''">
+            and (title like concat('%',#{courseQuery.title},'%'))
+        </if>
+        <if test="courseQuery.status!=null and courseQuery.status!=''">
+            and status = #{courseQuery.status}
+        </if>
+    </sql>
+
     <select id="selectPublishVoInfo" parameterType="java.lang.String"
             resultType="com.lcc.eduservice.entity.vo.CoursePublishVo">
         SELECT
@@ -38,4 +47,29 @@
         WHERE
             ec.id = #{courseId}
     </select>
+
+    <!-- 后端管理系统-课程列表查询 -->
+    <select id="selectCourseList" resultType="com.lcc.eduservice.entity.EduCourse">
+        SELECT
+            id,
+            teacher_id,
+            subject_id,
+            subject_parent_id,
+            title,
+            price,
+            lesson_num,
+            cover,
+            buy_count,
+            view_count,
+            status,
+            gmt_create
+        FROM
+            edu_course
+        WHERE
+            is_deleted = 0
+        <include refid="queryCondition"/>
+        ORDER BY
+            gmt_create DESC
+    </select>
+
 </mapper>

@@ -8,6 +8,7 @@ import com.lcc.eduservice.entity.vo.CourseQuery;
 import com.lcc.eduservice.entity.vo.ObjectPageInfo;
 import com.lcc.eduservice.service.EduCourseService;
 import com.lcc.result.Result;
+import com.lcc.vo.PageVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -37,26 +38,35 @@ public class EduCourseController {
     @GetMapping("/getCourseList")
     public Result getCourseList() {
         List<EduCourse> list = courseService.list(null);
-        return Result.ok().data("list",list);
+        return Result.ok().data("list", list);
     }
 
+    @Deprecated
     @ApiOperation("根据条件查询课程分页")
     @PostMapping("/pageCourseCondition/{current}/{size}")
     //使用@RequestBody(required = false)  前端传过来的成json格式数据封装成对象信息，false代表可以为空 ,且必须用post提交
     public Result pageCourseCondition(@PathVariable long current, @PathVariable long size,
-                                       @RequestBody(required = false) CourseQuery courseQuery) {
+                                      @RequestBody(required = false) CourseQuery courseQuery) {
         ObjectPageInfo pageInfo = courseService.selectAllCoursePageInfo(current, size, courseQuery);
         long total = pageInfo.getTotal();
         List<EduCourse> records = pageInfo.getList();
         return Result.ok().data("total", total).data("rows", records);
     }
 
+    @ApiOperation("课程列表-分页")
+    @PostMapping("/listCourse/{current}/{size}")
+    public Result listCourse(@PathVariable Integer current, @PathVariable Integer size,
+                             @RequestBody(required = false) CourseQuery courseQuery) {
+        PageVO pageVO = new PageVO(current, size);
+        return courseService.listCourse(pageVO, courseQuery);
+    }
+
     @ApiOperation("添加课程基本信息")
 //    @AnonymousAccess
     @PostMapping("/addCourseInfo")
-    public Result addCourseInfo(@RequestBody CourseInfoVo courseInfoVo){
+    public Result addCourseInfo(@RequestBody CourseInfoVo courseInfoVo) {
         Integer id = courseService.saveCourseInfo(courseInfoVo);
-        return Result.ok().data("courseId",id);
+        return Result.ok().data("courseId", id);
     }
 
     @ApiOperation("根据id得到课程信息")
@@ -65,7 +75,7 @@ public class EduCourseController {
             @ApiParam(name = "courseId", value = "课程id", required = true)
             @PathVariable Integer courseId) {
         CourseInfoVo courseInfoVo = courseService.getCourseInfo(courseId);
-        return Result.ok().data("courseInfoVo",courseInfoVo);
+        return Result.ok().data("courseInfoVo", courseInfoVo);
     }
 
     @ApiOperation("更新课程信息")
@@ -79,9 +89,9 @@ public class EduCourseController {
     @GetMapping("/getPublishVoInfo/{courseId}")
     public Result getPublishVoInfo(
             @ApiParam(name = "courseId", value = "课程id", required = true)
-            @PathVariable Integer courseId){
+            @PathVariable Integer courseId) {
         CoursePublishVo publishVoInfo = courseService.getPublishVoInfo(courseId);
-        return Result.ok().data("publishVoInfo",publishVoInfo);
+        return Result.ok().data("publishVoInfo", publishVoInfo);
     }
 
     @ApiOperation("最终发布")

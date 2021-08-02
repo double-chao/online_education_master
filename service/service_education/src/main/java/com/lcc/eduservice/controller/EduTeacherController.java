@@ -1,9 +1,10 @@
 package com.lcc.eduservice.controller;
 
-import com.github.pagehelper.PageInfo;
+import com.lcc.eduservice.constant.TeacherLevelEnum;
 import com.lcc.eduservice.entity.EduTeacher;
 import com.lcc.eduservice.entity.vo.ObjectPageInfo;
-import com.lcc.eduservice.entity.vo.TeacherQuery;
+import com.lcc.eduservice.entity.vo.teacher.TeacherQuery;
+import com.lcc.eduservice.entity.vo.teacher.TeacherVO;
 import com.lcc.eduservice.service.EduTeacherService;
 import com.lcc.result.Result;
 import com.lcc.servicebase.valid.AddGroup;
@@ -12,6 +13,7 @@ import com.lcc.vo.PageVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.validation.annotation.Validated;
@@ -29,7 +31,7 @@ import java.util.Set;
  * @author chaochao
  * @since 2020-05-25
  */
-@Api(value = "讲师管理")  //接口文当中有说明
+@Api(value = "讲师管理", tags = "讲师管理操作服务接口")  //接口文当中有说明
 @RestController
 @RequestMapping("/eduservice/teacher")
 //@CrossOrigin //解决跨域问题
@@ -60,6 +62,7 @@ public class EduTeacherController {
         return teacherService.removeByIds(teacherIdSet) ? Result.ok() : Result.fail();
     }
 
+    @Deprecated
     @ApiOperation("根据条件查询讲师分页")
     @PostMapping("pageTeacherCondition/{current}/{size}")
     //使用@RequestBody(required = false)  前端传过来的成json格式数据封装成对象信息，false代表可以为空 ,且必须用post提交
@@ -71,13 +74,12 @@ public class EduTeacherController {
         return Result.ok().data("total", total).data("rows", records);
     }
 
-    @ApiOperation("讲师分页")
-    @PostMapping("listTeacher")
-    public Result listTeacher(PageVO pageVO, @RequestBody(required = false) TeacherQuery teacherQuery) {
-        PageInfo<EduTeacher> pageInfo = teacherService.listTeacher(pageVO, teacherQuery);
-        long total = pageInfo.getTotal();
-        List<EduTeacher> records = pageInfo.getList();
-        return Result.ok().data("total", total).data("rows", records);
+    @ApiOperation("讲师列表-分页")
+    @PostMapping("list/{current}/{size}")
+    public Result listTeacher(@RequestBody(required = false) TeacherQuery teacherQuery,
+                              @PathVariable Integer current, @PathVariable Integer size) {
+        PageVO pageVO = new PageVO(current, size);
+        return teacherService.listTeacher(pageVO, teacherQuery);
     }
 
     @ApiOperation("添加讲师")
@@ -93,14 +95,25 @@ public class EduTeacherController {
     public Result getTeacher(@ApiParam(name = "id", value = "讲师id", required = true)
                              @PathVariable Integer id) {
         EduTeacher eduTeacher = teacherService.getById(id);
-        return Result.ok().data("eduTeacher", eduTeacher);
+        TeacherVO teacherVO = new TeacherVO();
+        BeanUtils.copyProperties(eduTeacher,teacherVO);
+        teacherVO.setLevel(TeacherLevelEnum.getNameByCode(eduTeacher.getLevel()));
+        return Result.ok().data("eduTeacher", teacherVO);
     }
 
     @ApiOperation("更新讲师信息")
     @CacheEvict(value = {"teacherFront"}, key = "'getTeacherFrontList'")
     @PostMapping("/updateTeacher")
-    public Result updateTeacher(@Validated({UpdateGroup.class}) @RequestBody EduTeacher eduTeacher) {
-        boolean flag = teacherService.updateById(eduTeacher);
+    public Result updateTeacher(@Validated({UpdateGroup.class}) @RequestBody TeacherVO teacherVO) {
+        EduTeacher modifyEduTeacher = new EduTeacher();
+        modifyEduTeacher.setId(teacherVO.getId());
+        modifyEduTeacher.setName(teacherVO.getName());
+        modifyEduTeacher.setSort(teacherVO.getSort());
+        modifyEduTeacher.setLevel(TeacherLevelEnum.getCodeByName(teacherVO.getLevel()));
+        modifyEduTeacher.setCareer(teacherVO.getCareer());
+        modifyEduTeacher.setIntro(teacherVO.getIntro());
+        modifyEduTeacher.setAvatar(teacherVO.getAvatar());
+        boolean flag = teacherService.updateById(modifyEduTeacher);
         return flag ? Result.ok() : Result.fail();
     }
 

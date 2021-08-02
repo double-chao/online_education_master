@@ -3,6 +3,9 @@ package com.lcc.eduservice.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.lcc.eduservice.constant.CourseStatusEnum;
 import com.lcc.eduservice.entity.EduCourse;
 import com.lcc.eduservice.entity.EduCourseDescription;
 import com.lcc.eduservice.entity.frontvo.CourseFrontVo;
@@ -11,13 +14,16 @@ import com.lcc.eduservice.entity.vo.CourseInfoVo;
 import com.lcc.eduservice.entity.vo.CoursePublishVo;
 import com.lcc.eduservice.entity.vo.CourseQuery;
 import com.lcc.eduservice.entity.vo.ObjectPageInfo;
+import com.lcc.eduservice.entity.vo.course.CourseVO;
 import com.lcc.eduservice.mapper.EduCourseMapper;
 import com.lcc.eduservice.service.EduChapterService;
 import com.lcc.eduservice.service.EduCourseDescriptionService;
 import com.lcc.eduservice.service.EduCourseService;
 import com.lcc.eduservice.service.EduVideoService;
+import com.lcc.result.Result;
 import com.lcc.servicebase.exceptionhandler.BadException;
 import com.lcc.servicebase.exceptionhandler.CodeEnum;
+import com.lcc.vo.PageVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -25,8 +31,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +79,28 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         objectPageInfo.setTotal(total);
         objectPageInfo.setList(records);
         return objectPageInfo;
+    }
+
+    @Override
+    public Result listCourse(PageVO pageVO, CourseQuery courseQuery) {
+        PageHelper.startPage(pageVO.getPage(), pageVO.getSize());
+        Integer code = CourseStatusEnum.getCodeByName(courseQuery.getStatus());
+        if (!ObjectUtils.isEmpty(code)) {
+            courseQuery.setStatus(code.toString());
+        }
+        List<EduCourse> courseList = baseMapper.selectCourseList(courseQuery);
+        PageInfo<EduCourse> pageInfo = new PageInfo<>(courseList);
+        long total = pageInfo.getTotal();
+        List<EduCourse> eduCourseList = pageInfo.getList();
+        List<CourseVO> courseVOList = new ArrayList<>(eduCourseList.size());
+        for (EduCourse course : eduCourseList) {
+            CourseVO courseVO = new CourseVO();
+            BeanUtils.copyProperties(course, courseVO);
+            boolean status = course.isStatus();
+            courseVO.setStatus(CourseStatusEnum.getNameByCode(status ? 1 : 0));
+            courseVOList.add(courseVO);
+        }
+        return Result.ok().data("total", total).data("rows", courseVOList);
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
