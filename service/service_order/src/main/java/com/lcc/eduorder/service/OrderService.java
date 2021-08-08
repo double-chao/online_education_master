@@ -16,11 +16,18 @@ public interface OrderService extends IService<Order> {
     /**
      * 创建订单
      *
-     * @param courseId
-     * @param token
-     * @param memberId
-     * @return
+     * @param courseId 课程id
+     * @param token 防重令牌
+     * @param memberId 客户id
+     * @return 返回信息
      */
     String createOrders(Integer courseId, String token, Integer memberId);
+
+    /**
+     * 关闭订单
+     * @param order 订单实体
+     * @return 返回标志，true:关闭成功，false:关闭失败
+     */
+    boolean closeOrder(Order order);
 
 }

@@ -13,12 +13,13 @@ import com.lcc.servicebase.exceptionhandler.CodeEnum;
 import com.lcc.vo.CourseOrder;
 import com.lcc.vo.UserOrder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * <p>
@@ -34,10 +35,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Autowired
     private UserClient userClient;
+
     @Autowired
     private CourseClient courseClient;
+
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Override
     public String createOrders(Integer courseId, String token, Integer memberId) {
@@ -46,8 +52,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
         //  return 0 失败  1 成功
         Long result = stringRedisTemplate.execute(new DefaultRedisScript<>(script, Long.class),
-                Arrays.asList(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberId), token);
-        if (result == 0L) { // 令牌验证失败, 创建订单失败
+                Collections.singletonList(OrderConstant.USER_ORDER_TOKEN_PREFIX + memberId), token);
+        if (result == null || result == 0L) { // 令牌验证失败, 创建订单失败
             throw new BadException(CodeEnum.CREATE_ORDER_EXCEPTION);
         } else { // 令牌验证成功
             //用户信息
@@ -67,9 +73,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             order.setNickname(userOrder.getNickname());
             order.setStatus(0);  // 支付状态 0未支付 1已支付
             order.setPayType(1); // 支付类型 1微信 2支付宝
-            baseMapper.insert(order);
+            int i = baseMapper.insert(order);
+            if (i > 0) {
+                // 订单创建成功发送消息
+                rabbitTemplate.convertAndSend("order-event-exchange", "order.create.order", order);
+            }
             return order.getOrderNo(); //返回订单号
         }
     }
 
+    @Override
+    public boolean closeOrder(Order order) {
+        return baseMapper.updateById(order) > 0;
+    }
 }
