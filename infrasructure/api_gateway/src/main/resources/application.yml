@@ -1,0 +1,75 @@
+# 服务端口
+server:
+  port: 8222
+  # 服务名
+spring:
+  application:
+    name: service-gateway
+
+  # nacos服务地址
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+  #使用服务发现路由  默认为false
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+      routes:
+        - id: service-acl   #设置路由id---- id=值，其实这个值可以随便写，但是我们还是写服务的名字
+          uri: lb://service-acl  #设置路由的uri   lb://nacos注册服务名称  代表负载均衡
+          predicates:
+            - Path=/*/acl/**  #设置路由断言,代理servicerId为auth-service的/auth/路径
+
+        - id: service-education
+          uri: lb://service-education
+          predicates:
+            - Path=/eduservice/**
+
+        - id: service-msm
+          uri: lb://service-msm
+          predicates:
+            - Path=/edumsm/**
+
+        - id: service-order
+          uri: lb://service-order
+          predicates:
+            - Path=/eduorder/**
+
+        - id: service-oss
+          uri: lb://service-oss
+          predicates:
+            - Path=/eduoss/**
+
+        - id: service-statistics
+          uri: lb://service-statistics
+          predicates:
+            - Path=/statistics/**
+
+        - id: service-ucenter
+          uri: lb://service-ucenter
+          predicates:
+            - Path=/educenter/**
+
+        - id: service-vod
+          uri: lb://service-vod
+          predicates:
+            - Path=/eduvod/**
+
+        - id: service-cms
+          uri: lb://service-cms
+          predicates:
+            - Path=/educms/**
+
+        - id: service-oa
+          uri: lb://service-oa
+          predicates:
+            - Path=/oaservice/**
+
+        - id: service-or
+          uri: lb://service-or
+          predicates:
+            - Path=/online/recruitment/**

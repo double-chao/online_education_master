@@ -1,0 +1,91 @@
+# 服务端口
+server:
+  port: 5218
+# 服务名
+spring:
+  application:
+    name: service-elasticsearch
+
+# 环境设置：dev、test、prod
+  profiles:
+    active: dev
+
+# mysql数据库连接
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/online_education?serverTimezone=GMT%2B8
+    username: root
+    password: root
+
+#返回json的全局时间格式
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+# nacos服务地址
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+  #    sentinel:
+#      transport:
+#        dashboard: 8333
+#        prot: 8719
+
+#redis服务地址
+  redis:
+    host: 192.168.233.129
+    port: 6379
+    database: 0
+    timeout: 1800000
+    lettuce:
+      pool:
+        max-active: 20
+        max-wait: -1
+        #最大阻塞等待时间(负数表示没限制)
+        max-idle: 5
+        min-idle: 0
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: *
+
+#配置mapper.xml文件的路径
+#因为我自动生成的xml文件在java目录下，你若在mapper.xml文件中写了自己的方法，maven编译是找不到的
+#所以这里要配置一下mapper.xml文件路径  还需要在pom.xml文件中配置一下编译资源目录中
+mybatis-plus:
+  mapper-locations: classpath:com/lcc/elasticsearch/mapper/xml/*.xml
+
+#mybatis日志,能看到sql语句
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# 设置日志级别
+#logging:
+#  level:
+#    root: WARN
+
+feign:
+  # 对请求与响应的数据进行压缩,默认为false
+  compression:
+    request:
+      enabled: true
+      mime-types: text/html,application/xml,application/json
+      min-request-size: 2048
+    response:
+      enabled: true
+  #开启熔断机制
+  hystrix:
+    enabled: true
+
+#设置hystrix超时时间，默认1000ms = 1s
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 4000 # 设置hystrix的超时时间为4000m
