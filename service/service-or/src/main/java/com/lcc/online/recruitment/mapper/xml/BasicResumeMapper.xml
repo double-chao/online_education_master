@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lcc.online.recruitment.mapper.BasicResumeMapper">
+
+    <!-- 需要查询的简历详细信息 -->
+    <sql id="resumeInfo">
+        SELECT id,
+               resume_code,
+               employee_name,
+               phone,
+               id_card,
+               email,
+               sex,
+               apply_job,
+               apply_level,
+               expected_salary,
+               personal_introduction,
+               resume_from,
+               resume_url,
+               create_by,
+               create_time,
+               modified_by,
+               modified_time
+        FROM `or_basic_resume`
+    </sql>
+
+    <!-- 前提条件：简历未删除、未释放 -->
+    <sql id="precondition">
+        <if test="1 == 1">
+            deleted = 0 AND resume_status = 2
+        </if>
+    </sql>
+
+    <!-- 排序条件 -->
+    <sql id="sortCondition">
+        <if test="1 == 1">
+            ORDER BY id desc
+        </if>
+    </sql>
+
+    <!-- 查询条件 -->
+    <sql id="queryCondition">
+        <where>
+            <include refid="precondition"/>
+
+            <if test="resumeQueryDTO.id != null">
+                AND id = #{resumeQueryDTO.id}
+            </if>
+
+            <if test="resumeQueryDTO.resumeCode != null and resumeQueryDTO.resumeCode !='' ">
+                AND resume_code = #{resumeQueryDTO.resumeCode}
+            </if>
+
+            <if test="resumeQueryDTO.employeeName != null and resumeQueryDTO.employeeName !='' ">
+                AND employee_name like concat('%',#{resumeQueryDTO.employeeName},'%')
+            </if>
+
+            <if test="resumeQueryDTO.idCard != null and resumeQueryDTO.idCard !='' ">
+                AND id_card = #{resumeQueryDTO.idCard}
+            </if>
+
+            <if test="resumeQueryDTO.applyJob != null and resumeQueryDTO.applyJob !='' ">
+                AND apply_job = #{resumeQueryDTO.applyJob}
+            </if>
+
+            <if test="resumeQueryDTO.applyLevel != null and resumeQueryDTO.applyLevel !='' ">
+                AND apply_level = #{resumeQueryDTO.applyLevel}
+            </if>
+
+            <if test="resumeQueryDTO.resumeFrom != null and resumeQueryDTO.resumeFrom !='' ">
+                AND resume_from = #{resumeQueryDTO.resumeFrom}
+            </if>
+
+            <if test="resumeQueryDTO.createTime != null">
+                AND create_time = DATE_FORMAT(#{resumeQueryDTO.createTime},'%Y-%m-%d')
+            </if>
+
+            <include refid="sortCondition"/>
+        </where>
+    </sql>
+
+    <!-- 根据查询条件，获取简历数据集合 -->
+    <select id="listBaseResumeByCondition" resultType="com.lcc.online.recruitment.entity.BasicResume">
+        <include refid="resumeInfo"/>
+        <include refid="queryCondition"/>
+    </select>
+
+    <!-- 根据简历id获取简历相关信息 -->
+    <select id="selectBasicResumeById" resultType="com.lcc.online.recruitment.entity.BasicResume">
+        <include refid="resumeInfo"/>
+        <where>
+            <include refid="precondition"/>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+        </where>
+    </select>
+
+</mapper>
