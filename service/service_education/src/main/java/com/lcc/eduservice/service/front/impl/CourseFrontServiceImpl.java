@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -86,7 +85,7 @@ public class CourseFrontServiceImpl implements CourseFrontService {
             BigDecimal price = courseWebVo.getPrice();
             BigDecimal freePrice = new BigDecimal("0");
             boolean isBuy = buyCourse.get();
-            if (price.compareTo(freePrice) != 0 && isBuy == false) { // 课程的价格不为0并且没有购买的课程，需要生成订单的token
+            if (price.compareTo(freePrice) != 0 && !isBuy) { // 课程的价格不为0并且没有购买的课程，需要生成订单的token
                 String token = UUID.randomUUID().toString().replace("-", "");
                 courseWebVo.setToken(token); // 客户端保存一个防重令牌
                 // redis中添加一个随机Token 防重令牌 设置过期时间，30分钟

@@ -22,6 +22,10 @@ public class MyRedissonConfig {
         // 1、创建配置
         Config config = new Config();
         config.useSingleServer().setAddress("redis://192.168.233.129:6379");
+
+        // 这是设置集群模式
+//        config.useClusterServers().addNodeAddress(""redis://127.0.0.1:7001",""redis://127.0.0.1:7002");
+
         // 2、根据config创建RedissonClient示例
         return Redisson.create(config);
     }
